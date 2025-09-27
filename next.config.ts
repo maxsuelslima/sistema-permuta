@@ -1,9 +1,9 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  eslint: {
-    dirs: ["pages", "utils"],
-  },
+    eslint: {
+        dirs: ['pages', 'utils'],
+    },
 };
 
 export default nextConfig;
