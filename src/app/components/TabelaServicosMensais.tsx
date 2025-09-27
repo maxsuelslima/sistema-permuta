@@ -1,12 +1,13 @@
 import { ServicoMensal } from '@/app/utils';
 import { FC } from 'react';
-import { Dispensa, Permutas } from './Escala';
+import { Dispensa, Permutas, Servico } from './Escala';
 import { efetivo, guarnicoes } from '@/app/constans';
 
 const colors = {
     ordinary: '#6fd137',
     permuta: '#2b5491',
     folga: '#d3d3d3',
+    dispensa: '#652319',
 };
 
 const estiloGuarnicao: {
@@ -71,13 +72,14 @@ const TabelaServicosMensais: FC<{
         <div>
             <table style={{ borderCollapse: 'collapse', width: '100%' }}>
                 <thead>
-                    <tr>
+                    <tr style={{ fontSize: '0.5rem' }}>
                         <th
                             style={{
                                 border: '1px solid black',
-                                padding: '8px',
+                                padding: '2px 1px',
                                 textAlign: 'center',
                                 backgroundColor: '#f2f2f2',
+                                width: '12px',
                             }}
                         >
                             Nome
@@ -87,10 +89,10 @@ const TabelaServicosMensais: FC<{
                                 key={dia}
                                 style={{
                                     border: '1px solid black',
-                                    padding: '8px',
+                                    padding: '2px 1px',
                                     textAlign: 'center',
                                     backgroundColor: '#f2f2f2',
-                                    width: '100%',
+                                    width: 'fit-content',
                                     whiteSpace: 'nowrap',
                                 }}
                             >
@@ -108,8 +110,16 @@ const TabelaServicosMensais: FC<{
                             servicos,
                             permutas,
                             matricula: militar,
-                        })
-                        console.log({ diasComServico })
+                        });
+                        const diasComServicoMilitarSelecionadoParaPermuta =
+                            aplicarPermmutas({
+                                servicos:
+                                    servicosMensais.servicos[
+                                        permutaAtiva.matricula
+                                    ] || [],
+                                permutas,
+                                matricula: permutaAtiva.matricula,
+                            }).map((dia) => dia.dia);
                         return (
                             <LinhaTabela
                                 key={militar}
@@ -118,6 +128,11 @@ const TabelaServicosMensais: FC<{
                                 diasComServico={diasComServico}
                                 handlePermuta={handlePermuta}
                                 removerPermuta={removerPermuta}
+                                dispensas={dispensas}
+                                diasServicoMilitarSelecionadoParaPermuta={
+                                  servicosMensais.servicos[permutaAtiva.matricula] ? [...diasComServicoMilitarSelecionadoParaPermuta, ...servicosMensais.servicos[permutaAtiva.matricula]] : []
+                                }
+                                servicosOriginas={servicos}
                                 quantidadeDiasServico={diasNoMes.length}
                                 permutaAtiva={permutaAtiva}
                             />
@@ -136,10 +151,12 @@ const LinhaTabela: FC<{
         servico: 'ordinary' | 'permuta';
         id?: string;
     }>;
+    dispensas?: Array<Servico>;
     diasServicoMilitarSelecionadoParaPermuta?: Array<string>;
     quantidadeDiasServico: number;
     isEditingPermuta: boolean;
     permutaAtiva?: { dia: number; matricula: string };
+    servicosOriginas?: Array<string>;
     handlePermuta: (args: { diaIndex: number; matricula: string }) => void;
     removerPermuta: (id: string) => void;
 }> = ({
@@ -148,6 +165,8 @@ const LinhaTabela: FC<{
     permutaAtiva,
     isEditingPermuta,
     diasComServico,
+    diasServicoMilitarSelecionadoParaPermuta = [],
+    dispensas,
     handlePermuta,
     removerPermuta,
 }) => {
@@ -156,18 +175,20 @@ const LinhaTabela: FC<{
             <td
                 style={{
                     border: '1px solid black',
-                    padding: '8px',
+                    padding: '2px 1px',
                     textAlign: 'left',
                     fontWeight: 'bold',
                     backgroundColor: efetivo[militarId].isAdventist
                         ? '#d1e7dd'
                         : '#f8d7da',
-                    fontSize: '0.7rem',
+                    fontSize: '0.5rem',
+                    height: '20px',
                 }}
             >
                 {efetivo[militarId].name}
             </td>
             {new Array(quantidadeDiasServico).fill(null).map((_, diaIndex) => {
+              const isDispensa = (dispensas ?? []).find(d => d.matricula === militarId && d.dia === diaIndex + 1)
                 const statusDia =
                     diasComServico.find(
                         (servico) => servico.dia === String(diaIndex + 1)
@@ -178,7 +199,13 @@ const LinhaTabela: FC<{
                     (permutaAtiva?.dia === diaIndex + 1 &&
                         diasComServico.find(
                             (servico) => servico.dia === String(diaIndex + 1)
-                        )?.servico === 'ordinary');
+                        )?.servico === 'ordinary') ||
+                    diasServicoMilitarSelecionadoParaPermuta.includes(
+                        String(diaIndex + 1)
+                    ) || isDispensa || diasComServico.find(
+                      (servico) => servico.dia === String(permutaAtiva?.dia)
+                  ) !== undefined;
+                    
                 const isSelectedForPermuta =
                     isEditingPermuta &&
                     permutaAtiva?.dia === diaIndex + 1 &&
@@ -188,20 +215,24 @@ const LinhaTabela: FC<{
                         key={diaIndex}
                         style={{
                             border: `1px solid ${isSelectedForPermuta ? '#FFA500' : 'black'}`,
-                            padding: '8px',
+                            padding: '2px 1px',
                             textAlign: 'center',
-                            backgroundColor: colors[statusDia],
+                            backgroundColor: isDispensa ? colors.dispensa : isSelectedForPermuta ? '#FFF0B3' : colors[statusDia],
                             opacity: isDisabledClick ? 0.6 : 1,
                             cursor: isDisabledClick
                                 ? 'not-allowed'
                                 : statusDia === 'permuta'
                                   ? 'crosshair'
                                   : 'pointer',
-                            fontSize: '0.7rem',
+                            fontSize: '0.5rem',
                             fontWeight: 'bold',
                             transition: 'background-color 0.3s, opacity 0.3s',
+                            width: 'fit-content',
                         }}
                         onClick={() => {
+                            if(isDispensa) {
+                              return;
+                            }
                             if (statusDia === 'ordinary' && !isDisabledClick) {
                                 handlePermuta({
                                     diaIndex: diaIndex + 1,
@@ -223,7 +254,7 @@ const LinhaTabela: FC<{
                         {diasComServico.find(
                             (servico) => servico.dia === String(diaIndex + 1)
                         )
-                            ? 'O'
+                            ? isDispensa ? 'DISP' : 'O'
                             : ''}
                     </td>
                 );
@@ -231,7 +262,7 @@ const LinhaTabela: FC<{
         </tr>
     );
 };
-function aplicarPermmutas(ars: {
+export function aplicarPermmutas(ars: {
     servicos: Array<string>;
     permutas: Permutas;
     matricula?: string;
@@ -249,24 +280,35 @@ function aplicarPermmutas(ars: {
     servicos.forEach((diaServicoOrdinario, index) => {
         diasComServico.push({ dia: diaServicoOrdinario, servico: 'ordinary' });
     });
-    permutas.forEach(({ id, servicos}) => {
+    permutas.forEach(({ id, servicos }) => {
         const [first, second] = servicos;
-        if (first.matricula === matricula ) {
-            const diaParaRemover = first.dia
-            const diaParaAdicionar = second.dia
-            const indexRemover = diasComServico.findIndex(dia => dia.dia === String(diaParaRemover))
-            diasComServico[indexRemover] = { dia: String(diaParaAdicionar), servico: 'permuta', id }
-            return
+        if (first.matricula === matricula) {
+            const diaParaRemover = first.dia;
+            const diaParaAdicionar = second.dia;
+            const indexRemover = diasComServico.findIndex(
+                (dia) => dia.dia === String(diaParaRemover)
+            );
+            diasComServico[indexRemover] = {
+                dia: String(diaParaAdicionar),
+                servico: 'permuta',
+                id,
+            };
+            return;
         }
-        if (second.matricula === matricula ) {
-            const diaParaRemover = second.dia
-            const diaParaAdicionar = first.dia
-            const indexRemover = diasComServico.findIndex(dia => dia.dia === String(diaParaRemover))
-            diasComServico[indexRemover] = { dia: String(diaParaAdicionar), servico: 'permuta', id }
-            return
+        if (second.matricula === matricula) {
+            const diaParaRemover = second.dia;
+            const diaParaAdicionar = first.dia;
+            const indexRemover = diasComServico.findIndex(
+                (dia) => dia.dia === String(diaParaRemover)
+            );
+            diasComServico[indexRemover] = {
+                dia: String(diaParaAdicionar),
+                servico: 'permuta',
+                id,
+            };
+            return;
         }
-
     });
-    return diasComServico
+    return diasComServico;
 }
 export { TabelaServicosMensais };

@@ -26,6 +26,20 @@ body {
 td {
     user-select: none;
 }
+tr:hover {
+    border-bottom: 2px solid black !important;
+    animation: highlight infinite 1s alternate;
+}
+@keyframes highlight {
+    0% {
+        border-bottom: 2px solid #FFA500;
+        background-color: #FFF0B3;
+    }
+    100% {
+        border-bottom: 2px solid transparent;
+        background-color: transparent;
+    }
+}   
 td:focus {
     outline: none;
     caret-color: transparent;
