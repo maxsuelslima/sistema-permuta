@@ -21,7 +21,7 @@ const efetivo: Record<
     },
     '725243-9': {
         isAdventist: true,
-        name: 'COELHO',
+        name: 'COELHO (Cmaut)',
         id: '725243-9',
         matricula: '725243-9',
     },
@@ -57,13 +57,13 @@ const efetivo: Record<
     },
     '725250-1': {
         isAdventist: false,
-        name: 'ANDRADE',
+        name: 'ANDRADE (Cmaut)',
         id: '725250-1',
         matricula: '725250-1',
     },
     '725252-8': {
         isAdventist: false,
-        name: 'CARVALHO',
+        name: 'CARVALHO (Cmaut)',
         id: '725252-8',
         matricula: '725252-8',
     },
@@ -93,7 +93,7 @@ const efetivo: Record<
     },
     '725260-9': {
         isAdventist: false,
-        name: 'DIONÍSIO',
+        name: 'DIONÍSIO (Cmaut)',
         id: '725260-9',
         matricula: '725260-9',
     },

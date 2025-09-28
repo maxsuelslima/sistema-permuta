@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { gerarServicoMensal, ServicoMensal } from '../utils';
-import { aplicarPermmutas, TabelaServicosMensais } from './TabelaServicosMensais';
+import { aplicarPermutas, TabelaServicosMensais } from './TabelaServicosMensais';
 import ListaPermutas from './ListaPermutas';
 export type Dispensa = {
     matricula: string;
@@ -10,7 +10,7 @@ const dispensas: Array<Dispensa> = [{
     matricula: '725241-2',
     dia: 5
 }, {
-    matricula: '725241-2',
+    matricula: '725239-0',
     dia: 21
 }];
 export type Servico = {
@@ -162,12 +162,12 @@ export function validarPermuta({
   // 6. O militar não pode permutar pra um dia que ele já tenha permutado
   if (jaPermutouNoDia(militarA.matricula, militarB.dia)) return false;
   if (jaPermutouNoDia(militarB.matricula, militarA.dia)) return false;
-  const todosOsServicosMilitaresA = aplicarPermmutas({
+  const todosOsServicosMilitaresA = aplicarPermutas({
     servicos: servicosMensais.servicos[militarA.matricula] || [],
     permutas,
     matricula: militarA.matricula,
   });
-  const todosOsServicosMilitaresB = aplicarPermmutas({
+  const todosOsServicosMilitaresB = aplicarPermutas({
     servicos: servicosMensais.servicos[militarB.matricula] || [],
     permutas,
     matricula: militarB.matricula,
@@ -178,6 +178,32 @@ export function validarPermuta({
     return false;
   }
   return true;
+}
+function sequenciaQuatroOuMais(dias: string[]): string[] {
+  const nums = dias.map(d => Number(d));
+  const n = nums.length;
+  const found = new Set<string>();
+
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 3; j < n; j++) { // mínimo 4 elementos
+      const slice = nums.slice(i, j + 1);
+
+      // verifica se todos são consecutivos
+      let consecutivo = true;
+      for (let k = 1; k < slice.length; k++) {
+        if (slice[k] - slice[k - 1] !== 1) {
+          consecutivo = false;
+          break;
+        }
+      }
+
+      if (consecutivo) {
+        found.add(slice.join(","));
+      }
+    }
+  }
+
+  return [...found];
 }
 
 export default Escala;
