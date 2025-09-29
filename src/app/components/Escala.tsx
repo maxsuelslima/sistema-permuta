@@ -103,7 +103,7 @@ const Escala: FC<{
                     isEditingPermuta={isEditingPermuta}
                     permutaAtiva={permuta}
                 />
-                <button onClick={() => {
+                {/* <button onClick={() => {
                     setPermutas([]);
                     localStorage.removeItem('permutas');
                 }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>Limpar Permutas</button>
@@ -111,10 +111,10 @@ const Escala: FC<{
                   setPermutas(escalaOutubro);
                 }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>
                   resetar
-                </button>
+                </button> */}
             </div>
             <ListaPermutas
-                permutas={permutas}
+                permutas={escalaOutubro}
                 removerPermuta={removerPermuta}
             />
         </div>
