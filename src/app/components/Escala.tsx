@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { gerarServicoMensal, ServicoMensal } from '../utils';
 import { aplicarPermutas, TabelaServicosMensais } from './TabelaServicosMensais';
 import ListaPermutas from './ListaPermutas';
-import { efetivo, escalaOutubro } from '../constans';
+import { efetivo, escalaOutubro, escalaOutubro2 } from '../constans';
 export type Dispensa = {
     matricula: string;
     dia: number;
@@ -38,7 +38,7 @@ const Escala: FC<{
     });
     const isEditingPermuta = permuta.dia !== -1 && permuta.matricula !== '';
     function handlePermuta(args: { diaIndex: number; matricula: string }) {
-      return;
+      return
         const { diaIndex, matricula } = args;
         if (isEditingPermuta) {
             adicionarPermuta({
@@ -78,7 +78,7 @@ const Escala: FC<{
     }
 
     function removerPermuta(id: string) {
-        return
+      return
         setPermutas((prev) => prev.filter((p) => p.id !== id));
     }
     /**
@@ -90,31 +90,29 @@ const Escala: FC<{
     console.log(permutas)
 
     return (
-        <div style={{ marginTop: '2rem', padding: '1rem' }}>
+        <div style={{ marginTop: '2rem', padding: '1rem', pointerEvents: 'none' }}>
             <div style={{ overflowX: 'auto' }}>
                 <TabelaServicosMensais
                     servicosMensais={servicosMensais}
-                    permutas={
-                      escalaOutubro
-                    }
+                    permutas={escalaOutubro2}
                     dispensas={dispensas}
                     handlePermuta={handlePermuta}
                     removerPermuta={removerPermuta}
                     isEditingPermuta={isEditingPermuta}
                     permutaAtiva={permuta}
                 />
-                {/* <button onClick={() => {
+                 <button onClick={() => {
                     setPermutas([]);
                     localStorage.removeItem('permutas');
-                }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>Limpar Permutas</button>
+                }} style={{ marginTop: '1rem', marginLeft: '1rem', display: 'none'}}>Limpar Permutas</button>
                 <button onClick={() => {
                   setPermutas(escalaOutubro);
-                }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>
+                }} style={{ marginTop: '1rem', marginLeft: '1rem', display: 'none' }}>
                   resetar
-                </button> */}
+                </button> 
             </div>
             <ListaPermutas
-                permutas={escalaOutubro}
+                permutas={escalaOutubro2}
                 removerPermuta={removerPermuta}
             />
         </div>
