@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { gerarServicoMensal, ServicoMensal } from '../utils';
 import { aplicarPermutas, TabelaServicosMensais } from './TabelaServicosMensais';
 import ListaPermutas from './ListaPermutas';
-import { efetivo, escalaOutubro, escalaOutubro2 } from '../constans';
+import { efetivo, escalaOutubro, escalaOutubro2, escalaOutubro3 } from '../constans';
 export type Dispensa = {
     matricula: string;
     dia: number;
@@ -38,7 +38,6 @@ const Escala: FC<{
     });
     const isEditingPermuta = permuta.dia !== -1 && permuta.matricula !== '';
     function handlePermuta(args: { diaIndex: number; matricula: string }) {
-      return
         const { diaIndex, matricula } = args;
         if (isEditingPermuta) {
             adicionarPermuta({
@@ -78,7 +77,6 @@ const Escala: FC<{
     }
 
     function removerPermuta(id: string) {
-      return
         setPermutas((prev) => prev.filter((p) => p.id !== id));
     }
     /**
@@ -94,25 +92,26 @@ const Escala: FC<{
             <div style={{ overflowX: 'auto' }}>
                 <TabelaServicosMensais
                     servicosMensais={servicosMensais}
-                    permutas={escalaOutubro2}
+                    permutas={escalaOutubro3}
                     dispensas={dispensas}
                     handlePermuta={handlePermuta}
                     removerPermuta={removerPermuta}
                     isEditingPermuta={isEditingPermuta}
                     permutaAtiva={permuta}
                 />
-                 <button onClick={() => {
+             {/*     <button onClick={() => {
                     setPermutas([]);
                     localStorage.removeItem('permutas');
-                }} style={{ marginTop: '1rem', marginLeft: '1rem', display: 'none'}}>Limpar Permutas</button>
+                }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>Limpar Permutas</button>
                 <button onClick={() => {
-                  setPermutas(escalaOutubro);
-                }} style={{ marginTop: '1rem', marginLeft: '1rem', display: 'none' }}>
+                  setPermutas(escalaOutubro2);
+                  window.localStorage.setItem('permutas', JSON.stringify(escalaOutubro2));
+                }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>
                   resetar
-                </button> 
+                </button>  */}
             </div>
             <ListaPermutas
-                permutas={escalaOutubro2}
+                permutas={escalaOutubro3}
                 removerPermuta={removerPermuta}
             />
         </div>

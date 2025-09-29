@@ -170,7 +170,7 @@ const TabelaServicosMensais: FC<{
                 </tbody>
             </table>
             <div>
-                <label style={{ fontSize: '0.8rem' }}>
+{/*                 <label style={{ fontSize: '0.8rem' }}>
                     <input
                         type="checkbox"
                         checked={isPermutaComEscalaIdealBloqueada}
@@ -182,7 +182,7 @@ const TabelaServicosMensais: FC<{
                     Bloquear permutas que resultem em escala ideal
                     (sem 4 dias consecutivos e todos os dias de serviço
                     fazendo parte de uma sequência de 3 dias consecutivos)
-                </label>
+                </label> */}
             </div>
         </div>
     );

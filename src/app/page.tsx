@@ -9,15 +9,15 @@ export default function Home() {
     const [mes, setMes] = useState(new Date());
 
     return (
-        <main className={styles.main}>
+        <main>
             <div style={{
                 width: '100%',
             }}>
-                <div className={styles.center}>
+                <div>
                 <h1>Escala - 10</h1>
             </div>
             <div>
-                <div className={styles.grid}>
+                <div>
                     <Guarnicoes />
                 </div>
                 <Escala mes={10} ano={mes.getFullYear()} />
