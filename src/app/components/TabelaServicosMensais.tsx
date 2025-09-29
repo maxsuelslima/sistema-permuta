@@ -220,7 +220,7 @@ const LinhaTabela: FC<{
 }) => {
     return (
         <tr style={{
-            backgroundColor: statusLinhas === 'ideal' ? '#8e1782' : statusLinhas === 'selecionado' ? '#cce5ff' : 'transparent',
+            backgroundColor: statusLinhas === 'ideal' ? '#808080cf' : statusLinhas === 'selecionado' ? '#cce5ff' : 'transparent',
             opacity: statusLinhas === 'ideal' ? 0.8 : 1,
             transition: 'background-color 0.3s, opacity 0.3s',
             pointerEvents: bloqueiaPermuta ? 'none' : 'auto',
