@@ -41,7 +41,7 @@ const ListaPermutas: FC<{
                             {p.servicos
                                 .map(
                                     (s) => {
-                                        return `${efetivo[s.matricula].name} (dia ${s.dia})`
+                                        return `${efetivo[s.matricula].name} ${s.matricula} (dia ${s.dia})`
                                     }
                                         
                                 )
