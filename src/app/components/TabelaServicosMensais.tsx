@@ -73,7 +73,7 @@ const TabelaServicosMensais: FC<{
 
     return (
         <div>
-            <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <table style={{ borderCollapse: 'collapse', width: '100%', pointerEvents: 'none' }}>
                 <thead>
                     <tr style={{ fontSize: '0.5rem' }}>
                         <th

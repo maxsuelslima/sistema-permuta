@@ -90,7 +90,7 @@ const Escala: FC<{
     console.log(permutas)
 
     return (
-        <div style={{ marginTop: '2rem', padding: '1rem', pointerEvents: 'none' }}>
+        <div style={{ marginTop: '2rem', padding: '1rem' }}>
             <div style={{ overflowX: 'auto' }}>
                 <TabelaServicosMensais
                     servicosMensais={servicosMensais}

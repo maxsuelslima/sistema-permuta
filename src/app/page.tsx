@@ -10,14 +10,18 @@ export default function Home() {
 
     return (
         <main className={styles.main}>
-            <div className={styles.center}>
+            <div style={{
+                width: '100%',
+            }}>
+                <div className={styles.center}>
                 <h1>Escala - 10</h1>
             </div>
-            <div className={styles.center}>
+            <div>
                 <div className={styles.grid}>
                     <Guarnicoes />
                 </div>
                 <Escala mes={10} ano={mes.getFullYear()} />
+            </div>
             </div>
         </main>
     );
