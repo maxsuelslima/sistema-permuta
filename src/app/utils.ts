@@ -1,12 +1,18 @@
-import { guarnicoes } from './constans';
+import { Permuta, Permutas } from './components/Escala';
+import { guarnicoes, Militar } from './constans';
+import { v4 as uuidv4 } from 'uuid';
 
 export type ServicoMensal = {
     mes: number;
     ano: number;
+    /**
+     * servicos é um objeto onde a chave é a matricula do militar
+     * e o valor é um array com os dias do mês que ele tem serviço
+     */
     servicos: Record<string, Array<string>>;
 };
 
-function gerarServicoMensal({
+export function gerarServicoMensal({
     mes,
     ano,
 }: {
@@ -31,7 +37,3 @@ function gerarServicoMensal({
     }
     return escalaMensal;
 }
-
-
-
-export { gerarServicoMensal };

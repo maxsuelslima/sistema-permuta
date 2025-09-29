@@ -1,7 +1,8 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { gerarServicoMensal, ServicoMensal } from '../utils';
 import { aplicarPermutas, TabelaServicosMensais } from './TabelaServicosMensais';
 import ListaPermutas from './ListaPermutas';
+import { efetivo, escalaOutubro } from '../constans';
 export type Dispensa = {
     matricula: string;
     dia: number;
@@ -18,23 +19,26 @@ export type Servico = {
     dia: number;
 };
 
-export type Permutas = Array<{
+export type Permutas = Array<Permuta>;
+export type Permuta = {
     id: string;
     servicos: Array<Servico>;
-}>;
+};
+
 
 const Escala: FC<{
     mes: number;
     ano: number;
 }> = ({ mes, ano }) => {
     const servicosMensais: ServicoMensal = gerarServicoMensal({ mes, ano });
-
+    const [permutas, setPermutas] = useState<Permutas>([]);
     const [permuta, setPermuta] = useState<Servico>({
         dia: -1,
         matricula: '',
     });
     const isEditingPermuta = permuta.dia !== -1 && permuta.matricula !== '';
     function handlePermuta(args: { diaIndex: number; matricula: string }) {
+      return;
         const { diaIndex, matricula } = args;
         if (isEditingPermuta) {
             adicionarPermuta({
@@ -49,15 +53,14 @@ const Escala: FC<{
             setPermuta({ dia: diaIndex, matricula });
         }
     }
-    const [permutas, setPermutas] = useState<Permutas>(() => {
-        if (typeof window !== 'undefined') {
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
             const storedPermutas = localStorage.getItem('permutas');
             if (storedPermutas) {
-                return JSON.parse(storedPermutas);
+              setPermutas(JSON.parse(storedPermutas));
             }
         }
-        return [];
-    });
+    }, []);
 
     function adicionarPermuta(args: { servicos: Array<Servico> }) {
         const { servicos } = args;
@@ -75,20 +78,40 @@ const Escala: FC<{
     }
 
     function removerPermuta(id: string) {
+        return
         setPermutas((prev) => prev.filter((p) => p.id !== id));
     }
+    /**
+     * militaresComEscalaIdeal são aqueles que, após aplicar todas as permutas,
+     * não possuem 4 dias consecutivos de serviço no mês.
+     * e que todos os dias de serviço fazer parte de uma sequência de 3 dias consecutivos.
+     * 
+     */
+    console.log(permutas)
+
     return (
         <div style={{ marginTop: '2rem', padding: '1rem' }}>
             <div style={{ overflowX: 'auto' }}>
                 <TabelaServicosMensais
                     servicosMensais={servicosMensais}
-                    permutas={permutas}
+                    permutas={
+                      escalaOutubro
+                    }
                     dispensas={dispensas}
                     handlePermuta={handlePermuta}
                     removerPermuta={removerPermuta}
                     isEditingPermuta={isEditingPermuta}
                     permutaAtiva={permuta}
                 />
+                <button onClick={() => {
+                    setPermutas([]);
+                    localStorage.removeItem('permutas');
+                }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>Limpar Permutas</button>
+                <button onClick={() => {
+                  setPermutas(escalaOutubro);
+                }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>
+                  resetar
+                </button>
             </div>
             <ListaPermutas
                 permutas={permutas}

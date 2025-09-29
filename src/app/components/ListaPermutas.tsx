@@ -21,7 +21,7 @@ const ListaPermutas: FC<{
                                 )
                                 .join(' <-> ')}
                             <button
-                                style={{ marginLeft: '1rem' }}
+                                style={{ marginLeft: '1rem', display: 'none' }}
                                 onClick={() => removerPermuta(p.id)}
                             >
                                 Remover
