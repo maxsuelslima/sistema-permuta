@@ -4801,7 +4801,7 @@ export const escalaAtual = [
                 matricula: '725247-1',
             },
             {
-                dia: 31,
+                dia: 27,
                 matricula: '725255-2',
             },
         ],
