@@ -163,45 +163,6 @@ export default function Home() {
                                 </div>
                             )) || <p>Nenhum militar escalado.</p>}
                         </div>
-                        <br />
-                        <h2>Serviços do dia {diaSelecionado} (método antigo)</h2>
-                        {diaSelecionado && (
-                            <div>
-                                {Object.entries(servicosMensais.servicos).map(
-                                    ([matricula, servicos]) => {
-                                        const servicoDoDia = aplicarPermutas({
-                                            servicos: servicos,
-                                            permutas: escalaAtual,
-                                            matricula,
-                                        }).find(
-                                            (s) => s.dia === String(diaSelecionado)
-                                        );
-                                        if (servicoDoDia) {
-                                            return (
-                                                <div
-                                                    key={matricula}
-                                                    className={
-                                                        styles.diaServico
-                                                    }
-                                                >
-                                                    <span>
-                                                        {
-                                                            efetivo[matricula]
-                                                                .name
-                                                        }
-                                                    </span>{' '}
-                                                    -{' '}
-                                                    <span style={{
-                                                        textTransform: 'capitalize'
-                                                    }}>{servicoDoDia.servico === 'ordinary' ? 'ordinário' : 'permuta'}</span>
-                                                </div>
-                                            );
-                                        }
-                                        return null;
-                                    }
-                                )}
-                            </div>
-                        )}  
                     </div>
                     <div>
                         <h1>Dias de serviço</h1>
