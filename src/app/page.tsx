@@ -174,7 +174,7 @@ export default function Home() {
                                             permutas: escalaAtual,
                                             matricula,
                                         }).find(
-                                            (s) => s.dia === diaSelecionado
+                                            (s) => s.dia === String(diaSelecionado)
                                         );
                                         if (servicoDoDia) {
                                             return (
@@ -226,7 +226,7 @@ export default function Home() {
                             servicos: servicosMensais.servicos[filtroMilitar] ?? [],
                             permutas: escalaAtual,
                             matricula: filtroMilitar,
-                        }).sort((a, b) => a.dia - b.dia).map((dia, idx) => {
+                        }).sort((a, b) => Number(a.dia) - Number(b.dia)).map((dia, idx) => {
                             return (
                                 <div key={idx} className={styles.diaServico}>
                                     <span>{dia.dia}</span> -{' '}
