@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { gerarServicoMensal, ServicoMensal } from '../utils';
 import { aplicarPermutas, TabelaServicosMensais } from './TabelaServicosMensais';
 import ListaPermutas from './ListaPermutas';
-import { efetivo, escalaOutubro, escalaOutubro2, escalaOutubro3 } from '../constans';
+import { escalaAtual, escalaOutubro3 } from '../constans';
 export type Dispensa = {
     matricula: string;
     dia: number;
@@ -31,7 +31,7 @@ const Escala: FC<{
     ano: number;
 }> = ({ mes, ano }) => {
     const servicosMensais: ServicoMensal = gerarServicoMensal({ mes, ano });
-    const [permutas, setPermutas] = useState<Permutas>([]);
+    const [permutas, setPermutas] = useState<Permutas>(escalaAtual);
     const [permuta, setPermuta] = useState<Servico>({
         dia: -1,
         matricula: '',
@@ -92,26 +92,28 @@ const Escala: FC<{
             <div style={{ overflowX: 'auto' }}>
                 <TabelaServicosMensais
                     servicosMensais={servicosMensais}
-                    permutas={escalaOutubro3}
+                    permutas={permutas}
                     dispensas={dispensas}
                     handlePermuta={handlePermuta}
                     removerPermuta={removerPermuta}
                     isEditingPermuta={isEditingPermuta}
                     permutaAtiva={permuta}
                 />
-             {/*     <button onClick={() => {
+                  <div style={{ display: 'none'}}>
+                    <button onClick={() => {
                     setPermutas([]);
                     localStorage.removeItem('permutas');
                 }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>Limpar Permutas</button>
                 <button onClick={() => {
-                  setPermutas(escalaOutubro2);
-                  window.localStorage.setItem('permutas', JSON.stringify(escalaOutubro2));
+                  setPermutas(escalaOutubro3);
+                  window.localStorage.setItem('permutas', JSON.stringify(escalaOutubro3));
                 }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>
                   resetar
-                </button>  */}
+                </button>  
+                  </div>
             </div>
             <ListaPermutas
-                permutas={escalaOutubro3}
+                permutas={permutas}
                 removerPermuta={removerPermuta}
             />
         </div>

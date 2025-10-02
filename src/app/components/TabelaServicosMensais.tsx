@@ -73,7 +73,7 @@ const TabelaServicosMensais: FC<{
 
     return (
         <div>
-            <table style={{ borderCollapse: 'collapse', width: '100%', pointerEvents: 'none' }}>
+            <table style={{ borderCollapse: 'collapse', width: '100%' }}>
                 <thead>
                     <tr style={{ fontSize: '0.5rem' }}>
                         <th
@@ -170,7 +170,7 @@ const TabelaServicosMensais: FC<{
                 </tbody>
             </table>
             <div>
-{/*                 <label style={{ fontSize: '0.8rem' }}>
+                <label style={{ fontSize: '0.8rem' }}>
                     <input
                         type="checkbox"
                         checked={isPermutaComEscalaIdealBloqueada}
@@ -182,7 +182,7 @@ const TabelaServicosMensais: FC<{
                     Bloquear permutas que resultem em escala ideal
                     (sem 4 dias consecutivos e todos os dias de serviço
                     fazendo parte de uma sequência de 3 dias consecutivos)
-                </label> */}
+                </label>
             </div>
         </div>
     );
@@ -222,7 +222,8 @@ const LinhaTabela: FC<{
         <tr style={{
             backgroundColor: statusLinhas === 'ideal' ? '#808080cf' : statusLinhas === 'selecionado' ? '#cce5ff' : 'transparent',
             opacity: statusLinhas === 'ideal' ? 0.8 : 1,
-            transition: 'background-color 0.3s, opacity 0.3s'
+            transition: 'background-color 0.3s, opacity 0.3s',
+            pointerEvents: 'none'
         }}>
             <td
                 style={{
@@ -287,7 +288,7 @@ const LinhaTabela: FC<{
                             fontSize: '0.5rem',
                             fontWeight: 'bold',
                             transition: 'background-color 0.3s, opacity 0.3s',
-                            width: 'fit-content',
+                            width: 'fit-content'
                         }}
                         onClick={() => {
                             if(isDispensa || bloqueiaPermuta) {
