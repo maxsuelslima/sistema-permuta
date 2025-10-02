@@ -92,7 +92,7 @@ const Escala: FC<{
             <div style={{ overflowX: 'auto' }}>
                 <TabelaServicosMensais
                     servicosMensais={servicosMensais}
-                    permutas={permutas}
+                    permutas={escalaAtual}
                     dispensas={dispensas}
                     handlePermuta={handlePermuta}
                     removerPermuta={removerPermuta}
@@ -113,7 +113,7 @@ const Escala: FC<{
                   </div>
             </div>
             <ListaPermutas
-                permutas={permutas}
+                permutas={escalaAtual}
                 removerPermuta={removerPermuta}
             />
         </div>
