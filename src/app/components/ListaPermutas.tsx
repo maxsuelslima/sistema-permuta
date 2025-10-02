@@ -19,7 +19,10 @@ const ListaPermutas: FC<{
                 >
                     <option value="">Todos</option>
                     {Object.values(efetivo).map((militar) => (
-                        <option key={militar.matricula} value={militar.matricula}>
+                        <option
+                            key={militar.matricula}
+                            value={militar.matricula}
+                        >
                             {militar.name}
                         </option>
                     ))}
@@ -39,15 +42,12 @@ const ListaPermutas: FC<{
                     return (
                         <li key={index}>
                             {p.servicos
-                                .map(
-                                    (s) => {
-                                        return `${efetivo[s.matricula].name} ${s.matricula} (dia ${s.dia})`
-                                    }
-                                        
-                                )
+                                .map((s) => {
+                                    return `${efetivo[s.matricula].name} ${s.matricula} (dia ${s.dia})`;
+                                })
                                 .join(' <-> ')}
                             <button
-                                style={{ marginLeft: '1rem', display: 'none' }}
+                                style={{ marginLeft: '1rem' }}
                                 onClick={() => removerPermuta(p.id)}
                             >
                                 Remover

@@ -13,9 +13,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: 'Escalima - Ouricurivis',
-    description: 'Site com as permutas.'
+    description: 'Site com as permutas.',
 };
-
 
 export default function RootLayout({
     children,

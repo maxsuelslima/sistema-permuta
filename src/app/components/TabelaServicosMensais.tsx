@@ -56,8 +56,10 @@ const TabelaServicosMensais: FC<{
         dia: number;
         diaSemana: string;
     }> = [];
-    const [isPermutaComEscalaIdealBloqueada, setIsPermutaComEscalaIdealBloqueada] =
-        useState(true);
+    const [
+        isPermutaComEscalaIdealBloqueada,
+        setIsPermutaComEscalaIdealBloqueada,
+    ] = useState(true);
     for (
         let dia = 1;
         dia <= new Date(servicosMensais.ano, servicosMensais.mes, 0).getDate();
@@ -123,30 +125,63 @@ const TabelaServicosMensais: FC<{
                                 permutas,
                                 matricula: permutaAtiva.matricula,
                             }).map((dia) => dia.dia);
-                        const militaresComEscalaIdeal = Object.entries(servicosMensais.servicos).filter(([matricula, dias]) => {
-                            const todosOsDiasComServicoDoMilitar = aplicarPermutas({
-                                servicos: dias,
-                                permutas,
-                                matricula,
-                            }).filter(d => {
-                                // remove dispensas
-                                return !(dispensas.find(dis => dis.matricula === matricula && dis.dia === Number(d.dia)));
-                            }).map(d => d.dia);
-                            const diasQueFazemParteDeTresDiasConsecutivos = checaSeFazParteDeSequenciaDeDias(todosOsDiasComServicoDoMilitar);
-                            const sequenciasDeQuatroOuMais = checaSequenciaQuatroOuMais(todosOsDiasComServicoDoMilitar.filter(d => {
-                                return !(dispensas.find(dis => dis.matricula === matricula && dis.dia === Number(d)));
-                            }).map(d => d));
-                            const isTodoDiasFazParteDeTresDiasConsecutivos = todosOsDiasComServicoDoMilitar.every(d => diasQueFazemParteDeTresDiasConsecutivos.includes(d));
-                            return isTodoDiasFazParteDeTresDiasConsecutivos && sequenciasDeQuatroOuMais.length === 0;
-                        }).map(([matricula]) => matricula);
+                        const militaresComEscalaIdeal = Object.entries(
+                            servicosMensais.servicos
+                        )
+                            .filter(([matricula, dias]) => {
+                                const todosOsDiasComServicoDoMilitar =
+                                    aplicarPermutas({
+                                        servicos: dias,
+                                        permutas,
+                                        matricula,
+                                    })
+                                        .filter((d) => {
+                                            // remove dispensas
+                                            return !dispensas.find(
+                                                (dis) =>
+                                                    dis.matricula ===
+                                                        matricula &&
+                                                    dis.dia === Number(d.dia)
+                                            );
+                                        })
+                                        .map((d) => d.dia);
+                                const diasQueFazemParteDeTresDiasConsecutivos =
+                                    checaSeFazParteDeSequenciaDeDias(
+                                        todosOsDiasComServicoDoMilitar
+                                    );
+                                const sequenciasDeQuatroOuMais =
+                                    checaSequenciaQuatroOuMais(
+                                        todosOsDiasComServicoDoMilitar
+                                            .filter((d) => {
+                                                return !dispensas.find(
+                                                    (dis) =>
+                                                        dis.matricula ===
+                                                            matricula &&
+                                                        dis.dia === Number(d)
+                                                );
+                                            })
+                                            .map((d) => d)
+                                    );
+                                const isTodoDiasFazParteDeTresDiasConsecutivos =
+                                    todosOsDiasComServicoDoMilitar.every((d) =>
+                                        diasQueFazemParteDeTresDiasConsecutivos.includes(
+                                            d
+                                        )
+                                    );
+                                return (
+                                    isTodoDiasFazParteDeTresDiasConsecutivos &&
+                                    sequenciasDeQuatroOuMais.length === 0
+                                );
+                            })
+                            .map(([matricula]) => matricula);
                         const statusLinha = militaresComEscalaIdeal.includes(
                             militar
                         )
                             ? 'ideal'
                             : permutaAtiva.matricula === militar
-                            ? 'selecionado'
-                            : 'normal';
-                        
+                              ? 'selecionado'
+                              : 'normal';
+
                         return (
                             <LinhaTabela
                                 key={militar}
@@ -155,10 +190,22 @@ const TabelaServicosMensais: FC<{
                                 diasComServico={diasComServico}
                                 handlePermuta={handlePermuta}
                                 removerPermuta={removerPermuta}
-                                bloqueiaPermuta={isPermutaComEscalaIdealBloqueada && militaresComEscalaIdeal.includes(militar)}
+                                bloqueiaPermuta={
+                                    isPermutaComEscalaIdealBloqueada &&
+                                    militaresComEscalaIdeal.includes(militar)
+                                }
                                 dispensas={dispensas}
                                 diasServicoMilitarSelecionadoParaPermuta={
-                                  servicosMensais.servicos[permutaAtiva.matricula] ? [...diasComServicoMilitarSelecionadoParaPermuta, ...servicosMensais.servicos[permutaAtiva.matricula]] : []
+                                    servicosMensais.servicos[
+                                        permutaAtiva.matricula
+                                    ]
+                                        ? [
+                                              ...diasComServicoMilitarSelecionadoParaPermuta,
+                                              ...servicosMensais.servicos[
+                                                  permutaAtiva.matricula
+                                              ],
+                                          ]
+                                        : []
                                 }
                                 statusLinhas={statusLinha}
                                 servicosOriginas={servicos}
@@ -170,7 +217,7 @@ const TabelaServicosMensais: FC<{
                 </tbody>
             </table>
             <div>
-                <label style={{ fontSize: '0.8rem' }}>
+                <label style={{ fontSize: '0.8rem', display: 'none' }}>
                     <input
                         type="checkbox"
                         checked={isPermutaComEscalaIdealBloqueada}
@@ -178,10 +225,9 @@ const TabelaServicosMensais: FC<{
                             setIsPermutaComEscalaIdealBloqueada((prev) => !prev)
                         }
                     />
-                    {'  '}
-                    Bloquear permutas que resultem em escala ideal
-                    (sem 4 dias consecutivos e todos os dias de serviço
-                    fazendo parte de uma sequência de 3 dias consecutivos)
+                    Bloquear permutas que resultem em escala ideal (sem 4 dias
+                    consecutivos e todos os dias de serviço fazendo parte de uma
+                    sequência de 3 dias consecutivos)
                 </label>
             </div>
         </div>
@@ -219,12 +265,18 @@ const LinhaTabela: FC<{
     removerPermuta,
 }) => {
     return (
-        <tr style={{
-            backgroundColor: statusLinhas === 'ideal' ? '#808080cf' : statusLinhas === 'selecionado' ? '#cce5ff' : 'transparent',
-            opacity: statusLinhas === 'ideal' ? 0.8 : 1,
-            transition: 'background-color 0.3s, opacity 0.3s',
-            pointerEvents: 'none'
-        }}>
+        <tr
+            style={{
+                backgroundColor:
+                    statusLinhas === 'ideal'
+                        ? '#808080cf'
+                        : statusLinhas === 'selecionado'
+                          ? '#cce5ff'
+                          : 'transparent',
+                opacity: statusLinhas === 'ideal' ? 0.8 : 1,
+                transition: 'background-color 0.3s, opacity 0.3s',
+            }}
+        >
             <td
                 style={{
                     border: '1px solid black',
@@ -241,7 +293,9 @@ const LinhaTabela: FC<{
                 {efetivo[militarId].name}
             </td>
             {new Array(quantidadeDiasServico).fill(null).map((_, diaIndex) => {
-              const isDispensa = (dispensas ?? []).find(d => d.matricula === militarId && d.dia === diaIndex + 1)
+                const isDispensa = (dispensas ?? []).find(
+                    (d) => d.matricula === militarId && d.dia === diaIndex + 1
+                );
                 const statusDia =
                     diasComServico.find(
                         (servico) => servico.dia === String(diaIndex + 1)
@@ -255,22 +309,41 @@ const LinhaTabela: FC<{
                         )?.servico === 'ordinary') ||
                     diasServicoMilitarSelecionadoParaPermuta.includes(
                         String(diaIndex + 1)
-                    ) || isDispensa || diasComServico.find(
-                      (servico) => servico.dia === String(permutaAtiva?.dia)
-                  ) !== undefined;
-                    
+                    ) ||
+                    isDispensa ||
+                    diasComServico.find(
+                        (servico) => servico.dia === String(permutaAtiva?.dia)
+                    ) !== undefined;
+
                 const isSelectedForPermuta =
                     isEditingPermuta &&
                     permutaAtiva?.dia === diaIndex + 1 &&
                     permutaAtiva?.matricula === militarId;
-                const todosOsDiasComServicoDoMilitar = diasComServico.map(d => d.dia)
-                const diasQueFazemParteDeTresDiasConsecutivos = checaSeFazParteDeSequenciaDeDias(todosOsDiasComServicoDoMilitar)
-                const fazParteDeTresDiasConsecutivos = diasQueFazemParteDeTresDiasConsecutivos.includes(String(diaIndex + 1))
-                const sequenciasDeQuatroOuMais = checaSequenciaQuatroOuMais(todosOsDiasComServicoDoMilitar.filter(d => {
-                  // remove dispensas
-                  return !(dispensas?.find(dis => dis.matricula === militarId && dis.dia === Number(d)));
-              }).map(d => d));
-                const fazParteDeQuatroOuMaisDiasConsecutivos = sequenciasDeQuatroOuMais.includes(String(diaIndex + 1))
+                const todosOsDiasComServicoDoMilitar = diasComServico.map(
+                    (d) => d.dia
+                );
+                const diasQueFazemParteDeTresDiasConsecutivos =
+                    checaSeFazParteDeSequenciaDeDias(
+                        todosOsDiasComServicoDoMilitar
+                    );
+                const fazParteDeTresDiasConsecutivos =
+                    diasQueFazemParteDeTresDiasConsecutivos.includes(
+                        String(diaIndex + 1)
+                    );
+                const sequenciasDeQuatroOuMais = checaSequenciaQuatroOuMais(
+                    todosOsDiasComServicoDoMilitar
+                        .filter((d) => {
+                            // remove dispensas
+                            return !dispensas?.find(
+                                (dis) =>
+                                    dis.matricula === militarId &&
+                                    dis.dia === Number(d)
+                            );
+                        })
+                        .map((d) => d)
+                );
+                const fazParteDeQuatroOuMaisDiasConsecutivos =
+                    sequenciasDeQuatroOuMais.includes(String(diaIndex + 1));
                 return (
                     <td
                         key={diaIndex}
@@ -278,21 +351,27 @@ const LinhaTabela: FC<{
                             border: `${fazParteDeTresDiasConsecutivos ? '2px' : '1px'} solid ${fazParteDeQuatroOuMaisDiasConsecutivos ? '#ff0000' : fazParteDeTresDiasConsecutivos ? '#ffa500' : 'black'}`,
                             padding: '2px 1px',
                             textAlign: 'center',
-                            backgroundColor: isDispensa ? colors.dispensa : isSelectedForPermuta ? '#FFF0B3' : colors[statusDia],
-                            opacity: isDisabledClick  ? 0.6 : 1,
+                            backgroundColor: isDispensa
+                                ? colors.dispensa
+                                : isSelectedForPermuta
+                                  ? '#FFF0B3'
+                                  : colors[statusDia],
+                            opacity: isDisabledClick ? 0.6 : 1,
                             cursor: isDisabledClick
                                 ? 'not-allowed'
                                 : statusDia === 'permuta'
                                   ? 'crosshair'
-                                  : bloqueiaPermuta ? 'not-allowed' : 'pointer',
+                                  : bloqueiaPermuta
+                                    ? 'not-allowed'
+                                    : 'pointer',
                             fontSize: '0.5rem',
                             fontWeight: 'bold',
                             transition: 'background-color 0.3s, opacity 0.3s',
-                            width: 'fit-content'
+                            width: 'fit-content',
                         }}
                         onClick={() => {
-                            if(isDispensa || bloqueiaPermuta) {
-                              return;
+                            if (isDispensa || bloqueiaPermuta) {
+                                return;
                             }
                             if (statusDia === 'ordinary' && !isDisabledClick) {
                                 handlePermuta({
@@ -315,7 +394,9 @@ const LinhaTabela: FC<{
                         {diasComServico.find(
                             (servico) => servico.dia === String(diaIndex + 1)
                         )
-                            ? isDispensa ? 'DISP' : 'O'
+                            ? isDispensa
+                                ? 'DISP'
+                                : 'O'
                             : ''}
                     </td>
                 );
@@ -323,7 +404,7 @@ const LinhaTabela: FC<{
         </tr>
     );
 };
-/** 
+/**
  * Função que checa quais dias fazem parte de 3 dias consecutivos de serviço ou
  * 2 dias de serviço + 1 folga + 2 dias de serviço ou
  * 3 dias de serviço + 1 folga + 1 dia de serviço
@@ -333,33 +414,36 @@ const LinhaTabela: FC<{
  * 3 dias de serviço + 1 folga + 1 dia de serviço
  * acusa a maior sequência que o dia faz parte
  */
-export function checaSeFazParteDeSequenciaDeDias(diasComServico: Array<string>): Array<string> {
-  const nums = diasComServico
-    .map(d => Number(d))
-    .filter(n => Number.isFinite(n));
-  const uniqueSorted = Array.from(new Set(nums)).sort((a, b) => a - b);
+export function checaSeFazParteDeSequenciaDeDias(
+    diasComServico: Array<string>
+): Array<string> {
+    const nums = diasComServico
+        .map((d) => Number(d))
+        .filter((n) => Number.isFinite(n));
+    const uniqueSorted = Array.from(new Set(nums)).sort((a, b) => a - b);
 
-  const n = uniqueSorted.length;
-  const found = new Set<string>();
+    const n = uniqueSorted.length;
+    const found = new Set<string>();
 
-  for (let i = 0; i < n; i++) {
-    for (let j = i + 1; j < n; j++) { // j-i+1 é tamanho da janela >= 2 agora
-      const window = uniqueSorted.slice(i, j + 1);
-      const gaps = window.slice(1).map((v, idx) => v - window[idx]);
+    for (let i = 0; i < n; i++) {
+        for (let j = i + 1; j < n; j++) {
+            // j-i+1 é tamanho da janela >= 2 agora
+            const window = uniqueSorted.slice(i, j + 1);
+            const gaps = window.slice(1).map((v, idx) => v - window[idx]);
 
-      // sequência válida se:
-      // - não houver gaps > 2 (ou seja, diferenças maiores que 2 excluem a janela)
-      // - e houver no máximo um gap == 2 (permite [T,F,T])
-      const numGaps2 = gaps.filter(g => g === 2).length;
-      const numGapsInvalid = gaps.filter(g => g > 2).length;
+            // sequência válida se:
+            // - não houver gaps > 2 (ou seja, diferenças maiores que 2 excluem a janela)
+            // - e houver no máximo um gap == 2 (permite [T,F,T])
+            const numGaps2 = gaps.filter((g) => g === 2).length;
+            const numGapsInvalid = gaps.filter((g) => g > 2).length;
 
-      if (numGapsInvalid === 0 && numGaps2 <= 1) {
-        found.add(window.join(","));
-      }
+            if (numGapsInvalid === 0 && numGaps2 <= 1) {
+                found.add(window.join(','));
+            }
+        }
     }
-  }
 
-  return Array.from(found).flatMap(s => s.split(","));
+    return Array.from(found).flatMap((s) => s.split(','));
 }
 export function aplicarPermutas(ars: {
     servicos: Array<string>;
@@ -370,6 +454,8 @@ export function aplicarPermutas(ars: {
     servico: 'ordinary' | 'permuta';
     id?: string;
 }> {
+    if (!ars.matricula) {
+    }
     const { servicos, permutas, matricula } = ars;
     const diasComServico: Array<{
         dia: string;
@@ -411,34 +497,33 @@ export function aplicarPermutas(ars: {
     return diasComServico;
 }
 function checaSequenciaQuatroOuMais(dias: string[]): string[] {
-  // parse + filtra não-numéricos + remove duplicados + ordena
-  const nums = Array.from(
-    new Set(
-      dias
-        .map(d => (typeof d === "string" ? d.trim() : d))
-        .map(d => Number(d))
-        .filter(n => Number.isFinite(n))
-    )
-  ).sort((a,b) => a - b);
+    // parse + filtra não-numéricos + remove duplicados + ordena
+    const nums = Array.from(
+        new Set(
+            dias
+                .map((d) => (typeof d === 'string' ? d.trim() : d))
+                .map((d) => Number(d))
+                .filter((n) => Number.isFinite(n))
+        )
+    ).sort((a, b) => a - b);
 
-  const resultados: string[] = [];
-  if (nums.length < 4) return resultados;
+    const resultados: string[] = [];
+    if (nums.length < 4) return resultados;
 
-  let run: number[] = [nums[0]];
-  for (let i = 1; i < nums.length; i++) {
-    const cur = nums[i];
-    const prev = nums[i - 1];
-    if (cur - prev === 1) {
-      run.push(cur);
-    } else {
-      if (run.length >= 4) resultados.push(run.join(","));
-      run = [cur];
+    let run: number[] = [nums[0]];
+    for (let i = 1; i < nums.length; i++) {
+        const cur = nums[i];
+        const prev = nums[i - 1];
+        if (cur - prev === 1) {
+            run.push(cur);
+        } else {
+            if (run.length >= 4) resultados.push(run.join(','));
+            run = [cur];
+        }
     }
-  }
-  if (run.length >= 4) resultados.push(run.join(","));
+    if (run.length >= 4) resultados.push(run.join(','));
 
-  return resultados.map(r => r.split(",")).flat(); // retorna array de dias que fazem parte de sequências de 4 ou mais
+    return resultados.map((r) => r.split(',')).flat(); // retorna array de dias que fazem parte de sequências de 4 ou mais
 }
-
 
 export { TabelaServicosMensais };

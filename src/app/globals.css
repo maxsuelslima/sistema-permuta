@@ -32,14 +32,14 @@ tr:hover {
 }
 @keyframes highlight {
     0% {
-        border-bottom: 2px solid #FFA500;
-        background-color: #FFF0B3;
+        border-bottom: 2px solid #ffa500;
+        background-color: #fff0b3;
     }
     100% {
         border-bottom: 2px solid transparent;
         background-color: transparent;
     }
-}   
+}
 td:focus {
     outline: none;
     caret-color: transparent;

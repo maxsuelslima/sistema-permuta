@@ -1,19 +1,25 @@
 import { FC, useEffect, useState } from 'react';
 import { gerarServicoMensal, ServicoMensal } from '../utils';
-import { aplicarPermutas, TabelaServicosMensais } from './TabelaServicosMensais';
+import {
+    aplicarPermutas,
+    TabelaServicosMensais,
+} from './TabelaServicosMensais';
 import ListaPermutas from './ListaPermutas';
 import { escalaAtual, escalaOutubro3 } from '../constans';
 export type Dispensa = {
     matricula: string;
     dia: number;
 };
-const dispensas: Array<Dispensa> = [{
-    matricula: '725241-2',
-    dia: 5
-}, {
-    matricula: '725239-0',
-    dia: 21
-}];
+const dispensas: Array<Dispensa> = [
+    {
+        matricula: '725241-2',
+        dia: 5,
+    },
+    {
+        matricula: '725239-0',
+        dia: 21,
+    },
+];
 export type Servico = {
     matricula: string;
     dia: number;
@@ -24,7 +30,6 @@ export type Permuta = {
     id: string;
     servicos: Array<Servico>;
 };
-
 
 const Escala: FC<{
     mes: number;
@@ -53,10 +58,10 @@ const Escala: FC<{
         }
     }
     useEffect(() => {
-      if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined') {
             const storedPermutas = localStorage.getItem('permutas');
             if (storedPermutas) {
-              setPermutas(JSON.parse(storedPermutas));
+                setPermutas(JSON.parse(storedPermutas));
             }
         }
     }, []);
@@ -83,9 +88,9 @@ const Escala: FC<{
      * militaresComEscalaIdeal são aqueles que, após aplicar todas as permutas,
      * não possuem 4 dias consecutivos de serviço no mês.
      * e que todos os dias de serviço fazer parte de uma sequência de 3 dias consecutivos.
-     * 
+     *
      */
-    console.log(permutas)
+    console.log(permutas);
 
     return (
         <div style={{ marginTop: '2rem', padding: '1rem' }}>
@@ -99,18 +104,29 @@ const Escala: FC<{
                     isEditingPermuta={isEditingPermuta}
                     permutaAtiva={permuta}
                 />
-                  <div style={{ display: 'none'}}>
-                    <button onClick={() => {
-                    setPermutas([]);
-                    localStorage.removeItem('permutas');
-                }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>Limpar Permutas</button>
-                <button onClick={() => {
-                  setPermutas(escalaOutubro3);
-                  window.localStorage.setItem('permutas', JSON.stringify(escalaOutubro3));
-                }} style={{ marginTop: '1rem', marginLeft: '1rem' }}>
-                  resetar
-                </button>  
-                  </div>
+                <div style={{ display: 'none' }}>
+                    <button
+                        onClick={() => {
+                            setPermutas([]);
+                            localStorage.removeItem('permutas');
+                        }}
+                        style={{ marginTop: '1rem', marginLeft: '1rem' }}
+                    >
+                        Limpar Permutas
+                    </button>
+                    <button
+                        onClick={() => {
+                            setPermutas(escalaAtual);
+                            window.localStorage.setItem(
+                                'permutas',
+                                JSON.stringify(escalaAtual)
+                            );
+                        }}
+                        style={{ marginTop: '1rem', marginLeft: '1rem' }}
+                    >
+                        resetar
+                    </button>
+                </div>
             </div>
             <ListaPermutas
                 permutas={escalaAtual}
@@ -121,111 +137,125 @@ const Escala: FC<{
 };
 
 interface ArgsValidarPermuta {
-  permuta: [Servico, Servico]; // sempre 2 militares
-  servicosMensais: ServicoMensal;
-  permutas: Permutas;
+    permuta: [Servico, Servico]; // sempre 2 militares
+    servicosMensais: ServicoMensal;
+    permutas: Permutas;
 }
 
 export function validarPermuta({
-  permuta,
-  servicosMensais,
-  permutas
+    permuta,
+    servicosMensais,
+    permutas,
 }: ArgsValidarPermuta): boolean {
-  const [militarA, militarB] = permuta;
+    const [militarA, militarB] = permuta;
 
-  // 3. O militar não pode permutar com ele mesmo
-  if (militarA.matricula === militarB.matricula) {
-    return false;
-  }
+    // 3. O militar não pode permutar com ele mesmo
+    if (militarA.matricula === militarB.matricula) {
+        return false;
+    }
 
-  // Função auxiliar: verifica se militar já participou de uma permuta em um dia
-  const jaPermutouNoDia = (matricula: string, dia: number) =>
-    permutas.some((p) =>
-      p.servicos.some(
-        (s) => s.matricula === matricula && s.dia === dia
-      )
+    // Função auxiliar: verifica se militar já participou de uma permuta em um dia
+    const jaPermutouNoDia = (matricula: string, dia: number) =>
+        permutas.some((p) =>
+            p.servicos.some((s) => s.matricula === matricula && s.dia === dia)
+        );
+
+    // 🔴 Nova função auxiliar: verifica se o serviço realmente pertence ao militar na escala original
+    const pertenceEscalaOriginal = (matricula: string, dia: number) =>
+        servicosMensais.servicos[matricula]?.includes(String(dia));
+
+    // 1. Ambos os militares têm serviço no dia que querem permutar
+    if (
+        !pertenceEscalaOriginal(militarA.matricula, militarA.dia) &&
+        !jaPermutouNoDia(militarA.matricula, militarA.dia)
+    ) {
+        // militar A não tem esse serviço originalmente nem por histórico de permuta → inválido
+        return false;
+    }
+    if (
+        !pertenceEscalaOriginal(militarB.matricula, militarB.dia) &&
+        !jaPermutouNoDia(militarB.matricula, militarB.dia)
+    ) {
+        return false;
+    }
+
+    // 2. Nenhum dos militares já tenha permutado o serviço no dia que querem permutar
+    if (jaPermutouNoDia(militarA.matricula, militarA.dia)) return false;
+    if (jaPermutouNoDia(militarB.matricula, militarB.dia)) return false;
+
+    // 4. O militar não pode permutar dias que já tenha permutado
+    if (jaPermutouNoDia(militarA.matricula, militarB.dia)) return false;
+    if (jaPermutouNoDia(militarB.matricula, militarA.dia)) return false;
+
+    // 5. O militar não pode permutar pra um dia que ele já tenha serviço
+    if (
+        servicosMensais.servicos[militarA.matricula]?.includes(
+            String(militarB.dia)
+        )
+    ) {
+        return false;
+    }
+    if (
+        servicosMensais.servicos[militarB.matricula]?.includes(
+            String(militarA.dia)
+        )
+    ) {
+        return false;
+    }
+
+    // 6. O militar não pode permutar pra um dia que ele já tenha permutado
+    if (jaPermutouNoDia(militarA.matricula, militarB.dia)) return false;
+    if (jaPermutouNoDia(militarB.matricula, militarA.dia)) return false;
+    const todosOsServicosMilitaresA = aplicarPermutas({
+        servicos: servicosMensais.servicos[militarA.matricula] || [],
+        permutas,
+        matricula: militarA.matricula,
+    });
+    const todosOsServicosMilitaresB = aplicarPermutas({
+        servicos: servicosMensais.servicos[militarB.matricula] || [],
+        permutas,
+        matricula: militarB.matricula,
+    });
+    const isDiaDeServicoMilitarA = todosOsServicosMilitaresA.find(
+        (d) => d.dia === String(militarB.dia)
     );
-
-  // 🔴 Nova função auxiliar: verifica se o serviço realmente pertence ao militar na escala original
-  const pertenceEscalaOriginal = (matricula: string, dia: number) =>
-    servicosMensais.servicos[matricula]?.includes(String(dia));
-
-  // 1. Ambos os militares têm serviço no dia que querem permutar
-  if (
-    !pertenceEscalaOriginal(militarA.matricula, militarA.dia) &&
-    !jaPermutouNoDia(militarA.matricula, militarA.dia)
-  ) {
-    // militar A não tem esse serviço originalmente nem por histórico de permuta → inválido
-    return false;
-  }
-  if (
-    !pertenceEscalaOriginal(militarB.matricula, militarB.dia) &&
-    !jaPermutouNoDia(militarB.matricula, militarB.dia)
-  ) {
-    return false;
-  }
-
-  // 2. Nenhum dos militares já tenha permutado o serviço no dia que querem permutar
-  if (jaPermutouNoDia(militarA.matricula, militarA.dia)) return false;
-  if (jaPermutouNoDia(militarB.matricula, militarB.dia)) return false;
-
-  // 4. O militar não pode permutar dias que já tenha permutado
-  if (jaPermutouNoDia(militarA.matricula, militarB.dia)) return false;
-  if (jaPermutouNoDia(militarB.matricula, militarA.dia)) return false;
-
-  // 5. O militar não pode permutar pra um dia que ele já tenha serviço
-  if (servicosMensais.servicos[militarA.matricula]?.includes(String(militarB.dia))) {
-    return false;
-  }
-  if (servicosMensais.servicos[militarB.matricula]?.includes(String(militarA.dia))) {
-    return false;
-  }
-
-  // 6. O militar não pode permutar pra um dia que ele já tenha permutado
-  if (jaPermutouNoDia(militarA.matricula, militarB.dia)) return false;
-  if (jaPermutouNoDia(militarB.matricula, militarA.dia)) return false;
-  const todosOsServicosMilitaresA = aplicarPermutas({
-    servicos: servicosMensais.servicos[militarA.matricula] || [],
-    permutas,
-    matricula: militarA.matricula,
-  });
-  const todosOsServicosMilitaresB = aplicarPermutas({
-    servicos: servicosMensais.servicos[militarB.matricula] || [],
-    permutas,
-    matricula: militarB.matricula,
-  });
-  const isDiaDeServicoMilitarA = todosOsServicosMilitaresA.find(d => d.dia === String(militarB.dia));
-  const isDiaDeServicoMilitarB = todosOsServicosMilitaresB.find(d => d.dia === String(militarA.dia));
-  if (isDiaDeServicoMilitarA !== undefined || isDiaDeServicoMilitarB !== undefined) {
-    return false;
-  }
-  return true;
+    const isDiaDeServicoMilitarB = todosOsServicosMilitaresB.find(
+        (d) => d.dia === String(militarA.dia)
+    );
+    if (
+        isDiaDeServicoMilitarA !== undefined ||
+        isDiaDeServicoMilitarB !== undefined
+    ) {
+        return false;
+    }
+    return true;
 }
 function sequenciaQuatroOuMais(dias: string[]): string[] {
-  const nums = dias.map(d => Number(d));
-  const n = nums.length;
-  const found = new Set<string>();
+    const nums = dias.map((d) => Number(d));
+    const n = nums.length;
+    const found = new Set<string>();
 
-  for (let i = 0; i < n; i++) {
-    for (let j = i + 3; j < n; j++) { // mínimo 4 elementos
-      const slice = nums.slice(i, j + 1);
+    for (let i = 0; i < n; i++) {
+        for (let j = i + 3; j < n; j++) {
+            // mínimo 4 elementos
+            const slice = nums.slice(i, j + 1);
 
-      // verifica se todos são consecutivos
-      let consecutivo = true;
-      for (let k = 1; k < slice.length; k++) {
-        if (slice[k] - slice[k - 1] !== 1) {
-          consecutivo = false;
-          break;
+            // verifica se todos são consecutivos
+            let consecutivo = true;
+            for (let k = 1; k < slice.length; k++) {
+                if (slice[k] - slice[k - 1] !== 1) {
+                    consecutivo = false;
+                    break;
+                }
+            }
+
+            if (consecutivo) {
+                found.add(slice.join(','));
+            }
         }
-      }
-
-      if (consecutivo) {
-        found.add(slice.join(","));
-      }
     }
-  }
 
-  return [...found];
+    return [...found];
 }
 
 export default Escala;
