@@ -136,6 +136,9 @@ const Escala: FC<{
         }
     }
     useEffect(() => {
+        if (onlyView) {
+            return
+        }
         const permutasSalvas = localStorage.getItem('permutas');
         if (permutasSalvas) {
             console.log({ permutasSalvas: JSON.parse(permutasSalvas) });
