@@ -1,261 +1,381 @@
 import { FC, useEffect, useState } from 'react';
-import { gerarServicoMensal, ServicoMensal } from '../utils';
-import {
-    aplicarPermutas,
-    TabelaServicosMensais,
-} from './TabelaServicosMensais';
+import { TabelaServicosMensais } from './TabelaServicosMensais';
 import ListaPermutas from './ListaPermutas';
-import { escalaAtual, escalaOutubro3 } from '../constans';
-export type Dispensa = {
-    matricula: string;
-    dia: number;
-};
-const dispensas: Array<Dispensa> = [
-    {
-        matricula: '725241-2',
-        dia: 5,
-    },
-    {
-        matricula: '725239-0',
-        dia: 21,
-    },
-];
-export type Servico = {
-    matricula: string;
-    dia: number;
-};
-
-export type Permutas = Array<Permuta>;
-export type Permuta = {
-    id: string;
-    servicos: Array<Servico>;
-};
+import ListaMilitaresDoDia from './ListaMilitaresDoDia';
+import ListaDeServicosPorMilitar from './ListaDeServicosPorMilitar';
+import { gerarEscalaMensalOrdinaria } from '../utils';
+import { Servico } from '../types/Servico';
+import { Permuta } from '../types/Permuta';
+import { dispensasNovembro, permutasNovembro } from '../constans';
 
 const Escala: FC<{
-    mes: number;
-    ano: number;
-}> = ({ mes, ano }) => {
-    const servicosMensais: ServicoMensal = gerarServicoMensal({ mes, ano });
-    const [permutas, setPermutas] = useState<Permutas>(escalaAtual);
-    const [permuta, setPermuta] = useState<Servico>({
-        dia: -1,
-        matricula: '',
+    onlyView?: boolean;
+}> = ({ onlyView }) => {
+    const [mes, setMes] = useState(String(new Date().getMonth() + 2));
+    const [militaresDaMesmaGuarnicao, setMilitaresDaMesmaGuarnicao] = useState<
+        Array<[string, string]>
+    >([]);
+    const [permutasSalvas, setPermutasSalvas] = useState<
+        Array<{ id: string; permutas: Array<Permuta> }>
+    >([]);
+    const [permutas, setPermutas] = useState<Array<Permuta>>(permutasNovembro);
+    const [servicoSelecionadoParaPermuta, setServicoSelecionadoParaPermuta] =
+        useState<Servico>({ dia: '', matricula: '' });
+    const dispensas: Array<Servico> = dispensasNovembro;
+    const ano = String(new Date().getFullYear());
+
+    const isEditing =
+        servicoSelecionadoParaPermuta.dia !== '' &&
+        servicoSelecionadoParaPermuta.matricula !== '';
+
+    const servicosPermutados: Array<Servico> = [];
+    permutas.forEach(({ servicos }) => {
+        const [servico1, servico2] = servicos;
+        servicosPermutados.push(servico1, servico2);
     });
-    const isEditingPermuta = permuta.dia !== -1 && permuta.matricula !== '';
-    function handlePermuta(args: { diaIndex: number; matricula: string }) {
-        const { diaIndex, matricula } = args;
-        if (isEditingPermuta) {
-            adicionarPermuta({
-                servicos: [
-                    { dia: permuta.dia, matricula: permuta.matricula },
-                    { dia: diaIndex, matricula },
-                ],
+    const servicosOrdinariosPorMatricula: {
+        [matricula: string]: Array<Servico>;
+    } = {};
+    const servicosMensais = gerarEscalaMensalOrdinaria({ mes, ano });
+
+    Object.keys(servicosMensais).forEach((data) => {
+        servicosMensais[data].forEach((matricula) => {
+            if (!servicosOrdinariosPorMatricula[matricula]) {
+                servicosOrdinariosPorMatricula[matricula] = [];
+            }
+            servicosOrdinariosPorMatricula[matricula].push({
+                dia: data,
+                matricula,
             });
-            localStorage.setItem('permutas', JSON.stringify(permutas));
-            setPermuta({ dia: -1, matricula: '' });
-        } else {
-            setPermuta({ dia: diaIndex, matricula });
+        });
+    });
+    const diasIndisponiveis: Array<string> = gerarDiasIndisponiveis({
+        permutas,
+        servicosOrdinariosMilitarSelecionado:
+            servicosOrdinariosPorMatricula[
+                servicoSelecionadoParaPermuta.matricula
+            ],
+        dispensas,
+        matricula: servicoSelecionadoParaPermuta.matricula,
+    });
+    function removerPermuta(id: string) {
+        setPermutas((prevPermutas) => {
+            localStorage.setItem(
+                'permutas',
+                JSON.stringify(
+                    prevPermutas.filter((permuta) => permuta.id !== id)
+                )
+            );
+            return prevPermutas.filter((permuta) => permuta.id !== id);
+        });
+    }
+    function selecionarServicoParaPermuta(servico: Servico) {
+        const servicoExiste = servicosOrdinariosPorMatricula[
+            servico.matricula
+        ]?.find((s) => s.dia === servico.dia);
+        if (!servicoExiste) return alert('Serviço inválido para permuta.');
+        setServicoSelecionadoParaPermuta(servico);
+    }
+    function adicionarPermuta(permuta: Permuta) {
+        setPermutas((prevPermutas) => {
+            localStorage.setItem(
+                'permutas',
+                JSON.stringify([...prevPermutas, permuta])
+            );
+            return [...prevPermutas, permuta];
+        });
+    }
+    function removerSelecaoDeServicoParaPermuta() {
+        setServicoSelecionadoParaPermuta({ dia: '', matricula: '' });
+    }
+    function onClickDia(servico: Servico) {
+        if (onlyView) return;
+        const jaFoiPermutado = servicosPermutados.find((srv) => {
+            return (
+                srv.dia === servico.dia && srv.matricula === servico.matricula
+            );
+        });
+        if (jaFoiPermutado && isEditing) {
+            removerSelecaoDeServicoParaPermuta();
+            return;
+        }
+        if (jaFoiPermutado && !isEditing) {
+            const idDaPermuta = permutas.find((permuta) => {
+                return permuta.servicos.some(
+                    (srv) =>
+                        srv.dia === servico.dia &&
+                        srv.matricula === servico.matricula
+                );
+            })?.id;
+            if (idDaPermuta) {
+                removerPermuta(idDaPermuta);
+                return;
+            }
+        }
+        if (!isEditing) {
+            selecionarServicoParaPermuta(servico);
+        }
+        if (!jaFoiPermutado && isEditing) {
+            const isPermutaValida = validarPermuta({
+                permutas,
+                permuta: {
+                    id: String(new Date().getTime()),
+                    servicos: [servicoSelecionadoParaPermuta, servico],
+                },
+                servicosOrdinariosPorMatricula,
+                dispensas: [],
+            });
+            if (isPermutaValida) {
+                adicionarPermuta({
+                    id: String(new Date().getTime()),
+                    servicos: [servicoSelecionadoParaPermuta, servico],
+                });
+                return removerSelecaoDeServicoParaPermuta();
+            }
+            alert('Permuta inválida.');
         }
     }
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const storedPermutas = localStorage.getItem('permutas');
-            if (storedPermutas) {
-                setPermutas(JSON.parse(storedPermutas));
-            }
+        const permutasSalvas = localStorage.getItem('permutas');
+        if (permutasSalvas) {
+            console.log({ permutasSalvas: JSON.parse(permutasSalvas) });
+            setPermutas(JSON.parse(permutasSalvas));
         }
     }, []);
-
-    function adicionarPermuta(args: { servicos: Array<Servico> }) {
-        const { servicos } = args;
-        const isValida = validarPermuta({
-            permuta: [servicos[0], servicos[1]],
-            servicosMensais,
-            permutas,
-        });
-        if (!isValida) {
-            alert('Permuta inválida');
-            return;
+    function salvarPermutas() {
+        const permutasSalvas: Array<{
+            id: string;
+            permutas: Array<Permuta>;
+        }> = JSON.parse(localStorage.getItem('permutasSalvas') || '[]');
+        const newPermutasSalvas = [
+            {
+                id: String(new Date().getTime()),
+                permutas,
+            },
+            ...permutasSalvas,
+        ];
+        localStorage.setItem(
+            'permutasSalvas',
+            JSON.stringify(newPermutasSalvas)
+        );
+        setPermutasSalvas(newPermutasSalvas);
+    }
+    function recuperarPermutasSalvas() {
+        const permutasSalvas = localStorage.getItem('permutasSalvas');
+        if (permutasSalvas) {
+            setPermutasSalvas(JSON.parse(permutasSalvas));
         }
-        const id = servicos.map((s) => `${s.matricula}-${s.dia}`).join('|');
-        setPermutas((prev) => [...prev, { id, servicos }]);
     }
+    function permutarEntreMilitaresDaMesmaGuarnicao({
+        militares,
+    }: {
+        militares: [string, string];
+    }) {
+        const [matriculaA, matriculaB] = militares;
+        const permutasA = permutas.filter((permuta) =>
+            permuta.servicos.some((s) => s.matricula === matriculaA)
+        );
+        const permutasB = permutas.filter((permuta) =>
+            permuta.servicos.some((s) => s.matricula === matriculaB)
+        );
+        const novosServicosA: Array<Servico> = [];
+        const novosServicosB: Array<Servico> = [];
+        permutasA.forEach((permuta) => {
+            const servico = permuta.servicos.find(
+                (s) => s.matricula === matriculaA
+            );
+            if (servico) {
+                novosServicosB.push({
+                    dia: servico.dia,
+                    matricula: matriculaB,
+                });
+            }
+        });
+        permutasB.forEach((permuta) => {
+            const servico = permuta.servicos.find(
+                (s) => s.matricula === matriculaB
+            );
+            if (servico) {
+                novosServicosA.push({
+                    dia: servico.dia,
+                    matricula: matriculaA,
+                });
+            }
+        });
+        const novasPermutas: Array<Permuta> = [];
+        novosServicosA.forEach((servicoA, index) => {
+            const servicoB = novosServicosB[index];
+            if (servicoB) {
+                novasPermutas.push({
+                    id: String(new Date().getTime()) + index,
+                    servicos: [servicoA, servicoB],
+                });
+            }
+        });
+        setPermutas((prevPermutas) => {
+            const permutasFiltradas = prevPermutas.filter((permuta) => {
+                return !permuta.servicos.some(
+                    (s) =>
+                        s.matricula === matriculaA || s.matricula === matriculaB
+                );
+            });
+            const permutasAtualizadas = [
+                ...permutasFiltradas,
+                ...novasPermutas,
+            ];
 
-    function removerPermuta(id: string) {
-        setPermutas((prev) => prev.filter((p) => p.id !== id));
+            return permutasAtualizadas;
+        });
     }
-    /**
-     * militaresComEscalaIdeal são aqueles que, após aplicar todas as permutas,
-     * não possuem 4 dias consecutivos de serviço no mês.
-     * e que todos os dias de serviço fazer parte de uma sequência de 3 dias consecutivos.
-     *
-     */
-    console.log(permutas);
-
+    console.log({ permutas });
     return (
-        <div style={{ marginTop: '2rem', padding: '1rem' }}>
-            <div style={{ overflowX: 'auto' }}>
-                <TabelaServicosMensais
-                    servicosMensais={servicosMensais}
-                    permutas={escalaAtual}
-                    dispensas={dispensas}
-                    handlePermuta={handlePermuta}
-                    removerPermuta={removerPermuta}
-                    isEditingPermuta={isEditingPermuta}
-                    permutaAtiva={permuta}
-                />
-                <div style={{ display: 'none' }}>
-                    <button
-                        onClick={() => {
-                            setPermutas([]);
-                            localStorage.removeItem('permutas');
-                        }}
-                        style={{ marginTop: '1rem', marginLeft: '1rem' }}
-                    >
-                        Limpar Permutas
-                    </button>
-                    <button
-                        onClick={() => {
-                            setPermutas(escalaAtual);
-                            window.localStorage.setItem(
-                                'permutas',
-                                JSON.stringify(escalaAtual)
-                            );
-                        }}
-                        style={{ marginTop: '1rem', marginLeft: '1rem' }}
-                    >
-                        resetar
-                    </button>
-                </div>
-            </div>
+        <div>
+            <TabelaServicosMensais
+                mes={mes}
+                ano={ano}
+                servicosPorMatricula={servicosOrdinariosPorMatricula}
+                permutas={permutas}
+                servicoSelecionadoParaPermuta={servicoSelecionadoParaPermuta}
+                onClickDia={onClickDia}
+                dispensas={dispensasNovembro}
+                diasIndisponiveis={diasIndisponiveis}
+                onlyView={onlyView}
+            />
+            <ul
+                style={{
+                    display: onlyView ? 'none' : 'block',
+                }}
+            >
+                {permutasSalvas.map((permutaSalva) => (
+                    <li key={permutaSalva.id}>
+                        {permutaSalva.id}{' '}
+                        <button
+                            onClick={() => {
+                                setPermutas(permutaSalva.permutas);
+                            }}
+                        >
+                            Recuperar
+                        </button>
+                    </li>
+                ))}
+            </ul>
+            <button
+                onClick={salvarPermutas}
+                style={{
+                    display: onlyView ? 'none' : 'inline-block',
+                }}
+            >
+                Salvar Permutas
+            </button>
+            <button
+                style={{
+                    display: onlyView ? 'none' : 'inline-block',
+                }}
+                onClick={recuperarPermutasSalvas}
+            >
+                Recuperar Permutas Salvas
+            </button>
             <ListaPermutas
-                permutas={escalaAtual}
+                permutas={permutas}
                 removerPermuta={removerPermuta}
+                onlyView={onlyView}
+            />
+            <ListaMilitaresDoDia
+                servicosDoMes={servicosMensais}
+                permutas={permutas}
+            />
+            <ListaDeServicosPorMilitar
+                servicosOrdinariosPorMatricula={servicosOrdinariosPorMatricula}
+                permutas={permutas}
             />
         </div>
     );
 };
 
-interface ArgsValidarPermuta {
-    permuta: [Servico, Servico]; // sempre 2 militares
-    servicosMensais: ServicoMensal;
-    permutas: Permutas;
-}
-
-export function validarPermuta({
-    permuta,
-    servicosMensais,
+type ValidarPermutaParams = {
+    permutas: Array<Permuta>;
+    permuta: Permuta;
+    servicosOrdinariosPorMatricula: {
+        [matricula: string]: Array<Servico>;
+    };
+    dispensas: Array<Servico>;
+};
+function validarPermuta({
     permutas,
-}: ArgsValidarPermuta): boolean {
-    const [militarA, militarB] = permuta;
-
-    // 3. O militar não pode permutar com ele mesmo
-    if (militarA.matricula === militarB.matricula) {
+    permuta,
+    servicosOrdinariosPorMatricula,
+    dispensas,
+}: ValidarPermutaParams): boolean {
+    const [servicoA, servicoB] = permuta.servicos;
+    const servicoFazParteDaEscalaA = servicosOrdinariosPorMatricula[
+        servicoA.matricula
+    ]?.some((s) => s.dia === servicoA.dia);
+    const servicoFazParteDaEscalaB = servicosOrdinariosPorMatricula[
+        servicoB.matricula
+    ]?.some((s) => s.dia === servicoB.dia);
+    if (!servicoFazParteDaEscalaA || !servicoFazParteDaEscalaB) {
         return false;
     }
-
-    // Função auxiliar: verifica se militar já participou de uma permuta em um dia
-    const jaPermutouNoDia = (matricula: string, dia: number) =>
-        permutas.some((p) =>
-            p.servicos.some((s) => s.matricula === matricula && s.dia === dia)
-        );
-
-    // 🔴 Nova função auxiliar: verifica se o serviço realmente pertence ao militar na escala original
-    const pertenceEscalaOriginal = (matricula: string, dia: number) =>
-        servicosMensais.servicos[matricula]?.includes(String(dia));
-
-    // 1. Ambos os militares têm serviço no dia que querem permutar
-    if (
-        !pertenceEscalaOriginal(militarA.matricula, militarA.dia) &&
-        !jaPermutouNoDia(militarA.matricula, militarA.dia)
-    ) {
-        // militar A não tem esse serviço originalmente nem por histórico de permuta → inválido
-        return false;
-    }
-    if (
-        !pertenceEscalaOriginal(militarB.matricula, militarB.dia) &&
-        !jaPermutouNoDia(militarB.matricula, militarB.dia)
-    ) {
-        return false;
-    }
-
-    // 2. Nenhum dos militares já tenha permutado o serviço no dia que querem permutar
-    if (jaPermutouNoDia(militarA.matricula, militarA.dia)) return false;
-    if (jaPermutouNoDia(militarB.matricula, militarB.dia)) return false;
-
-    // 4. O militar não pode permutar dias que já tenha permutado
-    if (jaPermutouNoDia(militarA.matricula, militarB.dia)) return false;
-    if (jaPermutouNoDia(militarB.matricula, militarA.dia)) return false;
-
-    // 5. O militar não pode permutar pra um dia que ele já tenha serviço
-    if (
-        servicosMensais.servicos[militarA.matricula]?.includes(
-            String(militarB.dia)
-        )
-    ) {
-        return false;
-    }
-    if (
-        servicosMensais.servicos[militarB.matricula]?.includes(
-            String(militarA.dia)
-        )
-    ) {
-        return false;
-    }
-
-    // 6. O militar não pode permutar pra um dia que ele já tenha permutado
-    if (jaPermutouNoDia(militarA.matricula, militarB.dia)) return false;
-    if (jaPermutouNoDia(militarB.matricula, militarA.dia)) return false;
-    const todosOsServicosMilitaresA = aplicarPermutas({
-        servicos: servicosMensais.servicos[militarA.matricula] || [],
-        permutas,
-        matricula: militarA.matricula,
-    });
-    const todosOsServicosMilitaresB = aplicarPermutas({
-        servicos: servicosMensais.servicos[militarB.matricula] || [],
-        permutas,
-        matricula: militarB.matricula,
-    });
-    const isDiaDeServicoMilitarA = todosOsServicosMilitaresA.find(
-        (d) => d.dia === String(militarB.dia)
+    const servicoADispensado = dispensas.some(
+        (s) => s.dia === servicoA.dia && s.matricula === servicoA.matricula
     );
-    const isDiaDeServicoMilitarB = todosOsServicosMilitaresB.find(
-        (d) => d.dia === String(militarA.dia)
+    const servicoBDispensado = dispensas.some(
+        (s) => s.dia === servicoB.dia && s.matricula === servicoB.matricula
     );
-    if (
-        isDiaDeServicoMilitarA !== undefined ||
-        isDiaDeServicoMilitarB !== undefined
-    ) {
+    if (servicoADispensado || servicoBDispensado) {
+        return false;
+    }
+    const servicoAJaPermutado = permutas.some((p) =>
+        p.servicos.some(
+            (s) => s.dia === servicoA.dia && s.matricula === servicoA.matricula
+        )
+    );
+
+    const servicoBJaPermutado = permutas.some((p) =>
+        p.servicos.some(
+            (s) => s.dia === servicoB.dia && s.matricula === servicoB.matricula
+        )
+    );
+    if (servicoBJaPermutado || servicoAJaPermutado) {
         return false;
     }
     return true;
 }
-function sequenciaQuatroOuMais(dias: string[]): string[] {
-    const nums = dias.map((d) => Number(d));
-    const n = nums.length;
-    const found = new Set<string>();
-
-    for (let i = 0; i < n; i++) {
-        for (let j = i + 3; j < n; j++) {
-            // mínimo 4 elementos
-            const slice = nums.slice(i, j + 1);
-
-            // verifica se todos são consecutivos
-            let consecutivo = true;
-            for (let k = 1; k < slice.length; k++) {
-                if (slice[k] - slice[k - 1] !== 1) {
-                    consecutivo = false;
-                    break;
-                }
-            }
-
-            if (consecutivo) {
-                found.add(slice.join(','));
-            }
+type GerarDiasIndisponiveisParams = {
+    permutas: Array<Permuta>;
+    servicosOrdinariosMilitarSelecionado: Array<Servico>;
+    dispensas: Array<Servico>;
+    matricula: string;
+};
+export function gerarDiasIndisponiveis({
+    permutas,
+    servicosOrdinariosMilitarSelecionado,
+    dispensas,
+    matricula,
+}: GerarDiasIndisponiveisParams): Array<string> {
+    const diasIndisponiveis: Array<string> = [];
+    dispensas.forEach((dispensa) => {
+        if (dispensa.matricula === matricula) {
+            diasIndisponiveis.push(dispensa.dia);
         }
-    }
-
-    return [...found];
+    });
+    const servicosOrdinarios = servicosOrdinariosMilitarSelecionado || [];
+    servicosOrdinarios.forEach((servico) => {
+        if (servico.matricula === matricula) {
+            diasIndisponiveis.push(servico.dia);
+        }
+    });
+    permutas.forEach((permuta) => {
+        const [servicoA, servicoB] = permuta.servicos;
+        if (servicoA.matricula === matricula) {
+            diasIndisponiveis.push(servicoB.dia);
+        }
+        if (servicoB.matricula === matricula) {
+            diasIndisponiveis.push(servicoA.dia);
+        }
+    });
+    console.log({ diasIndisponiveis });
+    return diasIndisponiveis;
 }
 
 export default Escala;

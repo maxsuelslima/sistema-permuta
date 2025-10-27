@@ -1,39 +1,39 @@
-import { Permuta, Permutas } from './components/Escala';
-import { guarnicoes, Militar } from './constans';
-import { v4 as uuidv4 } from 'uuid';
+import { guarnicoes } from './constans';
+import ServicosMensais from './types/ServicosMensais';
+// sabendo que no mes 10 do ano de 2025 a guarnicao alfa é a primeira a entrar em servico no dia 1
+// e que a cada dia a proxima guarnicao entra em servico, retornando a primeira apos a ultima
+// e sabendo que existem 4 guarnicoes: alfa, bravo, charlie e delta
+// gere um dicionario onde a chave é o dia do mes e o valor é um array com as matriculas dos militares de cada guarnicao que estao de servico naquele dia
 
-export type ServicoMensal = {
-    mes: number;
-    ano: number;
-    /**
-     * servicos é um objeto onde a chave é a matricula do militar
-     * e o valor é um array com os dias do mês que ele tem serviço
-     */
-    servicos: Record<string, Array<string>>;
-};
-
-export function gerarServicoMensal({
+export function gerarEscalaMensalOrdinaria({
     mes,
     ano,
 }: {
-    mes: number;
-    ano: number;
-}): ServicoMensal {
-    const diasNoMes = new Date(ano, mes, 0).getDate();
-    const escalaMensal: ServicoMensal = {
-        mes,
-        ano,
-        servicos: {},
-    };
+    mes: string;
+    ano: string;
+}): ServicosMensais {
+    const diasNoMes = new Date(parseInt(ano), parseInt(mes), 0).getDate();
+    const dicionarioDiasServicos: Record<string, Array<string>> = {};
+    const dataReferencial = new Date(2025, 9, 1); // 1 de outubro de 2025
+    const diffDias = Math.floor(
+        (new Date(parseInt(ano), parseInt(mes) - 1, 1).getTime() -
+            dataReferencial.getTime()) /
+            (1000 * 60 * 60 * 24)
+    );
+    const guarnicaoInicialIndex =
+        ((diffDias % guarnicoes.length) + guarnicoes.length) %
+        guarnicoes.length;
+
     for (let dia = 1; dia <= diasNoMes; dia++) {
-        const guarnicaoIndex = (dia - 1) % guarnicoes.length;
-        const guarnicao = guarnicoes[guarnicaoIndex];
-        guarnicao.map((matricula) => {
-            escalaMensal.servicos[matricula] =
-                escalaMensal.servicos[matricula] || [];
-            escalaMensal.servicos[matricula].push(dia.toString());
-            return null;
+        const guarnicaoIndex =
+            (guarnicaoInicialIndex + dia - 1) % guarnicoes.length;
+        const guarnicaoDoDia = guarnicoes[guarnicaoIndex];
+        guarnicaoDoDia.map((matricula) => {
+            if (!dicionarioDiasServicos[dia]) {
+                dicionarioDiasServicos[dia] = [];
+            }
+            dicionarioDiasServicos[dia].push(matricula);
         });
     }
-    return escalaMensal;
+    return dicionarioDiasServicos;
 }

@@ -7,6 +7,7 @@
     :root {
         --background: #0a0a0a;
         --foreground: #ededed;
+
     }
 }
 
@@ -25,18 +26,17 @@ body {
 }
 td {
     user-select: none;
+
 }
+
 tr:hover {
-    border-bottom: 2px solid black !important;
     animation: highlight infinite 1s alternate;
 }
 @keyframes highlight {
     0% {
-        border-bottom: 2px solid #ffa500;
         background-color: #fff0b3;
     }
     100% {
-        border-bottom: 2px solid transparent;
         background-color: transparent;
     }
 }
@@ -59,4 +59,8 @@ a {
     html {
         color-scheme: dark;
     }
+}
+.selected-day {
+
+    animation: selectedDayAnimation infinite 1s alternate;
 }
