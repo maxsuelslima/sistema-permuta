@@ -5320,7 +5320,7 @@ export const permutasNovembro: Array<Permuta> = [
         ],
     },
 ];
-export const permutasNovembroAlternativas = [
+export const permutasNovembroAlternativas: Array<Permuta> = [
     {
         id: '1761582515650',
         servicos: [
