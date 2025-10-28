@@ -12,7 +12,7 @@ const Escala: FC<{
     onlyView?: boolean;
 }> = ({ onlyView }) => {
     const [mes, setMes] = useState(String(new Date().getMonth() + 2));
-    const [ativarFiltroDia15, setAtivarFiltroDia15] = useState(false);
+    const [ativarFiltroDia15, setAtivarFiltroDia15] = useState(true);
     const [militaresDaMesmaGuarnicao, setMilitaresDaMesmaGuarnicao] = useState<
         Array<[string, string]>
     >([]);
