@@ -6,7 +6,13 @@ import ListaDeServicosPorMilitar from './ListaDeServicosPorMilitar';
 import { gerarEscalaMensalOrdinaria } from '../utils';
 import { Servico } from '../types/Servico';
 import { Permuta } from '../types/Permuta';
-import { dispensasNovembro, permutasNovembro } from '../constans';
+import {
+    dispensasNovembro,
+    efetivo,
+    guarnicoes,
+    permutasNovembro,
+    permutasNovembroAlternativas,
+} from '../constans';
 
 const Escala: FC<{
     onlyView?: boolean;
@@ -14,12 +20,14 @@ const Escala: FC<{
     const [mes, setMes] = useState(String(new Date().getMonth() + 2));
     const [ativarFiltroDia15, setAtivarFiltroDia15] = useState(true);
     const [militaresDaMesmaGuarnicao, setMilitaresDaMesmaGuarnicao] = useState<
-        Array<[string, string]>
-    >([]);
+        [string, string]
+    >(['', '']);
     const [permutasSalvas, setPermutasSalvas] = useState<
         Array<{ id: string; permutas: Array<Permuta> }>
     >([]);
-    const [permutas, setPermutas] = useState<Array<Permuta>>(permutasNovembro);
+    const [permutas, setPermutas] = useState<Array<Permuta>>(
+        permutasNovembroAlternativas
+    );
     const [servicoSelecionadoParaPermuta, setServicoSelecionadoParaPermuta] =
         useState<Servico>({ dia: '', matricula: '' });
     const dispensas: Array<Servico> = dispensasNovembro;
@@ -176,59 +184,57 @@ const Escala: FC<{
         militares: [string, string];
     }) {
         const [matriculaA, matriculaB] = militares;
-        const permutasA = permutas.filter((permuta) =>
-            permuta.servicos.some((s) => s.matricula === matriculaA)
-        );
-        const permutasB = permutas.filter((permuta) =>
-            permuta.servicos.some((s) => s.matricula === matriculaB)
-        );
-        const novosServicosA: Array<Servico> = [];
-        const novosServicosB: Array<Servico> = [];
-        permutasA.forEach((permuta) => {
-            const servico = permuta.servicos.find(
-                (s) => s.matricula === matriculaA
-            );
-            if (servico) {
-                novosServicosB.push({
-                    dia: servico.dia,
-                    matricula: matriculaB,
-                });
+        const permutasTrocadas: Array<Permuta> = permutas.map((permuta) => {
+            const [servico1, servico2] = permuta.servicos;
+            if (servico1.matricula === matriculaA) {
+                return {
+                    ...permuta,
+                    servicos: [
+                        { ...servico1, matricula: matriculaB },
+                        servico2,
+                    ],
+                };
             }
-        });
-        permutasB.forEach((permuta) => {
-            const servico = permuta.servicos.find(
-                (s) => s.matricula === matriculaB
-            );
-            if (servico) {
-                novosServicosA.push({
-                    dia: servico.dia,
-                    matricula: matriculaA,
-                });
+            if (servico2.matricula === matriculaA) {
+                return {
+                    ...permuta,
+                    servicos: [
+                        servico1,
+                        { ...servico2, matricula: matriculaB },
+                    ],
+                };
             }
-        });
-        const novasPermutas: Array<Permuta> = [];
-        novosServicosA.forEach((servicoA, index) => {
-            const servicoB = novosServicosB[index];
-            if (servicoB) {
-                novasPermutas.push({
-                    id: String(new Date().getTime()) + index,
-                    servicos: [servicoA, servicoB],
-                });
+            if (servico1.matricula === matriculaB) {
+                return {
+                    ...permuta,
+                    servicos: [
+                        { ...servico1, matricula: matriculaA },
+                        servico2,
+                    ],
+                };
             }
+            if (servico2.matricula === matriculaB) {
+                return {
+                    ...permuta,
+                    servicos: [
+                        servico1,
+                        { ...servico2, matricula: matriculaA },
+                    ],
+                };
+            }
+            return permuta;
         });
         setPermutas((prevPermutas) => {
-            const permutasFiltradas = prevPermutas.filter((permuta) => {
-                return !permuta.servicos.some(
-                    (s) =>
-                        s.matricula === matriculaA || s.matricula === matriculaB
-                );
-            });
-            const permutasAtualizadas = [
-                ...permutasFiltradas,
-                ...novasPermutas,
-            ];
-
-            return permutasAtualizadas;
+            const novasPermutas: Array<Permuta> = prevPermutas.filter(
+                (permuta) => {
+                    return !permuta.servicos.some(
+                        (s) =>
+                            s.matricula === matriculaA ||
+                            s.matricula === matriculaB
+                    );
+                }
+            );
+            return novasPermutas.concat(permutasTrocadas);
         });
     }
     const permutasFiltradas = permutas.filter((permuta) => {
@@ -237,7 +243,16 @@ const Escala: FC<{
             return Number(servico.dia) < 16;
         });
     });
-    console.log({ permutasFiltrasdas: permutasFiltradas });
+    function resetar() {
+        setPermutas(permutasNovembro);
+        localStorage.removeItem('permutas');
+    }
+    const guarnicaoSelecionada = guarnicoes.find((guarnicao) => {
+        return guarnicao.some(
+            (militar) => militar === militaresDaMesmaGuarnicao[0]
+        );
+    });
+    console.log({ permutas });
     return (
         <div>
             <TabelaServicosMensais
@@ -269,28 +284,96 @@ const Escala: FC<{
                     </li>
                 ))}
             </ul>
-            <button
-                onClick={salvarPermutas}
+            <div style={{ display: 'flex', padding: '8px', gap: '8px' }}>
+                <button
+                    onClick={resetar}
+                    style={{
+                        display: onlyView ? 'none' : 'inline-block',
+                    }}
+                >
+                    Resetar Permutas
+                </button>
+                <button
+                    onClick={salvarPermutas}
+                    style={{
+                        display: onlyView ? 'none' : 'inline-block',
+                    }}
+                >
+                    Salvar Permutas
+                </button>
+                <button
+                    style={{
+                        display: onlyView ? 'none' : 'inline-block',
+                    }}
+                    onClick={recuperarPermutasSalvas}
+                >
+                    Recuperar Permutas Salvas
+                </button>
+                <input
+                    type="checkbox"
+                    checked={ativarFiltroDia15}
+                    onChange={(e) => setAtivarFiltroDia15(e.target.checked)}
+                />
+                <label>Ativar filtro dia 15</label>
+            </div>
+            <div
                 style={{
-                    display: onlyView ? 'none' : 'inline-block',
+                    display: onlyView ? 'none' : 'block',
                 }}
             >
-                Salvar Permutas
-            </button>
-            <button
-                style={{
-                    display: onlyView ? 'none' : 'inline-block',
-                }}
-                onClick={recuperarPermutasSalvas}
-            >
-                Recuperar Permutas Salvas
-            </button>
-            <input
-                type="checkbox"
-                checked={ativarFiltroDia15}
-                onChange={(e) => setAtivarFiltroDia15(e.target.checked)}
-            />{' '}
-            <label>Ativar filtro dia 15</label>
+                <select
+                    onChange={(e) => {
+                        const matriculasSelecionadas = e.target.value;
+                        setMilitaresDaMesmaGuarnicao([e.target.value, '']);
+                    }}
+                >
+                    <option value="">Selecione um militar</option>
+                    {Object.values(efetivo).map((militar) => (
+                        <option
+                            key={militar.matricula}
+                            value={militar.matricula}
+                        >
+                            {militar.name} - {militar.matricula}
+                        </option>
+                    ))}
+                </select>
+                <select
+                    onChange={(e) => {
+                        const segundaMatricula = e.target.value;
+                        setMilitaresDaMesmaGuarnicao((prev) => [
+                            prev[0],
+                            segundaMatricula,
+                        ]);
+                    }}
+                    style={{
+                        display:
+                            militaresDaMesmaGuarnicao[0] !== ''
+                                ? 'inline'
+                                : 'none',
+                    }}
+                >
+                    <option value="">Selecione uma matrícula</option>
+                    {guarnicaoSelecionada?.map((matricula) => {
+                        if (matricula === militaresDaMesmaGuarnicao[0]) {
+                            return null;
+                        }
+                        return (
+                            <option key={matricula} value={matricula}>
+                                {efetivo[matricula]?.name} - {matricula}
+                            </option>
+                        );
+                    })}
+                </select>
+                <button
+                    onClick={() =>
+                        permutarEntreMilitaresDaMesmaGuarnicao({
+                            militares: militaresDaMesmaGuarnicao,
+                        })
+                    }
+                >
+                    Permutar
+                </button>
+            </div>
             <ListaPermutas
                 permutas={permutasFiltradas}
                 removerPermuta={removerPermuta}
