@@ -137,7 +137,7 @@ const Escala: FC<{
     }
     useEffect(() => {
         if (onlyView) {
-            return
+            return;
         }
         const permutasSalvas = localStorage.getItem('permutas');
         if (permutasSalvas) {
