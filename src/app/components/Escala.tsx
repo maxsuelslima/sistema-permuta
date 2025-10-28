@@ -12,6 +12,7 @@ const Escala: FC<{
     onlyView?: boolean;
 }> = ({ onlyView }) => {
     const [mes, setMes] = useState(String(new Date().getMonth() + 2));
+    const [ativarFiltroDia15, setAtivarFiltroDia15] = useState(false);
     const [militaresDaMesmaGuarnicao, setMilitaresDaMesmaGuarnicao] = useState<
         Array<[string, string]>
     >([]);
@@ -230,14 +231,20 @@ const Escala: FC<{
             return permutasAtualizadas;
         });
     }
-    console.log({ permutas });
+    const permutasFiltrasdas = permutas.filter((permuta) => {
+        if (!ativarFiltroDia15) return true;
+        return permuta.servicos.every((servico) => {
+            return Number(servico.dia) < 16;
+        });
+    });
+    console.log({ permutasFiltrasdas });
     return (
         <div>
             <TabelaServicosMensais
                 mes={mes}
                 ano={ano}
                 servicosPorMatricula={servicosOrdinariosPorMatricula}
-                permutas={permutas}
+                permutas={permutasFiltrasdas}
                 servicoSelecionadoParaPermuta={servicoSelecionadoParaPermuta}
                 onClickDia={onClickDia}
                 dispensas={dispensasNovembro}
@@ -278,6 +285,12 @@ const Escala: FC<{
             >
                 Recuperar Permutas Salvas
             </button>
+            <input
+                type="checkbox"
+                checked={ativarFiltroDia15}
+                onChange={(e) => setAtivarFiltroDia15(e.target.checked)}
+            />{' '}
+            <label>Ativar filtro dia 15</label>
             <ListaPermutas
                 permutas={permutas}
                 removerPermuta={removerPermuta}
