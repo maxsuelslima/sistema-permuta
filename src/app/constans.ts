@@ -5306,6 +5306,19 @@ export const permutasNovembro: Array<Permuta> = [
             },
         ],
     },
+    {
+        id: '1761610796858',
+        servicos: [
+            {
+                dia: '2',
+                matricula: '725239-0',
+            },
+            {
+                dia: '5',
+                matricula: '725260-9',
+            },
+        ],
+    },
 ];
 
 export { efetivo, guarnicoes, dispensasNovembro };
