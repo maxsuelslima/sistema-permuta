@@ -13,7 +13,7 @@ export default function Home() {
                 <div>
                     <Guarnicoes />
                 </div>
-                <Escala onlyView={true} />
+                <Escala onlyView />
             </div>
         </main>
     );

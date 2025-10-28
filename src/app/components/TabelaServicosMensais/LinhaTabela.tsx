@@ -211,6 +211,8 @@ const LinhaTabela: FC<{
                         key={index}
                         style={{
                             border: '1px solid black',
+                            minWidth: '32px',
+                            minHeight: '32px',
                             ...styles[tipo],
                             ...(disabled ? styles.disabled : {}),
                             animation: isSelectedDay

@@ -51,7 +51,7 @@ const TabelaServicosMensais: FC<{
     ).toLocaleDateString('pt-BR', { month: 'long' });
     const diasNoMes = gerarCalendarioDiasNoMes(Number(ano), Number(mes));
     return (
-        <div>
+        <div style={{ overflowX: 'auto' }}>
             <table style={{ borderCollapse: 'collapse', width: '100%' }}>
                 <thead>
                     {showMesPorExtenso ? (
