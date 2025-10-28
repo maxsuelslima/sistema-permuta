@@ -231,20 +231,20 @@ const Escala: FC<{
             return permutasAtualizadas;
         });
     }
-    const permutasFiltrasdas = permutas.filter((permuta) => {
+    const permutasFiltradas = permutas.filter((permuta) => {
         if (!ativarFiltroDia15) return true;
         return permuta.servicos.every((servico) => {
             return Number(servico.dia) < 16;
         });
     });
-    console.log({ permutasFiltrasdas });
+    console.log({ permutasFiltrasdas: permutasFiltradas });
     return (
         <div>
             <TabelaServicosMensais
                 mes={mes}
                 ano={ano}
                 servicosPorMatricula={servicosOrdinariosPorMatricula}
-                permutas={permutasFiltrasdas}
+                permutas={permutasFiltradas}
                 servicoSelecionadoParaPermuta={servicoSelecionadoParaPermuta}
                 onClickDia={onClickDia}
                 dispensas={dispensasNovembro}
@@ -292,17 +292,17 @@ const Escala: FC<{
             />{' '}
             <label>Ativar filtro dia 15</label>
             <ListaPermutas
-                permutas={permutas}
+                permutas={permutasFiltradas}
                 removerPermuta={removerPermuta}
                 onlyView={onlyView}
             />
             <ListaMilitaresDoDia
                 servicosDoMes={servicosMensais}
-                permutas={permutas}
+                permutas={permutasFiltradas}
             />
             <ListaDeServicosPorMilitar
                 servicosOrdinariosPorMatricula={servicosOrdinariosPorMatricula}
-                permutas={permutas}
+                permutas={permutasFiltradas}
             />
         </div>
     );
