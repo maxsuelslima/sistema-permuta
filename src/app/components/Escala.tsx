@@ -7,9 +7,11 @@ import { gerarEscalaMensalOrdinaria } from '../utils';
 import { Servico } from '../types/Servico';
 import { Permuta } from '../types/Permuta';
 import {
+    dispensasCadastradas,
     dispensasNovembro,
     efetivo,
     guarnicoes,
+    permutasCadastradas,
     permutasNovembro,
     permutasNovembroAlternativas,
 } from '../constans';
@@ -17,7 +19,10 @@ import {
 const Escala: FC<{
     onlyView?: boolean;
 }> = ({ onlyView }) => {
-    const [mes, setMes] = useState(String(new Date().getMonth() + 2));
+    const [mes, setMes] = useState(String(new Date().getMonth() + 1));
+    const [ano, setAno] = useState(String(new Date().getFullYear()));
+    const permutasMes = permutasCadastradas[`${ano}-${mes}`] ?? [];
+    const dispensasMes = dispensasCadastradas[`${ano}-${mes}`] ?? [];
     const [ativarFiltroDia15, setAtivarFiltroDia15] = useState(true);
     const [militaresDaMesmaGuarnicao, setMilitaresDaMesmaGuarnicao] = useState<
         [string, string]
@@ -25,13 +30,10 @@ const Escala: FC<{
     const [permutasSalvas, setPermutasSalvas] = useState<
         Array<{ id: string; permutas: Array<Permuta> }>
     >([]);
-    const [permutas, setPermutas] = useState<Array<Permuta>>(
-        permutasNovembroAlternativas
-    );
+    const [permutas, setPermutas] = useState<Array<Permuta>>(permutasMes);
     const [servicoSelecionadoParaPermuta, setServicoSelecionadoParaPermuta] =
         useState<Servico>({ dia: '', matricula: '' });
-    const dispensas: Array<Servico> = dispensasNovembro;
-    const ano = String(new Date().getFullYear());
+    const dispensas: Array<Servico> = dispensasMes;
 
     const isEditing =
         servicoSelecionadoParaPermuta.dia !== '' &&
@@ -144,16 +146,6 @@ const Escala: FC<{
             alert('Permuta inválida.');
         }
     }
-    useEffect(() => {
-        if (onlyView) {
-            return;
-        }
-        const permutasSalvas = localStorage.getItem('permutas');
-        if (permutasSalvas) {
-            console.log({ permutasSalvas: JSON.parse(permutasSalvas) });
-            setPermutas(JSON.parse(permutasSalvas));
-        }
-    }, []);
     function salvarPermutas() {
         const permutasSalvas: Array<{
             id: string;
@@ -244,8 +236,8 @@ const Escala: FC<{
         });
     });
     function resetar() {
-        setPermutas(permutasNovembro);
-        localStorage.removeItem('permutas');
+        setPermutas(permutasMes);
+        localStorage.setItem('permutas', JSON.stringify(permutasMes));
     }
     const guarnicaoSelecionada = guarnicoes.find((guarnicao) => {
         return guarnicao.some(
@@ -255,6 +247,28 @@ const Escala: FC<{
     console.log({ permutas });
     return (
         <div>
+            <label>Selecione o mês:</label>
+            <input
+                type="month"
+                value={`${ano}-${String(mes).padStart(2, '0')}`}
+                style={{
+                    display: onlyView ? 'none' : 'inline-block',
+                    marginBottom: '16px',
+                    marginTop: '16px',
+                    marginLeft: '8px',
+                }}
+                onChange={(e) => {
+                    const [anoSelecionado, mesSelecionado] =
+                        e.target.value.split('-');
+                    setMes(mesSelecionado);
+                    setAno(anoSelecionado);
+                    setPermutas(
+                        permutasCadastradas[
+                            `${anoSelecionado}-${mesSelecionado}`
+                        ] || []
+                    );
+                }}
+            />
             <TabelaServicosMensais
                 mes={mes}
                 ano={ano}
@@ -284,6 +298,7 @@ const Escala: FC<{
                     </li>
                 ))}
             </ul>
+
             <div style={{ display: 'flex', padding: '8px', gap: '8px' }}>
                 <button
                     onClick={resetar}

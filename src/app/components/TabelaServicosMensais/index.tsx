@@ -98,8 +98,9 @@ const TabelaServicosMensais: FC<{
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.keys(servicosPorMatricula).map(
-                        (matriculaMilitar) => {
+                    {Object.keys(servicosPorMatricula)
+                        .sort()
+                        .map((matriculaMilitar) => {
                             const permutasDoMilitar =
                                 permutas.filter(({ servicos }) =>
                                     servicos.some(
@@ -127,8 +128,7 @@ const TabelaServicosMensais: FC<{
                                     permutasDoMilitar={permutasDoMilitar}
                                 />
                             );
-                        }
-                    )}
+                        })}
                 </tbody>
             </table>
         </div>

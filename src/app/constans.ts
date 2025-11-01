@@ -5803,4 +5803,18 @@ export const permutasNovembroAlternativas: Array<Permuta> = [
         ],
     },
 ];
-export { efetivo, guarnicoes, dispensasNovembro };
+
+const permutasCadastradas: Record<string, Array<Permuta>> = {
+    '2025-11': permutasNovembroAlternativas,
+};
+const dispensasCadastradas: Record<string, Array<Servico>> = {
+    '2025-11': dispensasNovembro,
+};
+
+export {
+    efetivo,
+    guarnicoes,
+    dispensasNovembro,
+    permutasCadastradas,
+    dispensasCadastradas,
+};
