@@ -5374,19 +5374,6 @@ export const permutasNovembroAlternativas: Array<Permuta> = [
         ],
     },
     {
-        id: '1761603803449',
-        servicos: [
-            {
-                dia: '29',
-                matricula: '725265-0',
-            },
-            {
-                dia: '20',
-                matricula: '725257-9',
-            },
-        ],
-    },
-    {
         id: '1761604375121',
         servicos: [
             {
@@ -5435,19 +5422,6 @@ export const permutasNovembroAlternativas: Array<Permuta> = [
             {
                 dia: '14',
                 matricula: '725241-2',
-            },
-        ],
-    },
-    {
-        id: '1761607000385',
-        servicos: [
-            {
-                dia: '18',
-                matricula: '725241-2',
-            },
-            {
-                dia: '25',
-                matricula: '725265-0',
             },
         ],
     },
@@ -5738,50 +5712,50 @@ export const permutasNovembroAlternativas: Array<Permuta> = [
         ],
     },
     {
-        id: '1761659903015',
+        id: '1762440112619',
         servicos: [
             {
-                dia: '23',
-                matricula: '725246-3',
+                dia: '28',
+                matricula: '725258-7',
             },
             {
-                dia: '17',
-                matricula: '725261-7',
+                dia: '26',
+                matricula: '725245-5',
             },
         ],
     },
     {
-        id: '1761659906254',
+        id: '1762440144333',
         servicos: [
-            {
-                dia: '27',
-                matricula: '725246-3',
-            },
             {
                 dia: '18',
                 matricula: '725245-5',
             },
+            {
+                dia: '27',
+                matricula: '725246-3',
+            },
         ],
     },
     {
-        id: '1761659932229',
+        id: '1762440893886',
         servicos: [
             {
-                dia: '22',
-                matricula: '725245-5',
+                dia: '17',
+                matricula: '725265-0',
             },
+            {
+                dia: '23',
+                matricula: '725246-3',
+            },
+        ],
+    },
+    {
+        id: '1762440911341',
+        servicos: [
             {
                 dia: '25',
-                matricula: '725261-7',
-            },
-        ],
-    },
-    {
-        id: '1761659979736',
-        servicos: [
-            {
-                dia: '29',
-                matricula: '725261-7',
+                matricula: '725265-0',
             },
             {
                 dia: '24',
@@ -5790,15 +5764,41 @@ export const permutasNovembroAlternativas: Array<Permuta> = [
         ],
     },
     {
-        id: '1761659983559',
+        id: '1762440915330',
         servicos: [
             {
-                dia: '30',
-                matricula: '725245-5',
+                dia: '29',
+                matricula: '725265-0',
             },
             {
-                dia: '28',
-                matricula: '725258-7',
+                dia: '22',
+                matricula: '725245-5',
+            },
+        ],
+    },
+    {
+        id: '1762440961580',
+        servicos: [
+            {
+                dia: '25',
+                matricula: '725261-7',
+            },
+            {
+                dia: '18',
+                matricula: '725241-2',
+            },
+        ],
+    },
+    {
+        id: '1762440966367',
+        servicos: [
+            {
+                dia: '29',
+                matricula: '725261-7',
+            },
+            {
+                dia: '20',
+                matricula: '725257-9',
             },
         ],
     },

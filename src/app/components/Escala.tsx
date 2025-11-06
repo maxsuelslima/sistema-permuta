@@ -278,7 +278,7 @@ const Escala: FC<{
                 onClickDia={onClickDia}
                 dispensas={dispensasNovembro}
                 diasIndisponiveis={diasIndisponiveis}
-                onlyView={onlyView}
+                onlyView={false}
             />
             <ul
                 style={{
