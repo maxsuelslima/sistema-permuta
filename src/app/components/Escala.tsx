@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { TabelaServicosMensais } from './TabelaServicosMensais';
 import ListaPermutas from './ListaPermutas';
 import ListaMilitaresDoDia from './ListaMilitaresDoDia';
@@ -7,13 +7,10 @@ import { gerarEscalaMensalOrdinaria } from '../utils';
 import { Servico } from '../types/Servico';
 import { Permuta } from '../types/Permuta';
 import {
-    dispensasCadastradas,
-    dispensasNovembro,
+    dispensas,
     efetivo,
     guarnicoes,
     permutasCadastradas,
-    permutasNovembro,
-    permutasNovembroAlternativas,
 } from '../constans';
 
 const Escala: FC<{
@@ -21,8 +18,8 @@ const Escala: FC<{
 }> = ({ onlyView }) => {
     const [mes, setMes] = useState(String(new Date().getMonth() + 1));
     const [ano, setAno] = useState(String(new Date().getFullYear()));
-    const permutasMes = permutasCadastradas[`${ano}-${mes}`] ?? [];
-    const dispensasMes = dispensasCadastradas[`${ano}-${mes}`] ?? [];
+    const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
+    const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];
     const [ativarFiltroDia15, setAtivarFiltroDia15] = useState(true);
     const [militaresDaMesmaGuarnicao, setMilitaresDaMesmaGuarnicao] = useState<
         [string, string]
@@ -30,10 +27,11 @@ const Escala: FC<{
     const [permutasSalvas, setPermutasSalvas] = useState<
         Array<{ id: string; permutas: Array<Permuta> }>
     >([]);
-    const [permutas, setPermutas] = useState<Array<Permuta>>(permutasMes);
+    const [permutas, setPermutas] = useState<Array<Permuta>>(
+        permutasMesSelecionado
+    );
     const [servicoSelecionadoParaPermuta, setServicoSelecionadoParaPermuta] =
         useState<Servico>({ dia: '', matricula: '' });
-    const dispensas: Array<Servico> = dispensasMes;
 
     const isEditing =
         servicoSelecionadoParaPermuta.dia !== '' &&
@@ -66,7 +64,7 @@ const Escala: FC<{
             servicosOrdinariosPorMatricula[
                 servicoSelecionadoParaPermuta.matricula
             ],
-        dispensas,
+        dispensas: dispensasMesSelecionado,
         matricula: servicoSelecionadoParaPermuta.matricula,
     });
     function removerPermuta(id: string) {
@@ -236,8 +234,11 @@ const Escala: FC<{
         });
     });
     function resetar() {
-        setPermutas(permutasMes);
-        localStorage.setItem('permutas', JSON.stringify(permutasMes));
+        setPermutas(permutasMesSelecionado);
+        localStorage.setItem(
+            'permutas',
+            JSON.stringify(permutasMesSelecionado)
+        );
     }
     const guarnicaoSelecionada = guarnicoes.find((guarnicao) => {
         return guarnicao.some(
@@ -263,9 +264,8 @@ const Escala: FC<{
                     setMes(mesSelecionado);
                     setAno(anoSelecionado);
                     setPermutas(
-                        permutasCadastradas[
-                            `${anoSelecionado}-${mesSelecionado}`
-                        ] || []
+                        permutasCadastradas[anoSelecionado]?.[mesSelecionado] ??
+                            []
                     );
                 }}
             />
@@ -276,7 +276,7 @@ const Escala: FC<{
                 permutas={permutasFiltradas}
                 servicoSelecionadoParaPermuta={servicoSelecionadoParaPermuta}
                 onClickDia={onClickDia}
-                dispensas={dispensasNovembro}
+                dispensas={dispensas[ano]?.[mes] || []}
                 diasIndisponiveis={diasIndisponiveis}
                 onlyView={false}
             />
@@ -338,7 +338,6 @@ const Escala: FC<{
             >
                 <select
                     onChange={(e) => {
-                        const matriculasSelecionadas = e.target.value;
                         setMilitaresDaMesmaGuarnicao([e.target.value, '']);
                     }}
                 >

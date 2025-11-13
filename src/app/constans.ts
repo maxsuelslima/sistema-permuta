@@ -4821,14 +4821,6 @@ Array.from({ length: 25 }, (_, i) => i + 1).forEach((dia) => {
         dia: String(dia + 5),
         matricula: '725250-1',
     });
-    dispensasNovembro.push({
-        dia: String(dia + 5),
-        matricula: '725260-9',
-    });
-    dispensasNovembro.push({
-        dia: String(dia + 5),
-        matricula: '725252-8',
-    });
 });
 Array.from({ length: 30 }, (_, i) => i + 1).forEach((dia) => {
     dispensasNovembro.push({
@@ -5255,19 +5247,6 @@ export const permutasNovembro: Array<Permuta> = [
         ],
     },
     {
-        id: '1761614561091',
-        servicos: [
-            {
-                dia: '22',
-                matricula: '725239-0',
-            },
-            {
-                dia: '19',
-                matricula: '725248-0',
-            },
-        ],
-    },
-    {
         id: '1761614563694',
         servicos: [
             {
@@ -5277,19 +5256,6 @@ export const permutasNovembro: Array<Permuta> = [
             {
                 dia: '20',
                 matricula: '725254-4',
-            },
-        ],
-    },
-    {
-        id: '1761614572886',
-        servicos: [
-            {
-                dia: '27',
-                matricula: '725248-0',
-            },
-            {
-                dia: '21',
-                matricula: '725263-3',
             },
         ],
     },
@@ -5316,6 +5282,32 @@ export const permutasNovembro: Array<Permuta> = [
             {
                 dia: '2',
                 matricula: '725239-0',
+            },
+        ],
+    },
+    {
+        id: '1762911952408',
+        servicos: [
+            {
+                dia: '22',
+                matricula: '725239-0',
+            },
+            {
+                dia: '19',
+                matricula: '725252-8',
+            },
+        ],
+    },
+    {
+        id: '1762912631291',
+        servicos: [
+            {
+                dia: '27',
+                matricula: '725252-8',
+            },
+            {
+                dia: '21',
+                matricula: '725263-3',
             },
         ],
     },
@@ -5804,11 +5796,23 @@ export const permutasNovembroAlternativas: Array<Permuta> = [
     },
 ];
 
-const permutasCadastradas: Record<string, Array<Permuta>> = {
-    '2025-11': permutasNovembroAlternativas,
+const dispensasDezembro: Array<Servico> = [];
+for (let dia = 1; dia <= 31; dia++) {
+    dispensasDezembro.push({
+        dia: String(dia),
+        matricula: '725249-8',
+    });
+}
+
+const permutasCadastradas: Record<string, Record<string, Array<Permuta>>> = {
+    '2025': {
+        '11': permutasNovembro,
+    },
 };
-const dispensasCadastradas: Record<string, Array<Servico>> = {
-    '2025-11': dispensasNovembro,
+const dispensas: Record<string, Record<string, Array<Servico>>> = {
+    '2025': {
+        '11': dispensasNovembro,
+    },
 };
 
 export {
@@ -5816,5 +5820,5 @@ export {
     guarnicoes,
     dispensasNovembro,
     permutasCadastradas,
-    dispensasCadastradas,
+    dispensas,
 };
