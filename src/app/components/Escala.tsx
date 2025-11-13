@@ -20,7 +20,7 @@ const Escala: FC<{
     const [ano, setAno] = useState(String(new Date().getFullYear()));
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
     const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];
-    const [ativarFiltroDia15, setAtivarFiltroDia15] = useState(true);
+    const [ativarFiltroDia15, setAtivarFiltroDia15] = useState(false);
     const [militaresDaMesmaGuarnicao, setMilitaresDaMesmaGuarnicao] = useState<
         [string, string]
     >(['', '']);
