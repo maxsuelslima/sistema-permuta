@@ -39,8 +39,8 @@ const ListaPermutas: FC<{
                             (s) => s.matricula === militarSelecionado
                         );
                     })
-                    .map((permuta) => (
-                        <li key={permuta.id} style={{ marginBottom: '0.5rem' }}>
+                    .map((permuta, index) => (
+                        <li key={index} style={{ marginBottom: '0.5rem' }}>
                             {permuta.servicos
                                 .map(
                                     (s) =>

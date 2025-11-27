@@ -16,8 +16,8 @@ import {
 const Escala: FC<{
     onlyView?: boolean;
 }> = ({ onlyView }) => {
-    const [mes, setMes] = useState(String(new Date().getMonth() + 1));
-    const [ano, setAno] = useState(String(new Date().getFullYear()));
+    const [mes, setMes] = useState(String(12));
+    const [ano, setAno] = useState(String(2025));
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
     const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];
     const [ativarFiltroDia15, setAtivarFiltroDia15] = useState(false);
@@ -174,46 +174,62 @@ const Escala: FC<{
         militares: [string, string];
     }) {
         const [matriculaA, matriculaB] = militares;
-        const permutasTrocadas: Array<Permuta> = permutas.map((permuta) => {
-            const [servico1, servico2] = permuta.servicos;
-            if (servico1.matricula === matriculaA) {
-                return {
-                    ...permuta,
-                    servicos: [
-                        { ...servico1, matricula: matriculaB },
-                        servico2,
-                    ],
-                };
+        const permutasADoMilitarA: Array<Permuta> = permutas.filter(
+            (permuta) => {
+                return permuta.servicos.some((s) => s.matricula === matriculaA);
             }
-            if (servico2.matricula === matriculaA) {
-                return {
-                    ...permuta,
-                    servicos: [
-                        servico1,
-                        { ...servico2, matricula: matriculaB },
-                    ],
-                };
+        );
+        const permutasADoMilitarB: Array<Permuta> = permutas.filter(
+            (permuta) => {
+                return permuta.servicos.some((s) => s.matricula === matriculaB);
             }
-            if (servico1.matricula === matriculaB) {
-                return {
-                    ...permuta,
-                    servicos: [
-                        { ...servico1, matricula: matriculaA },
-                        servico2,
-                    ],
-                };
-            }
-            if (servico2.matricula === matriculaB) {
-                return {
-                    ...permuta,
-                    servicos: [
-                        servico1,
-                        { ...servico2, matricula: matriculaA },
-                    ],
-                };
-            }
-            return permuta;
+        );
+        const permutasFiltradas: Array<Permuta> = permutas.filter((permuta) => {
+            return !permuta.servicos.some(
+                (s) => s.matricula === matriculaA || s.matricula === matriculaB
+            );
         });
+        const novasPermutasA: Array<Permuta> = permutasADoMilitarA.map(
+            (permuta) => {
+                const servicosTrocados = permuta.servicos.map((s) => {
+                    if (s.matricula === matriculaA) {
+                        return {
+                            ...s,
+                            matricula: matriculaB,
+                        };
+                    }
+                    return s;
+                });
+                return {
+                    ...permuta,
+                    servicos: servicosTrocados,
+                    id: `${matriculaB}-${new Date().getTime()}`,
+                };
+            }
+        );
+        const novasPermutasB: Array<Permuta> = permutasADoMilitarB.map(
+            (permuta) => {
+                const servicosTrocados = permuta.servicos.map((s) => {
+                    if (s.matricula === matriculaB) {
+                        return {
+                            ...s,
+                            matricula: matriculaA,
+                            id: `${matriculaA}-${new Date().getTime()}`,
+                        };
+                    }
+                    return s;
+                });
+                return {
+                    ...permuta,
+                    servicos: servicosTrocados,
+                    id: `${matriculaB}-${new Date().getTime()}`,
+                };
+            }
+        );
+        const permutasTrocadas: Array<Permuta> = [
+            ...novasPermutasA,
+            ...novasPermutasB,
+        ];
         setPermutas((prevPermutas) => {
             const novasPermutas: Array<Permuta> = prevPermutas.filter(
                 (permuta) => {

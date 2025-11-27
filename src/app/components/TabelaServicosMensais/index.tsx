@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { efetivo } from '@/app/constans';
+import { efetivo, guarnicoes, pjes } from '@/app/constans';
 import LinhaTabela from './LinhaTabela';
 import { Servico } from '@/app/types/Servico';
 import { Permuta } from '@/app/types/Permuta';
@@ -31,6 +31,7 @@ const TabelaServicosMensais: FC<{
     showMesPorExtenso?: boolean;
     diasIndisponiveis?: Array<string>;
     dispensas?: Array<Servico>;
+    pjes?: Array<Servico>;
     onClickDia?: (args: { dia: string; matricula: string }) => void;
 }> = ({
     onClickDia,
@@ -100,6 +101,15 @@ const TabelaServicosMensais: FC<{
                 <tbody>
                     {Object.keys(servicosPorMatricula)
                         .sort()
+                        .sort((a, b) => {
+                            const indexA = guarnicoes.findIndex((grupo) =>
+                                grupo.includes(a)
+                            );
+                            const indexB = guarnicoes.findIndex((grupo) =>
+                                grupo.includes(b)
+                            );
+                            return indexA - indexB;
+                        })
                         .map((matriculaMilitar) => {
                             const permutasDoMilitar =
                                 permutas.filter(({ servicos }) =>
@@ -123,6 +133,7 @@ const TabelaServicosMensais: FC<{
                                     servicoSelecionadoParaPermuta={
                                         servicoSelecionadoParaPermuta
                                     }
+                                    pjes={pjes[ano][mes]}
                                     dispensas={dispensas}
                                     diasBloqueados={diasIndisponiveis}
                                     permutasDoMilitar={permutasDoMilitar}

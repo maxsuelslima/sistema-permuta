@@ -32,6 +32,13 @@ const styles: Record<string, CSSProperties> = {
         opacity: 0.5,
         pointerEvents: 'none',
     },
+    pjes: {
+        backgroundColor: '#171bf6',
+        cursor: 'pointer',
+        textAlign: 'center',
+        color: 'white',
+        pointerEvents: 'none',
+    },
 };
 const guarnicaoColors = {
     alfa: '#ff9999',
@@ -45,6 +52,7 @@ const conteudos = {
     dispensa: 'D',
     folgaEstranha: 'X',
     folga: '',
+    pjes: 'P',
 };
 
 const LinhaTabela: FC<{
@@ -57,6 +65,7 @@ const LinhaTabela: FC<{
     servicoSelecionadoParaPermuta?: Servico;
     permutasDoMilitar?: Array<Permuta>;
     dispensas?: Array<Servico>;
+    pjes?: Array<Servico>;
     onClickDia?: ({
         dia,
         matricula,
@@ -75,10 +84,17 @@ const LinhaTabela: FC<{
     dispensas = [],
     servicoSelecionadoParaPermuta,
     onlyView = false,
+    pjes = [],
 }) => {
-    const [linhasEstaDesabilitada, setLinhasEstaDesabilitada] = useState(false);
+    const [linhasEstaDesabilitada, setLinhasEstaDesabilitada] = useState(true);
     const celulas: Array<{
-        tipo: 'ordinario' | 'permuta' | 'dispensa' | 'folga' | 'folgaEstranha';
+        tipo:
+            | 'ordinario'
+            | 'permuta'
+            | 'dispensa'
+            | 'folga'
+            | 'folgaEstranha'
+            | 'pjes';
     }> = [];
     const detalhesPermuta: Array<{
         permutouCom: string;
@@ -119,7 +135,11 @@ const LinhaTabela: FC<{
             celulas[parseInt(dia, 10) - 1].tipo = 'dispensa';
         }
     });
-
+    pjes?.forEach(({ matricula: pMatricula, dia }) => {
+        if (pMatricula === matricula) {
+            celulas[parseInt(dia, 10) - 1].tipo = 'pjes';
+        }
+    });
     const diasIndisponiveis = gerarDiasIndisponiveis({
         permutas: permutasDoMilitar,
         servicosOrdinariosMilitarSelecionado: servicosOrdinarios,
