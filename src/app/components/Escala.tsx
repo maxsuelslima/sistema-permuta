@@ -184,11 +184,6 @@ const Escala: FC<{
                 return permuta.servicos.some((s) => s.matricula === matriculaB);
             }
         );
-        const permutasFiltradas: Array<Permuta> = permutas.filter((permuta) => {
-            return !permuta.servicos.some(
-                (s) => s.matricula === matriculaA || s.matricula === matriculaB
-            );
-        });
         const novasPermutasA: Array<Permuta> = permutasADoMilitarA.map(
             (permuta) => {
                 const servicosTrocados = permuta.servicos.map((s) => {
@@ -202,8 +197,8 @@ const Escala: FC<{
                 });
                 return {
                     ...permuta,
+                    id: `${matriculaA}-${new Date().getTime()}`,
                     servicos: servicosTrocados,
-                    id: `${matriculaB}-${new Date().getTime()}`,
                 };
             }
         );
