@@ -6608,7 +6608,7 @@ const pjesDezembro: Array<Servico> = [];
 const permutasCadastradas: Record<string, Record<string, Array<Permuta>>> = {
     '2025': {
         '11': permutasNovembro,
-        '12': permutasDezembro,
+        '12': permutasCorrompidasDezembro,
     },
 };
 const dispensas: Record<string, Record<string, Array<Servico>>> = {
