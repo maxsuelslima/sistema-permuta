@@ -133,7 +133,7 @@ const TabelaServicosMensais: FC<{
                                     servicoSelecionadoParaPermuta={
                                         servicoSelecionadoParaPermuta
                                     }
-                                    pjes={pjes[ano][mes]}
+                                    pjes={pjes[ano]?.[mes] ?? []}
                                     dispensas={dispensas}
                                     diasBloqueados={diasIndisponiveis}
                                     permutasDoMilitar={permutasDoMilitar}

@@ -16,8 +16,8 @@ import {
 const Escala: FC<{
     onlyView?: boolean;
 }> = ({ onlyView }) => {
-    const [mes, setMes] = useState(String(12));
-    const [ano, setAno] = useState(String(2025));
+    const [mes, setMes] = useState(String(1));
+    const [ano, setAno] = useState(String(2026));
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
     const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];
     const [ativarFiltroDia15, setAtivarFiltroDia15] = useState(false);
