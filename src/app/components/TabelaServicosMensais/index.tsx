@@ -51,6 +51,12 @@ const TabelaServicosMensais: FC<{
         1
     ).toLocaleDateString('pt-BR', { month: 'long' });
     const diasNoMes = gerarCalendarioDiasNoMes(Number(ano), Number(mes));
+    console.log('Dias no mês:', diasNoMes);
+    const fridaysAndSaturdays = diasNoMes.filter(
+        ({ diaSemana }) => diaSemana === 'sex.' || diaSemana === 'sáb.'
+    );
+    const sextaESabadosIndexes = fridaysAndSaturdays.map(({ dia }) => dia);
+    console.log('Sextas e Sábados:', sextaESabadosIndexes);
     return (
         <div style={{ overflowX: 'auto' }}>
             <table style={{ borderCollapse: 'collapse', width: '100%' }}>
@@ -133,6 +139,7 @@ const TabelaServicosMensais: FC<{
                                     servicoSelecionadoParaPermuta={
                                         servicoSelecionadoParaPermuta
                                     }
+                                    sextaESabadosIndexes={sextaESabadosIndexes}
                                     pjes={pjes[ano]?.[mes] ?? []}
                                     dispensas={dispensas}
                                     diasBloqueados={diasIndisponiveis}

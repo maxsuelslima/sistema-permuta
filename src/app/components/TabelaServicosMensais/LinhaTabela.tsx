@@ -2,7 +2,7 @@ import { Permuta } from '@/app/types/Permuta';
 import { Servico } from '@/app/types/Servico';
 import { CSSProperties, FC, useState } from 'react';
 import { gerarDiasIndisponiveis } from '../Escala';
-import { guarnicoes } from '@/app/constans';
+import { efetivo, guarnicoes } from '@/app/constans';
 
 const styles: Record<string, CSSProperties> = {
     ordinario: {
@@ -57,6 +57,7 @@ const conteudos = {
 
 const LinhaTabela: FC<{
     nomeDeGuerra: string;
+    sextaESabadosIndexes?: Array<string>;
     matricula: string;
     onlyView?: boolean;
     servicosOrdinarios: Array<Servico>;
@@ -85,6 +86,7 @@ const LinhaTabela: FC<{
     servicoSelecionadoParaPermuta,
     onlyView = false,
     pjes = [],
+    sextaESabadosIndexes = [],
 }) => {
     const [linhasEstaDesabilitada, setLinhasEstaDesabilitada] = useState(true);
     const celulas: Array<{
@@ -173,7 +175,7 @@ const LinhaTabela: FC<{
     );
     const guarnicaoColor =
         guarnicao >= 0 ? Object.values(guarnicaoColors)[guarnicao] : null;
-
+    const isAdventista = efetivo[matricula]?.isAdventist || false;
     return (
         <tr>
             <td
@@ -226,11 +228,19 @@ const LinhaTabela: FC<{
                     servicoSelecionadoParaPermuta?.dia ===
                         (index + 1).toString() &&
                     servicoSelecionadoParaPermuta?.matricula === matricula;
+                const isFridayOrSaturday = sextaESabadosIndexes?.includes(
+                    (index + 1).toString()
+                );
+                const showAdventistMarker =
+                    isAdventista &&
+                    isFridayOrSaturday &&
+                    (tipo === 'ordinario' || tipo === 'permuta');
                 return (
                     <td
                         key={index}
                         style={{
-                            border: '1px solid black',
+                            border: `1px solid ${showAdventistMarker ? '#ff6600' : 'black'}`,
+                            cursor: disabled ? '' : 'pointer',
                             minWidth: '32px',
                             minHeight: '32px',
                             ...styles[tipo],

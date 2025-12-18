@@ -197,7 +197,6 @@ const Escala: FC<{
                 });
                 return {
                     ...permuta,
-                    id: `${matriculaA}-${new Date().getTime()}`,
                     servicos: servicosTrocados,
                 };
             }
@@ -209,7 +208,6 @@ const Escala: FC<{
                         return {
                             ...s,
                             matricula: matriculaA,
-                            id: `${matriculaA}-${new Date().getTime()}`,
                         };
                     }
                     return s;
@@ -217,7 +215,6 @@ const Escala: FC<{
                 return {
                     ...permuta,
                     servicos: servicosTrocados,
-                    id: `${matriculaB}-${new Date().getTime()}`,
                 };
             }
         );
@@ -226,15 +223,19 @@ const Escala: FC<{
             ...novasPermutasB,
         ];
         setPermutas((prevPermutas) => {
-            const novasPermutas: Array<Permuta> = prevPermutas.filter(
-                (permuta) => {
+            const novasPermutas: Array<Permuta> = prevPermutas
+                .filter((permuta) => {
                     return !permuta.servicos.some(
                         (s) =>
                             s.matricula === matriculaA ||
                             s.matricula === matriculaB
                     );
-                }
-            );
+                })
+                .map((permuta, index) => ({
+                    ...permuta,
+                    id: index.toString(),
+                }));
+            console.log({ novasPermutas, permutasTrocadas });
             return novasPermutas.concat(permutasTrocadas);
         });
     }
@@ -498,8 +499,31 @@ export function gerarDiasIndisponiveis({
             diasIndisponiveis.push(servicoA.dia);
         }
     });
-    console.log({ diasIndisponiveis });
     return diasIndisponiveis;
 }
-
+function generateUUID() {
+    // Public Domain/MIT
+    let d = new Date().getTime(); //Timestamp
+    let d2 =
+        (typeof performance !== 'undefined' &&
+            performance.now &&
+            performance.now() * 1000) ||
+        0; //Time in microseconds since page-load or 0 if unsupported
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+        /[xy]/g,
+        function (c) {
+            let r = Math.random() * 16; //random number between 0 and 16
+            if (d > 0) {
+                //Use timestamp until depleted
+                r = (d + r) % 16 | 0;
+                d = Math.floor(d / 16);
+            } else {
+                //Use microseconds since page-load if supported
+                r = (d2 + r) % 16 | 0;
+                d2 = Math.floor(d2 / 16);
+            }
+            return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+        }
+    );
+}
 export default Escala;
