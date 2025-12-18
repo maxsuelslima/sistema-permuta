@@ -265,7 +265,6 @@ const Escala: FC<{
                 type="month"
                 value={`${ano}-${String(mes).padStart(2, '0')}`}
                 style={{
-                    display: onlyView ? 'none' : 'inline-block',
                     marginBottom: '16px',
                     marginTop: '16px',
                     marginLeft: '8px',
