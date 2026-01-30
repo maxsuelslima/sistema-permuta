@@ -67,11 +67,7 @@ const Escala: FC<{
             ],
         dispensas: dispensasMesSelecionado,
         matricula: servicoSelecionadoParaPermuta.matricula,
-    }).concat(
-        mes === '2' && ano === '2026'
-            ? ['11', '12', '13', '14', '15', '16']
-            : []
-    );
+    }).concat(mes === '2' && ano === '2026' ? ['14', '15', '16'] : []);
     function removerPermuta(id: string) {
         setPermutas((prevPermutas) => {
             localStorage.setItem(
