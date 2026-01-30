@@ -82,9 +82,7 @@ const ListaDeServicosPorMilitar: FC<{
                                         style={{
                                             color: permuta ? 'orange' : 'green',
                                         }}
-                                    >
-                                        {permuta ? 'Permutado' : 'Ordinário'}
-                                    </span>
+                                    ></span>
                                     {permuta && (
                                         <div
                                             style={{

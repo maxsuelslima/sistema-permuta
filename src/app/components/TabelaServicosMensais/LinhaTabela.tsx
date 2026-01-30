@@ -2,7 +2,11 @@ import { Permuta } from '@/app/types/Permuta';
 import { Servico } from '@/app/types/Servico';
 import { CSSProperties, FC, useState } from 'react';
 import { gerarDiasIndisponiveis } from '../Escala';
-import { efetivo, guarnicoes } from '@/app/constans';
+import {
+    guarnicoes,
+    listaAdventistas,
+    pantenteDictionary,
+} from '@/app/constans';
 
 const styles: Record<string, CSSProperties> = {
     ordinario: {
@@ -59,6 +63,7 @@ const LinhaTabela: FC<{
     nomeDeGuerra: string;
     sextaESabadosIndexes?: Array<string>;
     matricula: string;
+    patente?: string;
     onlyView?: boolean;
     servicosOrdinarios: Array<Servico>;
     quantidadeDiasNoMes: number;
@@ -76,6 +81,7 @@ const LinhaTabela: FC<{
     }) => void;
 }> = ({
     nomeDeGuerra,
+    patente,
     matricula,
     servicosOrdinarios,
     quantidadeDiasNoMes,
@@ -175,7 +181,9 @@ const LinhaTabela: FC<{
     );
     const guarnicaoColor =
         guarnicao >= 0 ? Object.values(guarnicaoColors)[guarnicao] : null;
-    const isAdventista = efetivo[matricula]?.isAdventist || false;
+    const isAdventista = listaAdventistas.includes(matricula);
+    const abreviacaoPatente =
+        pantenteDictionary[patente || ''].abbreviation || '';
     return (
         <tr>
             <td
@@ -206,7 +214,7 @@ const LinhaTabela: FC<{
                         fontWeight: 'bold',
                     }}
                 >
-                    {nomeDeGuerra}
+                    {abreviacaoPatente} {nomeDeGuerra}
                 </span>
                 <br />
                 <span

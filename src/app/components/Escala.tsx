@@ -16,7 +16,7 @@ import {
 const Escala: FC<{
     onlyView?: boolean;
 }> = ({ onlyView }) => {
-    const [mes, setMes] = useState(String(1));
+    const [mes, setMes] = useState(String(2));
     const [ano, setAno] = useState(String(2026));
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
     const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];
@@ -58,6 +58,7 @@ const Escala: FC<{
             });
         });
     });
+    console.log({ mes, ano });
     const diasIndisponiveis: Array<string> = gerarDiasIndisponiveis({
         permutas,
         servicosOrdinariosMilitarSelecionado:
@@ -66,7 +67,11 @@ const Escala: FC<{
             ],
         dispensas: dispensasMesSelecionado,
         matricula: servicoSelecionadoParaPermuta.matricula,
-    });
+    }).concat(
+        mes === '2' && ano === '2026'
+            ? ['11', '12', '13', '14', '15', '16']
+            : []
+    );
     function removerPermuta(id: string) {
         setPermutas((prevPermutas) => {
             localStorage.setItem(
@@ -235,7 +240,6 @@ const Escala: FC<{
                     ...permuta,
                     id: index.toString(),
                 }));
-            console.log({ novasPermutas, permutasTrocadas });
             return novasPermutas.concat(permutasTrocadas);
         });
     }

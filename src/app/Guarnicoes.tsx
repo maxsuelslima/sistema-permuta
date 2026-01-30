@@ -1,4 +1,4 @@
-import { efetivo, guarnicoes } from './constans';
+import { efetivo, guarnicoes, listaAdventistas } from './constans';
 
 const Guarnicoes = () => {
     return (
@@ -14,18 +14,17 @@ const Guarnicoes = () => {
                     <h2>Guarnição {index + 1}</h2>
                     <ul>
                         {guarnicao.map((id) => {
-                            const soldado = efetivo[id];
+                            const militar = efetivo[id];
+                            const isAdventist = listaAdventistas.includes(id);
                             return (
                                 <li
                                     key={id}
                                     style={{
-                                        color: soldado?.isAdventist
-                                            ? 'green'
-                                            : 'black',
+                                        color: isAdventist ? 'green' : 'black',
                                     }}
                                 >
-                                    {soldado?.name} ({id}){' '}
-                                    {soldado?.isAdventist ? '🌿' : ''}
+                                    {militar?.name} ({id}){' '}
+                                    {isAdventist ? '🌿' : ''}
                                 </li>
                             );
                         })}

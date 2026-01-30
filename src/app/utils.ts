@@ -5,6 +5,13 @@ import ServicosMensais from './types/ServicosMensais';
 // e sabendo que existem 4 guarnicoes: alfa, bravo, charlie e delta
 // gere um dicionario onde a chave é o dia do mes e o valor é um array com as matriculas dos militares de cada guarnicao que estao de servico naquele dia
 
+const escalaEspecialFevereiro: ServicosMensais = {
+    1: ['2', '6', '10', '14', '18', '22', '26'], // Alfa
+    2: ['3', '7', '13', '15', '19', '23', '27'], // Bravo
+    3: ['4', '8', '12', '16', '20', '24', '28'], // Charlie
+    4: ['1', '5', '9', '11', '17', '21', '25'], // Delta
+};
+
 export function gerarEscalaMensalOrdinaria({
     mes,
     ano,
@@ -33,6 +40,16 @@ export function gerarEscalaMensalOrdinaria({
                 dicionarioDiasServicos[dia] = [];
             }
             dicionarioDiasServicos[dia].push(matricula);
+        });
+    }
+    if (mes === '02' && ano === '2026') {
+        Object.keys(escalaEspecialFevereiro).map((guarnicaoIndex) => {
+            const matriculas = guarnicoes[parseInt(guarnicaoIndex) - 1];
+            const diasServicoGuarnicao =
+                escalaEspecialFevereiro[guarnicaoIndex];
+            diasServicoGuarnicao.map((dia) => {
+                dicionarioDiasServicos[dia] = matriculas;
+            });
         });
     }
     return dicionarioDiasServicos;
