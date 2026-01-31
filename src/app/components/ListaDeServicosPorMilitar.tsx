@@ -83,7 +83,7 @@ const ListaDeServicosPorMilitar: FC<{
                                             color: permuta ? 'orange' : 'green',
                                         }}
                                     ></span>
-                                    {permuta && (
+                                    {/*  {permuta && (
                                         <div
                                             style={{
                                                 fontStyle: 'italic',
@@ -101,7 +101,7 @@ const ListaDeServicosPorMilitar: FC<{
                                             </b>{' '}
                                             pelo dia {detalhesPermuta.dia}
                                         </div>
-                                    )}
+                                    )} */}
                                 </li>
                             );
                         })}
