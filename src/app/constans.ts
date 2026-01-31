@@ -4176,7 +4176,7 @@ const permutasCadastradas: Record<string, Record<string, Array<Permuta>>> = {
     },
     '2026': {
         '1': permutasJaneiro,
-        '2': permutasFevBugadas,
+        '2': permutasFevUpdate,
     },
 };
 const dispensas: Record<string, Record<string, Array<Servico>>> = {
