@@ -42,7 +42,7 @@ export function gerarEscalaMensalOrdinaria({
             dicionarioDiasServicos[dia].push(matricula);
         });
     }
-    if (mes === '02' && ano === '2026') {
+    if (Number(mes) === 2 && ano === '2026') {
         Object.keys(escalaEspecialFevereiro).map((guarnicaoIndex) => {
             const matriculas = guarnicoes[parseInt(guarnicaoIndex) - 1];
             const diasServicoGuarnicao =
