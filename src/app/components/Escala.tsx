@@ -274,9 +274,11 @@ const Escala: FC<{
                         e.target.value.split('-');
                     setMes(mesSelecionado);
                     setAno(anoSelecionado);
+                    console.log({ mesSelecionado, anoSelecionado });
                     setPermutas(
-                        permutasCadastradas[anoSelecionado]?.[mesSelecionado] ??
-                            []
+                        permutasCadastradas[String(anoSelecionado)]?.[
+                            String(Number(mesSelecionado))
+                        ] ?? []
                     );
                 }}
             />
