@@ -16,7 +16,7 @@ import {
 const Escala: FC<{
     onlyView?: boolean;
 }> = ({ onlyView }) => {
-    const [mes, setMes] = useState(String(3));
+    const [mes, setMes] = useState(String(4));
     const [ano, setAno] = useState(String(2026));
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
     const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];
@@ -272,12 +272,15 @@ const Escala: FC<{
                 onChange={(e) => {
                     const [anoSelecionado, mesSelecionado] =
                         e.target.value.split('-');
-                    setMes(mesSelecionado);
-                    setAno(anoSelecionado);
-                    setPermutas(
-                        permutasCadastradas[anoSelecionado]?.[mesSelecionado] ??
-                            []
-                    );
+                    const novoMes = Number(mesSelecionado).toString();
+                    const novoAno = Number(anoSelecionado).toString();
+                    setMes(novoMes);
+                    setAno(novoAno);
+                    const novasPermutas =
+                        permutasCadastradas[anoSelecionado]?.[
+                            `${mesSelecionado}`
+                        ] ?? [];
+                    setPermutas(permutasCadastradas[novoAno]?.[novoMes] ?? []);
                 }}
             />
             <TabelaServicosMensais
