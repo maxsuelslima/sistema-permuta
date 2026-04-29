@@ -1,9 +1,8 @@
-import { FC, useState } from 'react';
-import { efetivo, guarnicoes, pjes } from '@/app/constans';
+import { FC } from 'react';
+import { efetivo, listaMotoristas, PJES, pjes } from '@/app/constans';
 import LinhaTabela from './LinhaTabela';
 import { Servico } from '@/app/types/Servico';
 import { Permuta } from '@/app/types/Permuta';
-import { gerarEscalaMensalOrdinaria } from '@/app/utils';
 
 function gerarCalendarioDiasNoMes(
     ano: number,
@@ -31,7 +30,8 @@ const TabelaServicosMensais: FC<{
     showMesPorExtenso?: boolean;
     diasIndisponiveis?: Array<string>;
     dispensas?: Array<Servico>;
-    pjes?: Array<Servico>;
+    pjes?: Array<PJES>;
+    guarnicoes: Array<Array<string>>;
     onClickDia?: (args: { dia: string; matricula: string }) => void;
 }> = ({
     onClickDia,
@@ -44,13 +44,17 @@ const TabelaServicosMensais: FC<{
     permutas = [],
     dispensas = [],
     onlyView = false,
+    guarnicoes,
+    pjes = [],
 }) => {
     const mesPorExtenso = new Date(
         Number(ano),
         Number(mes) - 1,
         1
     ).toLocaleDateString('pt-BR', { month: 'long' });
+
     const diasNoMes = gerarCalendarioDiasNoMes(Number(ano), Number(mes));
+
     const fridaysAndSaturdays = diasNoMes.filter(
         ({ diaSemana }) => diaSemana === 'sex.' || diaSemana === 'sáb.'
     );
@@ -64,7 +68,19 @@ const TabelaServicosMensais: FC<{
             escalaMensal[dia].push(matricula);
         });
     });
-
+    const quantidadeDeMilitaresPorDia: Record<
+        string,
+        {
+            militares: number;
+            motoristas: number;
+            graduados: number;
+        }
+    > = gerarQuantidadeMilitaresPorDia({
+        escalaOrdinaria: escalaMensal,
+        permutas,
+        pjes,
+    });
+    console.log({ permutas });
     return (
         <div style={{ overflowX: 'auto' }}>
             <table style={{ borderCollapse: 'collapse', width: '100%' }}>
@@ -131,6 +147,13 @@ const TabelaServicosMensais: FC<{
                                         (s) => s.matricula === matriculaMilitar
                                     )
                                 ) || [];
+                            console.log({ matriculaMilitar });
+                            if (!efetivo[matriculaMilitar]) {
+                                console.warn(
+                                    `Matrícula ${matriculaMilitar} não encontrada no efetivo`
+                                );
+                                return null;
+                            }
                             return (
                                 <LinhaTabela
                                     key={matriculaMilitar}
@@ -149,13 +172,108 @@ const TabelaServicosMensais: FC<{
                                     }
                                     patente={efetivo[matriculaMilitar].patente}
                                     sextaESabadosIndexes={sextaESabadosIndexes}
-                                    pjes={pjes[ano]?.[mes] ?? []}
+                                    pjes={pjes}
                                     dispensas={dispensas}
                                     diasBloqueados={diasIndisponiveis}
                                     permutasDoMilitar={permutasDoMilitar}
+                                    guarnicoes={guarnicoes}
                                 />
                             );
                         })}
+                    {Object.keys(quantidadeDeMilitaresPorDia).length > 0 && (
+                        <>
+                            <tr>
+                                <td
+                                    style={{
+                                        border: '1px solid black',
+                                        padding: '2px 1px',
+                                        textAlign: 'center',
+                                        backgroundColor: '#f2f2f2',
+                                    }}
+                                >
+                                    Quantidade de militares escalados por dia
+                                </td>
+                                {diasNoMes.map(({ dia }, index) => (
+                                    <td
+                                        key={index}
+                                        style={{
+                                            border: '1px solid black',
+                                            padding: '2px 1px',
+                                            textAlign: 'center',
+                                            backgroundColor: '#f2f2f2',
+                                        }}
+                                    >
+                                        {quantidadeDeMilitaresPorDia[dia]
+                                            .militares || 0}
+                                    </td>
+                                ))}
+                            </tr>
+                            <tr>
+                                <td
+                                    style={{
+                                        border: '1px solid black',
+                                        padding: '2px 1px',
+                                        textAlign: 'center',
+                                        backgroundColor: '#f2f2f2',
+                                    }}
+                                >
+                                    Quantidade de motoristas escalados por dia
+                                </td>
+                                {diasNoMes.map(({ dia }, index) => (
+                                    <td
+                                        key={index}
+                                        style={{
+                                            border: '1px solid black',
+                                            padding: '2px 1px',
+                                            textAlign: 'center',
+                                            backgroundColor:
+                                                quantidadeDeMilitaresPorDia[dia]
+                                                    .motoristas >= 2
+                                                    ? '#ccffcc' // verde claro se tiver 2 ou mais motoristas
+                                                    : quantidadeDeMilitaresPorDia[
+                                                            dia
+                                                        ].motoristas >= 1
+                                                      ? '#ffffcc' // amarelo claro se tiver 1 motorista
+                                                      : '#ffcccc', // vermelho claro se não tiver motoristas
+                                        }}
+                                    >
+                                        {quantidadeDeMilitaresPorDia[dia]
+                                            .motoristas || 0}
+                                    </td>
+                                ))}
+                            </tr>
+                            <tr>
+                                <td
+                                    style={{
+                                        border: '1px solid black',
+                                        padding: '2px 1px',
+                                        textAlign: 'center',
+                                        backgroundColor: '#f2f2f2',
+                                    }}
+                                >
+                                    Quantidade de graduados escalados por dia
+                                </td>
+                                {diasNoMes.map(({ dia }, index) => (
+                                    <td
+                                        key={index}
+                                        style={{
+                                            border: '1px solid black',
+                                            padding: '2px 1px',
+                                            textAlign: 'center',
+                                            backgroundColor:
+                                                quantidadeDeMilitaresPorDia[dia]
+                                                    .graduados === 0
+                                                    ? '#ffcccc'
+                                                    : '#ccffcc',
+                                        }}
+                                    >
+                                        {quantidadeDeMilitaresPorDia[dia]
+                                            .graduados || 0}
+                                    </td>
+                                ))}
+                            </tr>
+                        </>
+                    )}
                 </tbody>
             </table>
         </div>
@@ -210,7 +328,7 @@ export function aplicarPermutas(ars: {
         servico: 'ordinario' | 'permuta';
         id?: string;
     }> = [];
-    servicos.forEach((diaServicoOrdinario, index) => {
+    servicos.forEach((diaServicoOrdinario) => {
         diasComServico.push({ dia: diaServicoOrdinario, servico: 'ordinario' });
     });
     permutas.forEach(({ id, servicos }) => {
@@ -244,34 +362,108 @@ export function aplicarPermutas(ars: {
     });
     return diasComServico;
 }
-function checaSequenciaQuatroOuMais(dias: string[]): string[] {
-    // parse + filtra não-numéricos + remove duplicados + ordena
-    const nums = Array.from(
-        new Set(
-            dias
-                .map((d) => (typeof d === 'string' ? d.trim() : d))
-                .map((d) => Number(d))
-                .filter((n) => Number.isFinite(n))
-        )
-    ).sort((a, b) => a - b);
-
-    const resultados: string[] = [];
-    if (nums.length < 4) return resultados;
-
-    let run: number[] = [nums[0]];
-    for (let i = 1; i < nums.length; i++) {
-        const cur = nums[i];
-        const prev = nums[i - 1];
-        if (cur - prev === 1) {
-            run.push(cur);
-        } else {
-            if (run.length >= 4) resultados.push(run.join(','));
-            run = [cur];
+type QuantidadeMilitaresPorDia = Record<
+    string,
+    { militares: number; motoristas: number; graduados: number }
+>;
+function gerarQuantidadeMilitaresPorDia({
+    escalaOrdinaria,
+    permutas,
+    pjes,
+}: {
+    escalaOrdinaria: Record<string, Array<string>>;
+    permutas: Array<Permuta>;
+    pjes: Array<PJES>;
+}): QuantidadeMilitaresPorDia {
+    const quantidadeDeMilitaresPorDia: QuantidadeMilitaresPorDia = {};
+    const escalaComPermutas: Record<
+        string,
+        Array<string>
+    > = aplicarPermutasNaEscala({
+        escalaOrdinaria,
+        permutas,
+    });
+    Object.entries(escalaComPermutas).forEach(([dia, militares]) => {
+        if (!quantidadeDeMilitaresPorDia[dia]) {
+            quantidadeDeMilitaresPorDia[dia] = {
+                militares: 0,
+                motoristas: 0,
+                graduados: 0,
+            };
         }
-    }
-    if (run.length >= 4) resultados.push(run.join(','));
-
-    return resultados.map((r) => r.split(',')).flat();
+        quantidadeDeMilitaresPorDia[dia].militares += militares.length;
+        militares.forEach((matricula) => {
+            const pertenceAoQuadroDeMotoristas = Object.keys(
+                listaMotoristas
+            ).some((motorista) => motorista === matricula);
+            if (pertenceAoQuadroDeMotoristas) {
+                quantidadeDeMilitaresPorDia[dia].motoristas += 1;
+            }
+            if (Number(efetivo[matricula]?.patente) >= 2) {
+                quantidadeDeMilitaresPorDia[dia].graduados += 1;
+            }
+        });
+    });
+    pjes.forEach(({ matricula: pMatricula, dia, turno }) => {
+        const pertenceAoQuadroDeMotoristas = Object.keys(listaMotoristas).some(
+            (motorista) => motorista === pMatricula
+        );
+        const isGraduado = Number(efetivo[pMatricula]?.patente) >= 2;
+        const isMeioTurno = turno === 'P1' || turno === 'P2';
+        if (pertenceAoQuadroDeMotoristas) {
+            if (isMeioTurno) {
+                quantidadeDeMilitaresPorDia[dia].motoristas += 0.5;
+            } else {
+                quantidadeDeMilitaresPorDia[dia].motoristas += 1;
+            }
+        }
+        if (isGraduado) {
+            if (isMeioTurno) {
+                quantidadeDeMilitaresPorDia[dia].graduados += 0.5;
+            } else {
+                quantidadeDeMilitaresPorDia[dia].graduados += 1;
+            }
+        }
+        if (!isMeioTurno) {
+            quantidadeDeMilitaresPorDia[dia].militares += 1;
+        } else {
+            quantidadeDeMilitaresPorDia[dia].militares += 0.5;
+        }
+    });
+    return quantidadeDeMilitaresPorDia;
 }
 
+function aplicarPermutasNaEscala({
+    escalaOrdinaria,
+    permutas,
+}: {
+    escalaOrdinaria: Record<string, Array<string>>;
+    permutas: Array<Permuta>;
+}): Record<string, Array<string>> {
+    const escalaComPermutas: Record<string, Array<string>> = {
+        ...escalaOrdinaria,
+    };
+    permutas.forEach(({ servicos }) => {
+        const [first, second] = servicos;
+        // Remove o serviço original do primeiro militar
+        escalaComPermutas[first.dia] = escalaComPermutas[first.dia].filter(
+            (matricula) => matricula !== first.matricula
+        );
+        // Remove o serviço original do segundo militar
+        escalaComPermutas[second.dia] = escalaComPermutas[second.dia].filter(
+            (matricula) => matricula !== second.matricula
+        );
+        // Adiciona o serviço permutado para o primeiro militar
+        if (!escalaComPermutas[second.dia]) {
+            escalaComPermutas[second.dia] = [];
+        }
+        escalaComPermutas[second.dia].push(first.matricula);
+        // Adiciona o serviço permutado para o segundo militar
+        if (!escalaComPermutas[first.dia]) {
+            escalaComPermutas[first.dia] = [];
+        }
+        escalaComPermutas[first.dia].push(second.matricula);
+    });
+    return escalaComPermutas;
+}
 export { TabelaServicosMensais };

@@ -1,6 +1,10 @@
+import { FC } from 'react';
 import { efetivo, guarnicoes, listaAdventistas } from './constans';
 
-const Guarnicoes = () => {
+const Guarnicoes: FC<{ ano: number; mes: number }> = ({
+    ano = 2026,
+    mes = 1,
+}) => {
     return (
         <div
             style={{
@@ -9,7 +13,7 @@ const Guarnicoes = () => {
                 gap: '1rem',
             }}
         >
-            {guarnicoes.map((guarnicao, index) => (
+            {guarnicoes[ano]?.[mes]?.map((guarnicao, index) => (
                 <div key={index}>
                     <h2>Guarnição {index + 1}</h2>
                     <ul>

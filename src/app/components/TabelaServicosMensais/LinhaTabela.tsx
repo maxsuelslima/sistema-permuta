@@ -2,11 +2,7 @@ import { Permuta } from '@/app/types/Permuta';
 import { Servico } from '@/app/types/Servico';
 import { CSSProperties, FC, useState } from 'react';
 import { gerarDiasIndisponiveis } from '../Escala';
-import {
-    guarnicoes,
-    listaAdventistas,
-    pantenteDictionary,
-} from '@/app/constans';
+import { listaAdventistas, pantenteDictionary, PJES } from '@/app/constans';
 
 const styles: Record<string, CSSProperties> = {
     ordinario: {
@@ -43,6 +39,20 @@ const styles: Record<string, CSSProperties> = {
         color: 'white',
         pointerEvents: 'none',
     },
+    p1: {
+        backgroundColor: '#171bf6',
+        cursor: 'pointer',
+        textAlign: 'center',
+        color: 'white',
+        pointerEvents: 'none',
+    },
+    p2: {
+        backgroundColor: '#0b0f5c',
+        cursor: 'pointer',
+        textAlign: 'center',
+        color: 'white',
+        pointerEvents: 'none',
+    },
 };
 const guarnicaoColors = {
     alfa: '#ff9999',
@@ -57,6 +67,8 @@ const conteudos = {
     folgaEstranha: 'X',
     folga: '',
     pjes: 'P',
+    p1: 'P1',
+    p2: 'P2',
 };
 
 const LinhaTabela: FC<{
@@ -71,7 +83,8 @@ const LinhaTabela: FC<{
     servicoSelecionadoParaPermuta?: Servico;
     permutasDoMilitar?: Array<Permuta>;
     dispensas?: Array<Servico>;
-    pjes?: Array<Servico>;
+    pjes?: Array<PJES>;
+    guarnicoes: Array<Array<string>>;
     onClickDia?: ({
         dia,
         matricula,
@@ -93,6 +106,7 @@ const LinhaTabela: FC<{
     onlyView = false,
     pjes = [],
     sextaESabadosIndexes = [],
+    guarnicoes,
 }) => {
     const [linhasEstaDesabilitada, setLinhasEstaDesabilitada] = useState(true);
     const celulas: Array<{
@@ -102,7 +116,9 @@ const LinhaTabela: FC<{
             | 'dispensa'
             | 'folga'
             | 'folgaEstranha'
-            | 'pjes';
+            | 'pjes'
+            | 'p1'
+            | 'p2';
     }> = [];
     const detalhesPermuta: Array<{
         permutouCom: string;
@@ -143,9 +159,10 @@ const LinhaTabela: FC<{
             celulas[parseInt(dia, 10) - 1].tipo = 'dispensa';
         }
     });
-    pjes?.forEach(({ matricula: pMatricula, dia }) => {
+    pjes?.forEach(({ matricula: pMatricula, dia, turno }) => {
         if (pMatricula === matricula) {
-            celulas[parseInt(dia, 10) - 1].tipo = 'pjes';
+            celulas[parseInt(dia, 10) - 1].tipo =
+                turno === 'P1' ? 'p1' : turno === 'P2' ? 'p2' : 'pjes';
         }
     });
     const diasIndisponiveis = gerarDiasIndisponiveis({

@@ -1,4 +1,3 @@
-import { guarnicoes } from './constans';
 import ServicosMensais from './types/ServicosMensais';
 // sabendo que no mes 10 do ano de 2025 a guarnicao alfa é a primeira a entrar em servico no dia 1
 // e que a cada dia a proxima guarnicao entra em servico, retornando a primeira apos a ultima
@@ -15,9 +14,11 @@ const escalaEspecialFevereiro: ServicosMensais = {
 export function gerarEscalaMensalOrdinaria({
     mes,
     ano,
+    guarnicoes,
 }: {
     mes: string;
     ano: string;
+    guarnicoes: Array<Array<string>>;
 }): ServicosMensais {
     const diasNoMes = new Date(parseInt(ano), parseInt(mes), 0).getDate();
     const dicionarioDiasServicos: Record<string, Array<string>> = {};

@@ -11,12 +11,13 @@ import {
     efetivo,
     guarnicoes,
     permutasCadastradas,
+    pjes,
 } from '../constans';
 
 const Escala: FC<{
     onlyView?: boolean;
 }> = ({ onlyView }) => {
-    const [mes, setMes] = useState(String(4));
+    const [mes, setMes] = useState(String(5));
     const [ano, setAno] = useState(String(2026));
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
     const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];
@@ -45,7 +46,11 @@ const Escala: FC<{
     const servicosOrdinariosPorMatricula: {
         [matricula: string]: Array<Servico>;
     } = {};
-    const servicosMensais = gerarEscalaMensalOrdinaria({ mes, ano });
+    const servicosMensais = gerarEscalaMensalOrdinaria({
+        mes,
+        ano,
+        guarnicoes: guarnicoes[ano]?.[mes] ?? [],
+    });
 
     Object.keys(servicosMensais).forEach((data) => {
         servicosMensais[data].forEach((matricula) => {
@@ -252,12 +257,11 @@ const Escala: FC<{
             JSON.stringify(permutasMesSelecionado)
         );
     }
-    const guarnicaoSelecionada = guarnicoes.find((guarnicao) => {
+    const guarnicaoSelecionada = guarnicoes[ano]?.[mes]?.find((guarnicao) => {
         return guarnicao.some(
             (militar) => militar === militaresDaMesmaGuarnicao[0]
         );
     });
-    console.log({ permutas });
     return (
         <div>
             <label>Selecione o mês:</label>
@@ -276,10 +280,6 @@ const Escala: FC<{
                     const novoAno = Number(anoSelecionado).toString();
                     setMes(novoMes);
                     setAno(novoAno);
-                    const novasPermutas =
-                        permutasCadastradas[anoSelecionado]?.[
-                            `${mesSelecionado}`
-                        ] ?? [];
                     setPermutas(permutasCadastradas[novoAno]?.[novoMes] ?? []);
                 }}
             />
@@ -293,6 +293,8 @@ const Escala: FC<{
                 dispensas={dispensas[ano]?.[mes] || []}
                 diasIndisponiveis={diasIndisponiveis}
                 onlyView={false}
+                guarnicoes={guarnicoes[ano][mes] ?? []}
+                pjes={pjes[ano][mes]}
             />
             <ul
                 style={{
