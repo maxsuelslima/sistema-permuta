@@ -147,7 +147,6 @@ const TabelaServicosMensais: FC<{
                                         (s) => s.matricula === matriculaMilitar
                                     )
                                 ) || [];
-                            console.log({ matriculaMilitar });
                             if (!efetivo[matriculaMilitar]) {
                                 console.warn(
                                     `Matrícula ${matriculaMilitar} não encontrada no efetivo`

@@ -4572,6 +4572,123 @@ const permutasMaio: Array<Permuta> = [
             },
         ],
     },
+    {
+        id: '1777913245571',
+        servicos: [
+            {
+                dia: '1',
+                matricula: '707401-8',
+            },
+            {
+                dia: '10',
+                matricula: '725261-7',
+            },
+        ],
+    },
+    {
+        id: '1777913265723',
+        servicos: [
+            {
+                dia: '4',
+                matricula: '718268-6',
+            },
+            {
+                dia: '6',
+                matricula: '725261-7',
+            },
+        ],
+    },
+    {
+        id: '1777913291690',
+        servicos: [
+            {
+                dia: '4',
+                matricula: '711014-6',
+            },
+            {
+                dia: '9',
+                matricula: '707401-8',
+            },
+        ],
+    },
+    {
+        id: '1777913334130',
+        servicos: [
+            {
+                dia: '12',
+                matricula: '711014-6',
+            },
+            {
+                dia: '18',
+                matricula: '725261-7',
+            },
+        ],
+    },
+    {
+        id: '1777913355507',
+        servicos: [
+            {
+                dia: '13',
+                matricula: '707401-8',
+            },
+            {
+                dia: '22',
+                matricula: '725261-7',
+            },
+        ],
+    },
+    {
+        id: '1777913387895',
+        servicos: [
+            {
+                dia: '16',
+                matricula: '718268-6',
+            },
+            {
+                dia: '26',
+                matricula: '707086-1',
+            },
+        ],
+    },
+    {
+        id: '1777913404670',
+        servicos: [
+            {
+                dia: '17',
+                matricula: '707401-8',
+            },
+            {
+                dia: '28',
+                matricula: '711014-6',
+            },
+        ],
+    },
+    {
+        id: '1777913441309',
+        servicos: [
+            {
+                dia: '20',
+                matricula: '718268-6',
+            },
+            {
+                dia: '29',
+                matricula: '707401-8',
+            },
+        ],
+    },
+    {
+        id: '1777913474328',
+        servicos: [
+            {
+                dia: '25',
+                matricula: '707401-8',
+            },
+            {
+                dia: '27',
+                matricula: '711045-6',
+            },
+        ],
+    },
 ];
 const permutasCadastradas: Record<string, Record<string, Array<Permuta>>> = {
     '2025': {
@@ -4599,31 +4716,31 @@ export type PJES = {
 };
 const pjesMaio: Array<PJES> = [
     { dia: '1', matricula: '711045-6', turno: 'P' },
-    { dia: '2', matricula: '725262-5', turno: 'P' },
+    { dia: '2', matricula: '707401-8', turno: 'P' },
     { dia: '3', matricula: '707401-8', turno: 'P' },
     { dia: '5', matricula: '711045-6', turno: 'P' },
-    { dia: '6', matricula: '725262-5', turno: 'P' },
+    { dia: '6', matricula: '707401-8', turno: 'P' },
     { dia: '7', matricula: '707401-8', turno: 'P' },
     { dia: '9', matricula: '711045-6', turno: 'P' },
     { dia: '10', matricula: '718268-6', turno: 'P' },
-    { dia: '11', matricula: '707401-8', turno: 'P' },
+    { dia: '11', matricula: '725262-5', turno: 'P' },
     { dia: '13', matricula: '711045-6', turno: 'P' },
     { dia: '14', matricula: '718268-6', turno: 'P' },
-    { dia: '15', matricula: '707401-8', turno: 'P' },
+    { dia: '15', matricula: '725262-5', turno: 'P' },
     { dia: '17', matricula: '711045-6', turno: 'P' },
-    { dia: '18', matricula: '718268-6', turno: 'P' },
+    { dia: '18', matricula: '707401-8', turno: 'P' },
     { dia: '19', matricula: '707401-8', turno: 'P' },
     { dia: '21', matricula: '711045-6', turno: 'P' },
     { dia: '22', matricula: '725265-0', turno: 'P' },
-    { dia: '23', matricula: '707401-8', turno: 'P' },
+    { dia: '23', matricula: '718268-6', turno: 'P' },
     { dia: '25', matricula: '718268-6', turno: 'P1' },
-    { dia: '25', matricula: '725261-7', turno: 'P2' },
+    { dia: '25', matricula: '718268-6', turno: 'P2' },
     { dia: '26', matricula: '725257-9', turno: 'P' },
     { dia: '27', matricula: '725261-7', turno: 'P1' },
     { dia: '27', matricula: '718268-6', turno: 'P2' },
     { dia: '29', matricula: '725255-2', turno: 'P2' },
     { dia: '29', matricula: '725261-7', turno: 'P1' },
-    { dia: '31', matricula: '718268-6', turno: 'P1' },
+    { dia: '31', matricula: '725261-7', turno: 'P1' },
     { dia: '31', matricula: '725261-7', turno: 'P2' },
     { dia: '30', matricula: '725260-9', turno: 'P' },
 ];
