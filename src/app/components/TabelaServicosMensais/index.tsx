@@ -1,8 +1,10 @@
 import { FC } from 'react';
-import { efetivo, listaMotoristas, PJES, pjes } from '@/app/constans';
 import LinhaTabela from './LinhaTabela';
 import { Servico } from '@/app/types/Servico';
 import { Permuta } from '@/app/types/Permuta';
+import efetivo from '@/app/constans/efetivo';
+import listaMotoristas from '@/app/constans/listaMotoristas';
+import { PJES } from '@/app/types/PJES';
 
 function gerarCalendarioDiasNoMes(
     ano: number,
@@ -30,7 +32,7 @@ const TabelaServicosMensais: FC<{
     showMesPorExtenso?: boolean;
     diasIndisponiveis?: Array<string>;
     dispensas?: Array<Servico>;
-    pjes?: Array<PJES>;
+    pjes: Array<PJES>;
     guarnicoes: Array<Array<string>>;
     onClickDia?: (args: { dia: string; matricula: string }) => void;
 }> = ({
@@ -80,7 +82,6 @@ const TabelaServicosMensais: FC<{
         permutas,
         pjes,
     });
-    console.log({ permutas });
     return (
         <div style={{ overflowX: 'auto' }}>
             <table style={{ borderCollapse: 'collapse', width: '100%' }}>

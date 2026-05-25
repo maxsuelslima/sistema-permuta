@@ -6,13 +6,12 @@ import ListaDeServicosPorMilitar from './ListaDeServicosPorMilitar';
 import { gerarEscalaMensalOrdinaria } from '../utils';
 import { Servico } from '../types/Servico';
 import { Permuta } from '../types/Permuta';
-import {
-    dispensas,
-    efetivo,
-    guarnicoes,
-    permutasCadastradas,
-    pjes,
-} from '../constans';
+import dispensas from '../constans/dispensas';
+import efetivo from '../constans/efetivo';
+import guarnicoes from '../constans/guarnicoes';
+import permutasCadastradas from '../constans/permutas';
+import pjes from '../constans/pjes';
+import { PJES } from '../types/PJES';
 
 const Escala: FC<{
     onlyView?: boolean;
@@ -22,6 +21,8 @@ const Escala: FC<{
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
     const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];
     const [ativarFiltroDia15, setAtivarFiltroDia15] = useState(false);
+    const [modoAdicionarPjes, setModoAdicionarPjes] = useState(false);
+    const [turnoPjes, setTurnoPjes] = useState<'P1' | 'P2' | 'P'>('P');
     const [militaresDaMesmaGuarnicao, setMilitaresDaMesmaGuarnicao] = useState<
         [string, string]
     >(['', '']);
@@ -31,6 +32,7 @@ const Escala: FC<{
     const [permutas, setPermutas] = useState<Array<Permuta>>(
         permutasMesSelecionado
     );
+
     const [servicoSelecionadoParaPermuta, setServicoSelecionadoParaPermuta] =
         useState<Servico>({ dia: '', matricula: '' });
 
@@ -49,9 +51,18 @@ const Escala: FC<{
     const servicosMensais = gerarEscalaMensalOrdinaria({
         mes,
         ano,
-        guarnicoes: guarnicoes[ano]?.[mes] ?? [],
     });
-
+    const [pjesDoMes, setPjesDoMes] = useState(pjes[ano]?.[mes] ?? []);
+    function adicionarPjes(pjes: PJES) {
+        setPjesDoMes((prevPjes) => [...prevPjes, pjes]);
+    }
+    function removerPjes(pjes: PJES) {
+        setPjesDoMes((prevPjes) =>
+            prevPjes.filter(
+                (p) => p.dia !== pjes.dia || p.matricula !== pjes.matricula
+            )
+        );
+    }
     Object.keys(servicosMensais).forEach((data) => {
         servicosMensais[data].forEach((matricula) => {
             if (!servicosOrdinariosPorMatricula[matricula]) {
@@ -63,7 +74,6 @@ const Escala: FC<{
             });
         });
     });
-    console.log({ mes, ano });
     const diasIndisponiveis: Array<string> = gerarDiasIndisponiveis({
         permutas,
         servicosOrdinariosMilitarSelecionado:
@@ -105,6 +115,14 @@ const Escala: FC<{
     }
     function onClickDia(servico: Servico) {
         if (onlyView) return;
+        if (modoAdicionarPjes) {
+            adicionarPjes({
+                dia: servico.dia,
+                matricula: servico.matricula,
+                turno: turnoPjes,
+            });
+            return;
+        }
         const jaFoiPermutado = servicosPermutados.find((srv) => {
             return (
                 srv.dia === servico.dia && srv.matricula === servico.matricula
@@ -257,11 +275,12 @@ const Escala: FC<{
             JSON.stringify(permutasMesSelecionado)
         );
     }
-    const guarnicaoSelecionada = guarnicoes[ano]?.[mes]?.find((guarnicao) => {
+    const guarnicaoSelecionada = guarnicoes({ ano, mes }).find((guarnicao) => {
         return guarnicao.some(
             (militar) => militar === militaresDaMesmaGuarnicao[0]
         );
     });
+    console.log({permutas})
     return (
         <div>
             <label>Selecione o mês:</label>
@@ -280,9 +299,27 @@ const Escala: FC<{
                     const novoAno = Number(anoSelecionado).toString();
                     setMes(novoMes);
                     setAno(novoAno);
+                    setPjesDoMes(pjes[novoAno]?.[novoMes] ?? []);
                     setPermutas(permutasCadastradas[novoAno]?.[novoMes] ?? []);
                 }}
             />
+            <label>Modo Adicionar Pjes</label>
+            <input
+                type="checkbox"
+                checked={modoAdicionarPjes}
+                onChange={(e) => setModoAdicionarPjes(e.target.checked)}
+            />
+            <label>Turno do PJES</label>
+            <select
+                value={turnoPjes}
+                onChange={(e) =>
+                    setTurnoPjes(e.target.value as 'P1' | 'P2' | 'P')
+                }
+            >
+                <option value="P">P</option>
+                <option value="P1">P1</option>
+                <option value="P2">P2</option>
+            </select>
             <TabelaServicosMensais
                 mes={mes}
                 ano={ano}
@@ -293,8 +330,8 @@ const Escala: FC<{
                 dispensas={dispensas[ano]?.[mes] || []}
                 diasIndisponiveis={diasIndisponiveis}
                 onlyView={false}
-                guarnicoes={guarnicoes[ano][mes] ?? []}
-                pjes={pjes[ano][mes]}
+                guarnicoes={guarnicoes({ ano, mes }) ?? []}
+                pjes={pjesDoMes}
             />
             <ul
                 style={{
@@ -314,7 +351,6 @@ const Escala: FC<{
                     </li>
                 ))}
             </ul>
-
             <div style={{ display: 'flex', padding: '8px', gap: '8px' }}>
                 <button
                     onClick={resetar}

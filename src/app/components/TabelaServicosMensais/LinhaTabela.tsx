@@ -2,7 +2,9 @@ import { Permuta } from '@/app/types/Permuta';
 import { Servico } from '@/app/types/Servico';
 import { CSSProperties, FC, useState } from 'react';
 import { gerarDiasIndisponiveis } from '../Escala';
-import { listaAdventistas, pantenteDictionary, PJES } from '@/app/constans';
+import listaAdventistas from '@/app/constans/listaAdventistas';
+import pantenteDictionary from '@/app/constans/patenteDictionary';
+import { PJES } from '@/app/types/PJES';
 
 const styles: Record<string, CSSProperties> = {
     ordinario: {

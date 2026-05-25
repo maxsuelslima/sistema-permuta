@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
-import { efetivo } from '../constans';
 import { Permuta } from '../types/Permuta';
 import { Servico } from '../types/Servico';
+import efetivo from '../constans/efetivo';
 
 const ListaDeServicosPorMilitar: FC<{
     servicosOrdinariosPorMatricula: { [matricula: string]: Array<Servico> };

@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
-import { efetivo } from '../constans';
 import { Permuta } from '../types/Permuta';
+import efetivo from '../constans/efetivo';
 
 const ListaPermutas: FC<{
     permutas: Array<Permuta>;

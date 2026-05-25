@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
-import { efetivo } from '../constans';
 import { Permuta } from '../types/Permuta';
 import ServicosMensais from '../types/ServicosMensais';
+import efetivo from '../constans/efetivo';
 
 const ListaMilitaresDoDia: FC<{
     servicosDoMes: ServicosMensais;

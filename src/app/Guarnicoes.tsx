@@ -1,5 +1,7 @@
 import { FC } from 'react';
-import { efetivo, guarnicoes, listaAdventistas } from './constans';
+import efetivo from './constans/efetivo';
+import guarnicoes from './constans/guarnicoes';
+import listaAdventistas from './constans/listaAdventistas';
 
 const Guarnicoes: FC<{ ano: number; mes: number }> = ({
     ano = 2026,
@@ -13,28 +15,33 @@ const Guarnicoes: FC<{ ano: number; mes: number }> = ({
                 gap: '1rem',
             }}
         >
-            {guarnicoes[ano]?.[mes]?.map((guarnicao, index) => (
-                <div key={index}>
-                    <h2>Guarnição {index + 1}</h2>
-                    <ul>
-                        {guarnicao.map((id) => {
-                            const militar = efetivo[id];
-                            const isAdventist = listaAdventistas.includes(id);
-                            return (
-                                <li
-                                    key={id}
-                                    style={{
-                                        color: isAdventist ? 'green' : 'black',
-                                    }}
-                                >
-                                    {militar?.name} ({id}){' '}
-                                    {isAdventist ? '🌿' : ''}
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div>
-            ))}
+            {guarnicoes({ ano: ano.toString(), mes: mes.toString() }).map(
+                (guarnicao, index) => (
+                    <div key={index}>
+                        <h2>Guarnição {index + 1}</h2>
+                        <ul>
+                            {guarnicao.map((id) => {
+                                const militar = efetivo[id];
+                                const isAdventist =
+                                    listaAdventistas.includes(id);
+                                return (
+                                    <li
+                                        key={id}
+                                        style={{
+                                            color: isAdventist
+                                                ? 'green'
+                                                : 'black',
+                                        }}
+                                    >
+                                        {militar?.name} ({id}){' '}
+                                        {isAdventist ? '🌿' : ''}
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                )
+            )}
         </div>
     );
 };

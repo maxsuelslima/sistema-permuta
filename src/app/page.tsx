@@ -11,7 +11,7 @@ export default function Home() {
                 }}
             >
                 <div>
-                    <Guarnicoes mes={5} ano={2026} />
+                    <Guarnicoes mes={6} ano={2026} />
                 </div>
                 <Escala onlyView={false} />
             </div>
