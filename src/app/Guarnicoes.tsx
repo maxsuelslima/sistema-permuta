@@ -5,7 +5,7 @@ import listaAdventistas from './constans/listaAdventistas';
 
 const Guarnicoes: FC<{ ano: number; mes: number }> = ({
     ano = 2026,
-    mes = 1,
+    mes = 6,
 }) => {
     return (
         <div

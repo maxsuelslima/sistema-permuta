@@ -81,6 +81,7 @@ const TabelaServicosMensais: FC<{
         escalaOrdinaria: escalaMensal,
         permutas,
         pjes,
+        dispensas,
     });
     return (
         <div style={{ overflowX: 'auto' }}>
@@ -370,10 +371,12 @@ function gerarQuantidadeMilitaresPorDia({
     escalaOrdinaria,
     permutas,
     pjes,
+    dispensas,
 }: {
     escalaOrdinaria: Record<string, Array<string>>;
     permutas: Array<Permuta>;
     pjes: Array<PJES>;
+    dispensas: Array<Servico>;
 }): QuantidadeMilitaresPorDia {
     const quantidadeDeMilitaresPorDia: QuantidadeMilitaresPorDia = {};
     const escalaComPermutas: Record<
@@ -393,6 +396,13 @@ function gerarQuantidadeMilitaresPorDia({
         }
         quantidadeDeMilitaresPorDia[dia].militares += militares.length;
         militares.forEach((matricula) => {
+            if (
+                dispensas.some(
+                    (d) => d.dia === dia && d.matricula === matricula
+                )
+            ) {
+                return;
+            }
             const pertenceAoQuadroDeMotoristas = Object.keys(
                 listaMotoristas
             ).some((motorista) => motorista === matricula);

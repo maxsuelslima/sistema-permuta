@@ -12,7 +12,7 @@ const pjesJunho: Array<PJES> = [
         turno: 'P',
     },
     {
-        dia: '7',
+        dia: '16',
         matricula: '725262-5',
         turno: 'P',
     },
@@ -22,7 +22,7 @@ const pjesJunho: Array<PJES> = [
         turno: 'P',
     },
     {
-        dia: '4',
+        dia: '11',
         matricula: '707401-8',
         turno: 'P',
     },
@@ -37,12 +37,12 @@ const pjesJunho: Array<PJES> = [
         turno: 'P',
     },
     {
-        dia: '16',
+        dia: '7',
         matricula: '707401-8',
         turno: 'P',
     },
     {
-        dia: '20',
+        dia: '27',
         matricula: '707401-8',
         turno: 'P',
     },
@@ -117,7 +117,7 @@ const pjesJunho: Array<PJES> = [
         turno: 'P',
     },
     {
-        dia: '11',
+        dia: '4',
         matricula: '718268-6',
         turno: 'P',
     },
@@ -127,7 +127,7 @@ const pjesJunho: Array<PJES> = [
         turno: 'P',
     },
     {
-        dia: '27',
+        dia: '20',
         matricula: '718268-6',
         turno: 'P',
     },
