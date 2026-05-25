@@ -280,6 +280,7 @@ const Escala: FC<{
             (militar) => militar === militaresDaMesmaGuarnicao[0]
         );
     });
+    console.log({ permutas });
     return (
         <div>
             <label>Selecione o mês:</label>
