@@ -147,7 +147,13 @@ function permutar({ pjes, dias }: { pjes: Array<PJES>; dias: Array<string> }) {
     return pjes;
 }
 
-[['12', '21'], ['17', '28'], ['27','18'], ['20','23']].forEach((dias) => {
+[
+    ['12', '21'],
+    ['17', '28'],
+    ['27', '18'],
+    ['20', '23'],
+    ['4', '11'],
+].forEach((dias) => {
     pjesJunho = permutar({ pjes: pjesJunho, dias });
 });
 

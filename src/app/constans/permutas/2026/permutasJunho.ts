@@ -455,19 +455,6 @@ const permutasJunho = [
         ],
     },
     {
-        id: '1779807257996',
-        servicos: [
-            {
-                dia: '4',
-                matricula: '711045-6',
-            },
-            {
-                dia: '29',
-                matricula: '718268-6',
-            },
-        ],
-    },
-    {
         id: '1779807280112',
         servicos: [
             {
