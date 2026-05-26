@@ -1,6 +1,6 @@
 import { PJES } from '@/app/types/PJES';
 
-const pjesJunho: Array<PJES> = [
+let pjesJunho: Array<PJES> = [
     {
         dia: '2',
         matricula: '711045-6',
@@ -12,7 +12,7 @@ const pjesJunho: Array<PJES> = [
         turno: 'P',
     },
     {
-        dia: '16',
+        dia: '7',
         matricula: '725262-5',
         turno: 'P',
     },
@@ -22,7 +22,7 @@ const pjesJunho: Array<PJES> = [
         turno: 'P',
     },
     {
-        dia: '11',
+        dia: '4',
         matricula: '707401-8',
         turno: 'P',
     },
@@ -37,12 +37,12 @@ const pjesJunho: Array<PJES> = [
         turno: 'P',
     },
     {
-        dia: '7',
+        dia: '16',
         matricula: '707401-8',
         turno: 'P',
     },
     {
-        dia: '27',
+        dia: '20',
         matricula: '707401-8',
         turno: 'P',
     },
@@ -117,7 +117,7 @@ const pjesJunho: Array<PJES> = [
         turno: 'P',
     },
     {
-        dia: '4',
+        dia: '11',
         matricula: '718268-6',
         turno: 'P',
     },
@@ -127,9 +127,28 @@ const pjesJunho: Array<PJES> = [
         turno: 'P',
     },
     {
-        dia: '20',
+        dia: '27',
         matricula: '718268-6',
         turno: 'P',
     },
 ];
+function permutar({ pjes, dias }: { pjes: Array<PJES>; dias: Array<string> }) {
+    const diaA = dias[0];
+    const diaB = dias[1];
+    const indexA = pjes.findIndex((pje) => pje.dia === diaA);
+    const indexB = pjes.findIndex((pje) => pje.dia === diaB);
+    if (indexA === -1 || indexB === -1) {
+        throw new Error('Dias não encontrados');
+    }
+    // troca as matriculas
+    const temp = pjes[indexA].matricula;
+    pjes[indexA].matricula = pjes[indexB].matricula;
+    pjes[indexB].matricula = temp;
+    return pjes;
+}
+
+[['12', '21'], ['17', '28'], ['27','18'], ['20','23']].forEach((dias) => {
+    pjesJunho = permutar({ pjes: pjesJunho, dias });
+});
+
 export default pjesJunho;
