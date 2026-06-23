@@ -128,6 +128,13 @@ const TabelaServicosMensais: FC<{
                                 {dia} <br /> {diaSemana}
                             </th>
                         ))}
+                        <th
+                            style={{
+                                width: '1rem',
+                            }}
+                        >
+                            Cotas PJES: {pjes.length}
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -201,7 +208,11 @@ const TabelaServicosMensais: FC<{
                                             border: '1px solid black',
                                             padding: '2px 1px',
                                             textAlign: 'center',
-                                            backgroundColor: '#f2f2f2',
+                                            backgroundColor:
+                                                quantidadeDeMilitaresPorDia[dia]
+                                                    .militares < 6
+                                                    ? '#ffcccc'
+                                                    : '#ccffcc',
                                         }}
                                     >
                                         {quantidadeDeMilitaresPorDia[dia]

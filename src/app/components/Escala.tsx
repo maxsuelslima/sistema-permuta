@@ -16,7 +16,7 @@ import { PJES } from '../types/PJES';
 const Escala: FC<{
     onlyView?: boolean;
 }> = ({ onlyView }) => {
-    const [mes, setMes] = useState(String(6));
+    const [mes, setMes] = useState(String(7));
     const [ano, setAno] = useState(String(2026));
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
     const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];
@@ -54,8 +54,10 @@ const Escala: FC<{
     });
     const [pjesDoMes, setPjesDoMes] = useState(pjes[ano]?.[mes] ?? []);
     function adicionarPjes(pjes: PJES) {
+        console.log('Adicionando PJES:', pjes);
         setPjesDoMes((prevPjes) => [...prevPjes, pjes]);
     }
+    console.log('Pjes do mês:', pjesDoMes);
     function removerPjes(pjes: PJES) {
         setPjesDoMes((prevPjes) =>
             prevPjes.filter(
@@ -115,6 +117,19 @@ const Escala: FC<{
     }
     function onClickDia(servico: Servico) {
         if (onlyView) return;
+        const isPjes = pjesDoMes.some((pjes) => {
+            return (
+                pjes.dia === servico.dia && pjes.matricula === servico.matricula
+            );
+        });
+        if (isPjes) {
+            removerPjes({
+                dia: servico.dia,
+                matricula: servico.matricula,
+                turno: turnoPjes,
+            });
+            return;
+        }
         if (modoAdicionarPjes) {
             adicionarPjes({
                 dia: servico.dia,
@@ -281,9 +296,27 @@ const Escala: FC<{
         );
     });
     console.log({ permutas });
+    const quantidadeDeCotasPJES = pjesDoMes.reduce(
+        (acc, pjes) => {
+            if (pjes.turno === 'P1') {
+                acc.P1 += 1;
+                acc.total += 1;
+            } else if (pjes.turno === 'P2') {
+                acc.P2 += 1;
+                acc.total += 1;
+            } else {
+                acc.P += 1;
+                acc.total += 2;
+            }
+            return acc;
+        },
+        { P1: 0, P2: 0, P: 0, total: 0 }
+    );
+    console.log('Quantidade de cotas PJES:', quantidadeDeCotasPJES);
     return (
         <div>
             <label>Selecione o mês:</label>
+            <h1>quantidade de cotas PJES: {quantidadeDeCotasPJES.total}</h1>
             <input
                 type="month"
                 value={`${ano}-${String(mes).padStart(2, '0')}`}

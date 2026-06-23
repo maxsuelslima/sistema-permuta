@@ -39,21 +39,18 @@ const styles: Record<string, CSSProperties> = {
         cursor: 'pointer',
         textAlign: 'center',
         color: 'white',
-        pointerEvents: 'none',
     },
     p1: {
         backgroundColor: '#171bf6',
         cursor: 'pointer',
         textAlign: 'center',
         color: 'white',
-        pointerEvents: 'none',
     },
     p2: {
         backgroundColor: '#0b0f5c',
         cursor: 'pointer',
         textAlign: 'center',
         color: 'white',
-        pointerEvents: 'none',
     },
 };
 const guarnicaoColors = {
@@ -203,6 +200,18 @@ const LinhaTabela: FC<{
     const isAdventista = listaAdventistas.includes(matricula);
     const abreviacaoPatente =
         pantenteDictionary[patente || ''].abbreviation || '';
+    const quantidadeCotasPJES = pjes
+        .filter((p) => p.matricula === matricula)
+        .map((p) => p.turno)
+        .reduce((acc, turno) => {
+            if (turno === 'P1' || turno === 'P2') {
+                return acc + 1;
+            }
+            if (turno === 'P') {
+                return acc + 2;
+            }
+            return acc;
+        }, 0);
     return (
         <tr>
             <td
@@ -279,7 +288,19 @@ const LinhaTabela: FC<{
                                   : '',
                         }}
                         onClick={() => {
-                            if (!disabled && !onlyView) {
+                            console.log('LinhaTabela - onClickDia:');
+                            if (
+                                (!disabled && !onlyView) ||
+                                tipo === 'pjes' ||
+                                tipo === 'p1' ||
+                                tipo === 'p2'
+                            ) {
+                                console.log(
+                                    'Dia clicado:',
+                                    index + 1,
+                                    'Matricula:',
+                                    matricula
+                                );
                                 onClickDia({
                                     dia: (index + 1).toString(),
                                     matricula,
@@ -291,6 +312,15 @@ const LinhaTabela: FC<{
                     </td>
                 );
             })}
+            <td
+                style={{
+                    border: '1px solid black',
+                    textAlign: 'center',
+                    padding: '4px',
+                }}
+            >
+                {quantidadeCotasPJES}
+            </td>
             <style jsx>{`
                 @keyframes selectedDayAnimation {
                     0% {
