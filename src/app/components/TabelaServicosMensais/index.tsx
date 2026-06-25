@@ -5,7 +5,12 @@ import { Permuta } from '@/app/types/Permuta';
 import efetivo from '@/app/constans/efetivo';
 import listaMotoristas from '@/app/constans/listaMotoristas';
 import { PJES } from '@/app/types/PJES';
-
+const guarnicaoColors: Record<string, string> = {
+    '1': '#ff9999',
+    '2': '#99ccff',
+    '3': '#99ff99',
+    '4': '#ffcc99',
+};
 function gerarCalendarioDiasNoMes(
     ano: number,
     mes: number
@@ -21,7 +26,12 @@ function gerarCalendarioDiasNoMes(
     }
     return diasNoMes;
 }
-
+const dictionaryGuarnicoes: Record<string, string> = {
+    '1': 'Alfa',
+    '2': 'Bravo',
+    '3': 'Charlie',
+    '4': 'Delta',
+};
 const TabelaServicosMensais: FC<{
     mes: string;
     ano: string;
@@ -84,7 +94,7 @@ const TabelaServicosMensais: FC<{
         dispensas,
     });
     return (
-        <div style={{ overflowX: 'auto' }}>
+        <div style={{ overflowX: 'auto', padding: '0.5rem 1rem' }}>
             <table style={{ borderCollapse: 'collapse', width: '100%' }}>
                 <thead>
                     {showMesPorExtenso ? (
@@ -156,11 +166,89 @@ const TabelaServicosMensais: FC<{
                                         (s) => s.matricula === matriculaMilitar
                                     )
                                 ) || [];
-                            if (!efetivo[matriculaMilitar]) {
-                                console.warn(
-                                    `Matrícula ${matriculaMilitar} não encontrada no efetivo`
+                            const isPrimeiroMilitarDoGrupo = guarnicoes.some(
+                                (grupo) => {
+                                    const index =
+                                        grupo.indexOf(matriculaMilitar);
+                                    return index === 0;
+                                }
+                            );
+                            if (isPrimeiroMilitarDoGrupo) {
+                                return (
+                                    <>
+                                        <tr key={matriculaMilitar}>
+                                            <td
+                                                colSpan={diasNoMes.length + 2}
+                                                style={{
+                                                    border: '1px solid black',
+                                                    padding: '2px 1px',
+                                                    textAlign: 'center',
+                                                    backgroundColor:
+                                                        guarnicaoColors[
+                                                            String(
+                                                                guarnicoes.findIndex(
+                                                                    (grupo) =>
+                                                                        grupo.includes(
+                                                                            matriculaMilitar
+                                                                        )
+                                                                ) + 1
+                                                            )
+                                                        ],
+                                                }}
+                                            >
+                                                Guarnição{' '}
+                                                {dictionaryGuarnicoes[
+                                                    guarnicoes.findIndex(
+                                                        (grupo) =>
+                                                            grupo.includes(
+                                                                matriculaMilitar
+                                                            )
+                                                    ) + 1
+                                                ] ||
+                                                    guarnicoes.findIndex(
+                                                        (grupo) =>
+                                                            grupo.includes(
+                                                                matriculaMilitar
+                                                            )
+                                                    ) + 1}
+                                            </td>
+                                        </tr>
+                                        <LinhaTabela
+                                            key={matriculaMilitar}
+                                            nomeDeGuerra={
+                                                efetivo[matriculaMilitar].name
+                                            }
+                                            onlyView={onlyView}
+                                            matricula={matriculaMilitar}
+                                            servicosOrdinarios={
+                                                servicosPorMatricula[
+                                                    matriculaMilitar
+                                                ]
+                                            }
+                                            onClickDia={onClickDia}
+                                            quantidadeDiasNoMes={
+                                                diasNoMes.length
+                                            }
+                                            servicoSelecionadoParaPermuta={
+                                                servicoSelecionadoParaPermuta
+                                            }
+                                            patente={
+                                                efetivo[matriculaMilitar]
+                                                    .patente
+                                            }
+                                            sextaESabadosIndexes={
+                                                sextaESabadosIndexes
+                                            }
+                                            pjes={pjes}
+                                            dispensas={dispensas}
+                                            diasBloqueados={diasIndisponiveis}
+                                            permutasDoMilitar={
+                                                permutasDoMilitar
+                                            }
+                                            guarnicoes={guarnicoes}
+                                        />
+                                    </>
                                 );
-                                return null;
                             }
                             return (
                                 <LinhaTabela

@@ -39,4 +39,3 @@ export function gerarEscalaMensalOrdinaria({
 
     return dicionarioDiasServicos;
 }
-

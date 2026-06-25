@@ -2,7 +2,12 @@ import { FC } from 'react';
 import efetivo from './constans/efetivo';
 import guarnicoes from './constans/guarnicoes';
 import listaAdventistas from './constans/listaAdventistas';
-
+const guarnicaoDictionary: Record<string, string> = {
+    '1': 'Alfa',
+    '2': 'Bravo',
+    '3': 'Charlie',
+    '4': 'Delta',
+};
 const Guarnicoes: FC<{ ano: number; mes: number }> = ({
     ano = 2026,
     mes = 6,
@@ -18,7 +23,10 @@ const Guarnicoes: FC<{ ano: number; mes: number }> = ({
             {guarnicoes({ ano: ano.toString(), mes: mes.toString() }).map(
                 (guarnicao, index) => (
                     <div key={index}>
-                        <h2>Guarnição {index + 1}</h2>
+                        <h2>
+                            Guarnição{' '}
+                            {guarnicaoDictionary[index + 1] || index + 1}
+                        </h2>
                         <ul>
                             {guarnicao.map((id) => {
                                 const militar = efetivo[id];

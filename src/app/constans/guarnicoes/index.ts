@@ -1,6 +1,7 @@
 import guarnicoesAbril from './2026/guarnicoeAbril';
 import guarnicoesFevereiro from './2026/guarnicoesFevereiro';
 import guarnicoesJaneiro from './2026/guarnicoesJaneiro';
+import guarnicoesjulho from './2026/guarnicoesJulho';
 import guarnicoesMaio from './2026/guarnicoesMaio';
 import guarnicoesMarco from './2026/guarnicoesMarco';
 
@@ -11,6 +12,7 @@ const guarnicoes: Record<string, Record<string, Array<Array<string>>>> = {
         '3': guarnicoesMarco,
         '4': guarnicoesAbril,
         '5': guarnicoesMaio,
+        '7': guarnicoesjulho,
     },
 };
 function recuperarGuarnicoesDoMes({ ano, mes }: { ano: string; mes: string }) {
