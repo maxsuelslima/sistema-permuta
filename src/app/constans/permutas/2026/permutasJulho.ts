@@ -169,84 +169,6 @@ const permutasPorGuarnicao = [
         ],
     },
     {
-        id: '1782350535234',
-        servicos: [
-            {
-                dia: '3',
-                matricula: '725257-9',
-            },
-            {
-                dia: '9',
-                matricula: '725246-3',
-            },
-        ],
-    },
-    {
-        id: '1782350536518',
-        servicos: [
-            {
-                dia: '5',
-                matricula: '725246-3',
-            },
-            {
-                dia: '4',
-                matricula: '725245-5',
-            },
-        ],
-    },
-    {
-        id: '1782350546365',
-        servicos: [
-            {
-                dia: '12',
-                matricula: '725245-5',
-            },
-            {
-                dia: '7',
-                matricula: '725257-9',
-            },
-        ],
-    },
-    {
-        id: '1782350567122',
-        servicos: [
-            {
-                dia: '25',
-                matricula: '725246-3',
-            },
-            {
-                dia: '19',
-                matricula: '725257-9',
-            },
-        ],
-    },
-    {
-        id: '1782350568708',
-        servicos: [
-            {
-                dia: '21',
-                matricula: '725246-3',
-            },
-            {
-                dia: '20',
-                matricula: '725245-5',
-            },
-        ],
-    },
-    {
-        id: '1782350591806',
-        servicos: [
-            {
-                dia: '23',
-                matricula: '725257-9',
-            },
-            {
-                dia: '24',
-                matricula: '725245-5',
-            },
-        ],
-    },
-    {
         id: '1782350621560',
         servicos: [
             {
@@ -555,6 +477,97 @@ const permutasPorGuarnicao = [
             {
                 dia: '27',
                 matricula: '725260-9',
+            },
+        ],
+    },
+    {
+        id: '1782583075902',
+        servicos: [
+            {
+                dia: '9',
+                matricula: '725246-3',
+            },
+            {
+                dia: '4',
+                matricula: '725245-5',
+            },
+        ],
+    },
+    {
+        id: '1782583077577',
+        servicos: [
+            {
+                dia: '3',
+                matricula: '725257-9',
+            },
+            {
+                dia: '13',
+                matricula: '725246-3',
+            },
+        ],
+    },
+    {
+        id: '1782583081376',
+        servicos: [
+            {
+                dia: '12',
+                matricula: '725245-5',
+            },
+            {
+                dia: '7',
+                matricula: '725257-9',
+            },
+        ],
+    },
+    {
+        id: '1782583118757',
+        servicos: [
+            {
+                dia: '21',
+                matricula: '725246-3',
+            },
+            {
+                dia: '16',
+                matricula: '725245-5',
+            },
+        ],
+    },
+    {
+        id: '1782583120857',
+        servicos: [
+            {
+                dia: '25',
+                matricula: '725246-3',
+            },
+            {
+                dia: '20',
+                matricula: '725245-5',
+            },
+        ],
+    },
+    {
+        id: '1782583123530',
+        servicos: [
+            {
+                dia: '19',
+                matricula: '725257-9',
+            },
+            {
+                dia: '29',
+                matricula: '725246-3',
+            },
+        ],
+    },
+    {
+        id: '1782583127427',
+        servicos: [
+            {
+                dia: '23',
+                matricula: '725257-9',
+            },
+            {
+                dia: '28',
+                matricula: '725245-5',
             },
         ],
     },
