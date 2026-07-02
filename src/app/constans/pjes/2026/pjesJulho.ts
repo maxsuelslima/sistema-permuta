@@ -328,26 +328,6 @@ const pjesJulho: PJES[] = [
         turno: 'P1',
     },
     {
-        dia: '5',
-        matricula: '725258-7',
-        turno: 'P1',
-    },
-    {
-        dia: '9',
-        matricula: '725258-7',
-        turno: 'P1',
-    },
-    {
-        dia: '5',
-        matricula: '718268-6',
-        turno: 'P2',
-    },
-    {
-        dia: '9',
-        matricula: '718268-6',
-        turno: 'P2',
-    },
-    {
         dia: '8',
         matricula: '725258-7',
         turno: 'P',
@@ -391,6 +371,16 @@ const pjesJulho: PJES[] = [
         dia: '29',
         matricula: '718268-6',
         turno: 'P2',
+    },
+    {
+        dia: '5',
+        matricula: '725258-7',
+        turno: 'P',
+    },
+    {
+        dia: '9',
+        matricula: '718268-6',
+        turno: 'P',
     },
 ]; /* [
     {

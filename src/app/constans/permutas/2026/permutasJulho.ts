@@ -571,6 +571,19 @@ const permutasPorGuarnicao = [
             },
         ],
     },
+    {
+        id: '1783020844855',
+        servicos: [
+            {
+                dia: '22',
+                matricula: '725258-7',
+            },
+            {
+                dia: '7',
+                matricula: '718268-6',
+            },
+        ],
+    },
 ];
 const permutasJulho = permutasPorGuarnicao;
 export default permutasJulho;

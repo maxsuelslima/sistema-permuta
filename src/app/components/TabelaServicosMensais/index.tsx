@@ -5,6 +5,7 @@ import { Permuta } from '@/app/types/Permuta';
 import efetivo from '@/app/constans/efetivo';
 import listaMotoristas from '@/app/constans/listaMotoristas';
 import { PJES } from '@/app/types/PJES';
+import React from 'react';
 const guarnicaoColors: Record<string, string> = {
     '1': '#ff9999',
     '2': '#99ccff',
@@ -159,7 +160,7 @@ const TabelaServicosMensais: FC<{
                             );
                             return indexA - indexB;
                         })
-                        .map((matriculaMilitar) => {
+                        .map((matriculaMilitar, index) => {
                             const permutasDoMilitar =
                                 permutas.filter(({ servicos }) =>
                                     servicos.some(
@@ -175,8 +176,8 @@ const TabelaServicosMensais: FC<{
                             );
                             if (isPrimeiroMilitarDoGrupo) {
                                 return (
-                                    <>
-                                        <tr key={matriculaMilitar}>
+                                    <React.Fragment key={index}>
+                                        <tr>
                                             <td
                                                 colSpan={diasNoMes.length + 2}
                                                 style={{
@@ -247,7 +248,7 @@ const TabelaServicosMensais: FC<{
                                             }
                                             guarnicoes={guarnicoes}
                                         />
-                                    </>
+                                    </React.Fragment>
                                 );
                             }
                             return (
