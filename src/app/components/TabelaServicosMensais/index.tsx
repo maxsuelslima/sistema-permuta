@@ -494,7 +494,7 @@ function gerarQuantidadeMilitaresPorDia({
                 graduados: 0,
             };
         }
-        quantidadeDeMilitaresPorDia[dia].militares += militares.length;
+
         militares.forEach((matricula) => {
             if (
                 dispensas.some(
@@ -503,6 +503,7 @@ function gerarQuantidadeMilitaresPorDia({
             ) {
                 return;
             }
+            quantidadeDeMilitaresPorDia[dia].militares += 1;
             const pertenceAoQuadroDeMotoristas = Object.keys(
                 listaMotoristas
             ).some((motorista) => motorista === matricula);
