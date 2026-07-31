@@ -19,5 +19,9 @@ Array.from({ length: 8 }, (_, index) => {
         dispensasAgosto.push({ dia, matricula });
     });
 });
-
+Array.from({ length: 9 }, (_, index) => {
+    const matricula = '711045-6'
+    const dia = (index + 13).toString();
+    dispensasAgosto.push({ dia, matricula });
+})
 export default dispensasAgosto;
