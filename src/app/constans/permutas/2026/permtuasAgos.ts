@@ -755,6 +755,32 @@ const permutasComNovinhos = [
             },
         ],
     },
+    {
+        id: '1786149936377',
+        servicos: [
+            {
+                dia: '31',
+                matricula: '726390-2',
+            },
+            {
+                dia: '26',
+                matricula: '726237-0',
+            },
+        ],
+    },
+    {
+        id: '1786149957009',
+        servicos: [
+            {
+                dia: '17',
+                matricula: '726370-8',
+            },
+            {
+                dia: '22',
+                matricula: '726237-0',
+            },
+        ],
+    },
 ];
 const permutasAgosto = permutasComNovinhos; /* permutasAteDiaQuinze */ /* [
     {
