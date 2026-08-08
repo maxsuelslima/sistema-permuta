@@ -151,6 +151,102 @@ const efetivo: Record<string, Militar> = {
         matricula: '725265-0',
         patente: '1',
     },
+    '726202-7': {
+        name: 'ARGENTA',
+        id: '726202-7',
+        matricula: '726202-7',
+        patente: '1',
+    },
+    '726349-0': {
+        name: 'WILLIAM',
+        id: '726349-0',
+        matricula: '726349-0',
+        patente: '1',
+    },
+    '726388-0': {
+        name: 'AIRTON',
+        id: '726388-0',
+        matricula: '726388-0',
+        patente: '1',
+    },
+    '726370-8': {
+        name: 'TIAGO SANTOS',
+        id: '726370-8',
+        matricula: '726370-8',
+        patente: '1',
+    },
+    '726223-0': {
+        name: 'ANTUNES',
+        id: '726223-0',
+        matricula: '726223-0',
+        patente: '1',
+    },
+    '726352-0': {
+        name: 'P LIMA',
+        id: '726352-0',
+        matricula: '726352-0',
+        patente: '1',
+    },
+    '726392-9': {
+        name: 'GUIMARÃES',
+        id: '726392-9',
+        matricula: '726392-9',
+        patente: '1',
+    },
+    '726237-0': {
+        name: 'CARVALHO',
+        id: '726237-0',
+        matricula: '726237-0',
+        patente: '1',
+    },
+    '726250-7': {
+        name: 'ISMAEL',
+        id: '726250-7',
+        matricula: '726250-7',
+        patente: '1',
+    },
+    '726356-2': {
+        name: 'D SOARES',
+        id: '726356-2',
+        matricula: '726356-2',
+        patente: '1',
+    },
+    '726390-2': {
+        name: 'P CAVALCANTE',
+        id: '726390-2',
+        matricula: '726390-2',
+        patente: '1',
+    },
+    '726357-0': {
+        name: 'ELIAS',
+        id: '726357-0',
+        matricula: '726357-0',
+        patente: '1',
+    },
+    '726280-9': {
+        name: 'LUCAS PIMENTEL',
+        id: '726280-9',
+        matricula: '726280-9',
+        patente: '1',
+    },
+    '726367-8': {
+        name: 'ADONIS',
+        id: '726367-8',
+        matricula: '726367-8',
+        patente: '1',
+    },
+    '726391-0': {
+        name: 'PEDRO LIMA',
+        id: '726391-0',
+        matricula: '726391-0',
+        patente: '1',
+    },
+    '726415-1': {
+        name: 'DO VALE',
+        id: '726415-1',
+        matricula: '726415-1',
+        patente: '1',
+    },
 };
 
 export default efetivo;

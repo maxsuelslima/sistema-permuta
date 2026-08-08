@@ -17,11 +17,6 @@ const pjesAgosto: PJES[] = [
         turno: 'P',
     },
     {
-        dia: '6',
-        matricula: '718268-6',
-        turno: 'P',
-    },
-    {
         dia: '18',
         matricula: '718268-6',
         turno: 'P',
@@ -29,11 +24,6 @@ const pjesAgosto: PJES[] = [
     {
         dia: '18',
         matricula: '725262-5',
-        turno: 'P',
-    },
-    {
-        dia: '22',
-        matricula: '718268-6',
         turno: 'P',
     },
     {
@@ -69,11 +59,6 @@ const pjesAgosto: PJES[] = [
     {
         dia: '30',
         matricula: '725262-5',
-        turno: 'P',
-    },
-    {
-        dia: '14',
-        matricula: '707401-8',
         turno: 'P',
     },
     {
@@ -133,6 +118,71 @@ const pjesAgosto: PJES[] = [
     },
     {
         dia: '17',
+        matricula: '725262-5',
+        turno: 'P',
+    },
+    {
+        dia: '22',
+        matricula: '725258-7',
+        turno: 'P2',
+    },
+    {
+        dia: '12',
+        matricula: '707401-8',
+        turno: 'P2',
+    },
+    {
+        dia: '11',
+        matricula: '707401-8',
+        turno: 'P1',
+    },
+    {
+        dia: '14',
+        matricula: '707401-8',
+        turno: 'P1',
+    },
+    {
+        dia: '23',
+        matricula: '707401-8',
+        turno: 'P',
+    },
+    {
+        dia: '28',
+        matricula: '707401-8',
+        turno: 'P',
+    },
+    {
+        dia: '12',
+        matricula: '725255-2',
+        turno: 'P1',
+    },
+    {
+        dia: '22',
+        matricula: '718268-6',
+        turno: 'P1',
+    },
+    {
+        dia: '6',
+        matricula: '718268-6',
+        turno: 'P1',
+    },
+    {
+        dia: '11',
+        matricula: '718268-6',
+        turno: 'P2',
+    },
+    {
+        dia: '14',
+        matricula: '718268-6',
+        turno: 'P2',
+    },
+    {
+        dia: '16',
+        matricula: '725248-0',
+        turno: 'P',
+    },
+    {
+        dia: '26',
         matricula: '725262-5',
         turno: 'P',
     },
