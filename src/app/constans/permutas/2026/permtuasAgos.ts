@@ -1044,32 +1044,6 @@ const novasPermutas = [
         ],
     },
     {
-        id: '1786145462011',
-        servicos: [
-            {
-                dia: '17',
-                matricula: '725250-1',
-            },
-            {
-                dia: '27',
-                matricula: '725260-9',
-            },
-        ],
-    },
-    {
-        id: '1786145483502',
-        servicos: [
-            {
-                dia: '24',
-                matricula: '726367-8',
-            },
-            {
-                dia: '29',
-                matricula: '725250-1',
-            },
-        ],
-    },
-    {
         id: '1786146238744',
         servicos: [
             {
@@ -1278,19 +1252,6 @@ const novasPermutas = [
         ],
     },
     {
-        id: '1786152859193',
-        servicos: [
-            {
-                dia: '17',
-                matricula: '725247-1',
-            },
-            {
-                dia: '30',
-                matricula: '725246-3',
-            },
-        ],
-    },
-    {
         id: '1786152865848',
         servicos: [
             {
@@ -1317,32 +1278,6 @@ const novasPermutas = [
         ],
     },
     {
-        id: '1786152879929',
-        servicos: [
-            {
-                dia: '28',
-                matricula: '726280-9',
-            },
-            {
-                dia: '21',
-                matricula: '725247-1',
-            },
-        ],
-    },
-    {
-        id: '1786152884136',
-        servicos: [
-            {
-                dia: '31',
-                matricula: '725258-7',
-            },
-            {
-                dia: '25',
-                matricula: '725247-1',
-            },
-        ],
-    },
-    {
         id: '1786152887516',
         servicos: [
             {
@@ -1352,19 +1287,6 @@ const novasPermutas = [
             {
                 dia: '23',
                 matricula: '725258-7',
-            },
-        ],
-    },
-    {
-        id: '1786152907918',
-        servicos: [
-            {
-                dia: '21',
-                matricula: '725250-1',
-            },
-            {
-                dia: '26',
-                matricula: '725244-7',
             },
         ],
     },
@@ -1391,6 +1313,110 @@ const novasPermutas = [
             {
                 dia: '18',
                 matricula: '725244-7',
+            },
+        ],
+    },
+    {
+        id: '1786191147106',
+        servicos: [
+            {
+                dia: '30',
+                matricula: '725246-3',
+            },
+            {
+                dia: '17',
+                matricula: '725250-1',
+            },
+        ],
+    },
+    {
+        id: '1786191161320',
+        servicos: [
+            {
+                dia: '31',
+                matricula: '725258-7',
+            },
+            {
+                dia: '25',
+                matricula: '725250-1',
+            },
+        ],
+    },
+    {
+        id: '1786191181798',
+        servicos: [
+            {
+                dia: '28',
+                matricula: '726280-9',
+            },
+            {
+                dia: '21',
+                matricula: '725250-1',
+            },
+        ],
+    },
+    {
+        id: '1786191205534',
+        servicos: [
+            {
+                dia: '27',
+                matricula: '725260-9',
+            },
+            {
+                dia: '17',
+                matricula: '725247-1',
+            },
+        ],
+    },
+    {
+        id: '1786191219787',
+        servicos: [
+            {
+                dia: '26',
+                matricula: '725244-7',
+            },
+            {
+                dia: '21',
+                matricula: '725247-1',
+            },
+        ],
+    },
+    {
+        id: '1786191237277',
+        servicos: [
+            {
+                dia: '24',
+                matricula: '726367-8',
+            },
+            {
+                dia: '29',
+                matricula: '725247-1',
+            },
+        ],
+    },
+    {
+        id: '1786191331789',
+        servicos: [
+            {
+                dia: '28',
+                matricula: '726415-1',
+            },
+            {
+                dia: '27',
+                matricula: '726250-7',
+            },
+        ],
+    },
+    {
+        id: '1786191374816',
+        servicos: [
+            {
+                dia: '24',
+                matricula: '726415-1',
+            },
+            {
+                dia: '26',
+                matricula: '726223-0',
             },
         ],
     },
