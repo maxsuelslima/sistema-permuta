@@ -25,7 +25,7 @@ matriculasCAS.forEach((matricula) => {
     dispensasAgosto.push({ dia: '31', matricula });
 });
 Array.from({ length: 9 }, (_, index) => {
-    const matricula = '711045-6'
+    const matricula = '711045-6';
     const dia = (index + 13).toString();
     dispensasAgosto.push({ dia, matricula });
 })
