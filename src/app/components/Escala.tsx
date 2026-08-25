@@ -16,7 +16,7 @@ import { PJES } from '../types/PJES';
 const Escala: FC<{
     onlyView?: boolean;
 }> = ({ onlyView }) => {
-    const [mes, setMes] = useState(String(8));
+    const [mes, setMes] = useState(String(9));
     const [ano, setAno] = useState(String(2026));
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
     const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];

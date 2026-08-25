@@ -14,5 +14,8 @@ const listaMotoristas: Record<string, { dataDeInclusao?: Date }> = {
     '711014-6': {
         dataDeInclusao: new Date('2024-01-20'),
     },
+    '726352-0': {
+        dataDeInclusao: new Date('2024-05-05'),
+    },
 };
 export default listaMotoristas;
