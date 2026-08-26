@@ -14,7 +14,7 @@ Array.from({ length: 4 }, (_, index) => {
         dispensasSetembro.push({ dia: (index + 1).toString(), matricula });
     });
 });
-Array.from({ length: 4 }, (_, index) => {
+Array.from({ length: 7 }, (_, index) => {
     matriculasCAS.forEach((matricula) => {
         dispensasSetembro.push({ dia: (index + 13).toString(), matricula });
     });
