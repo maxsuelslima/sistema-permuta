@@ -25,7 +25,7 @@ const permutasCadastradas: Record<string, Record<string, Array<Permuta>>> = {
         '6': permutasJunho,
         '7': permutasJulho,
         '8': permutasAgosto,
-        '9': permutasSetembro
+        '9': permutasSetembro,
     },
 };
 export default permutasCadastradas;

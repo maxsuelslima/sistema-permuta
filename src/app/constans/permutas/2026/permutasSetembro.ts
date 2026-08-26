@@ -1,2 +1,2 @@
-const permutasSetembro = []
+const permutasSetembro = [];
 export default permutasSetembro;

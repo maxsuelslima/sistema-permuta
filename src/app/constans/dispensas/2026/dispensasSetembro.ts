@@ -16,6 +16,11 @@ Array.from({ length: 4 }, (_, index) => {
 });
 Array.from({ length: 4 }, (_, index) => {
     matriculasCAS.forEach((matricula) => {
+        dispensasSetembro.push({ dia: (index + 13).toString(), matricula });
+    });
+});
+Array.from({ length: 4 }, (_, index) => {
+    matriculasCAS.forEach((matricula) => {
         dispensasSetembro.push({ dia: (index + 27).toString(), matricula });
     });
 });
