@@ -334,8 +334,12 @@ const TabelaServicosMensais: FC<{
                                                     : quantidadeDeMilitaresPorDia[
                                                             dia
                                                         ].motoristas == 2
-                                                      ? '#ccffcc'
-                                                      : '#ffcccc', // vermelho claro se não tiver motoristas
+                                                      ? '#ccffcc' // laranja claro se tiver 2 motoristas
+                                                      : quantidadeDeMilitaresPorDia[
+                                                              dia
+                                                          ].motoristas == 1
+                                                        ? '#ffff99' // amarelo claro se tiver 2 motoristas
+                                                        : '#ffcccc', // vermelho claro se não tiver motoristas
                                         }}
                                     >
                                         {quantidadeDeMilitaresPorDia[dia]
