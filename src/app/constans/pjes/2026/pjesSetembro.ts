@@ -17,7 +17,7 @@ const pjesSetembro: Array<PJES> = [
         turno: 'P',
     },
     {
-        dia: '30',
+        dia: '6',
         matricula: '711045-6',
         turno: 'P',
     },
