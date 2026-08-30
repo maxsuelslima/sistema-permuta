@@ -1,9 +1,10 @@
-'use client';
-import Guarnicoes from './Guarnicoes';
-import './globals.css';
-import Escala from './components/Escala';
-import { NextPage } from 'next';
-const Home: NextPage = () => {
+'use client'
+import { NextPage } from "next";
+import Guarnicoes from "../Guarnicoes";
+import Escala from "../components/Escala";
+
+
+const Escalas: NextPage = () => {
     return (
         <main>
             <div
@@ -14,9 +15,9 @@ const Home: NextPage = () => {
                 <div>
                     <Guarnicoes mes={8} ano={2026} />
                 </div>
-                <Escala onlyView={false} />
+                <Escala onlyView={false} enable725={true} />
             </div>
         </main>
     );
 }
-export default Home;
+export default Escalas;

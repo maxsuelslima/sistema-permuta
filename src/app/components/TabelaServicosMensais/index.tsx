@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import LinhaTabela from './LinhaTabela';
 import { Servico } from '@/app/types/Servico';
 import { Permuta } from '@/app/types/Permuta';
@@ -6,6 +6,7 @@ import efetivo from '@/app/constans/efetivo';
 import listaMotoristas from '@/app/constans/listaMotoristas';
 import { PJES } from '@/app/types/PJES';
 import React from 'react';
+import pantenteDictionary from '@/app/constans/patenteDictionary';
 const guarnicaoColors: Record<string, string> = {
     '1': '#ff9999',
     '2': '#99ccff',
@@ -46,6 +47,7 @@ const TabelaServicosMensais: FC<{
     pjes: Array<PJES>;
     guarnicoes: Array<Array<string>>;
     onClickDia?: (args: { dia: string; matricula: string }) => void;
+    enable725?: boolean;
 }> = ({
     onClickDia,
     ano,
@@ -59,6 +61,7 @@ const TabelaServicosMensais: FC<{
     onlyView = false,
     guarnicoes,
     pjes = [],
+    enable725 = false,
 }) => {
     const mesPorExtenso = new Date(
         Number(ano),
@@ -81,6 +84,7 @@ const TabelaServicosMensais: FC<{
             escalaMensal[dia].push(matricula);
         });
     });
+
     const quantidadeDeMilitaresPorDia: Record<
         string,
         {
@@ -94,8 +98,36 @@ const TabelaServicosMensais: FC<{
         pjes,
         dispensas,
     });
+    const [matriculaSelecionado, setMatriculaSelecionado] =
+        useState<string>('');
+
     return (
         <div style={{ overflowX: 'auto', padding: '0.5rem 1rem' }}>
+            <div>
+                <select
+                    value={matriculaSelecionado}
+                    onChange={(e) => setMatriculaSelecionado(e.target.value)}
+                >
+                    <option value="">Todos</option>
+                    {Object.values(efetivo).map((militar) => {
+                        if (militar.matricula.includes('725') && !enable725) {
+                            return null;
+                        }
+                        return (
+                            <option
+                                key={militar.matricula}
+                                value={militar.matricula}
+                            >
+                                {
+                                    pantenteDictionary[militar.patente]
+                                        .abbreviation
+                                }{' '}
+                                {militar.name} - {militar.matricula}
+                            </option>
+                        );
+                    })}
+                </select>
+            </div>
             <table style={{ borderCollapse: 'collapse', width: '100%' }}>
                 <thead>
                     {showMesPorExtenso ? (
@@ -174,6 +206,12 @@ const TabelaServicosMensais: FC<{
                                     return index === 0;
                                 }
                             );
+                            if (
+                                matriculaSelecionado !== matriculaMilitar ||
+                                (matriculaMilitar.includes('725') && !enable725)
+                            ) {
+                                return null;
+                            }
                             if (isPrimeiroMilitarDoGrupo) {
                                 return (
                                     <React.Fragment key={index}>
@@ -251,6 +289,7 @@ const TabelaServicosMensais: FC<{
                                     </React.Fragment>
                                 );
                             }
+
                             return (
                                 <LinhaTabela
                                     key={matriculaMilitar}

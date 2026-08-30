@@ -15,7 +15,8 @@ import { PJES } from '../types/PJES';
 
 const Escala: FC<{
     onlyView?: boolean;
-}> = ({ onlyView }) => {
+    enable725?: boolean;
+}> = ({ onlyView, enable725 }) => {
     const [mes, setMes] = useState(String(9));
     const [ano, setAno] = useState(String(2026));
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
@@ -365,6 +366,7 @@ const Escala: FC<{
                 onlyView={false}
                 guarnicoes={guarnicoes({ ano, mes }) ?? []}
                 pjes={pjesDoMes}
+                enable725={enable725}
             />
             <ul
                 style={{
@@ -384,7 +386,7 @@ const Escala: FC<{
                     </li>
                 ))}
             </ul>
-            <div style={{ display: 'flex', padding: '8px', gap: '8px' }}>
+            <div style={{ display: 'none', padding: '8px', gap: '8px' }}>
                 <button
                     onClick={resetar}
                     style={{
@@ -418,7 +420,7 @@ const Escala: FC<{
             </div>
             <div
                 style={{
-                    display: onlyView ? 'none' : 'block',
+                    display: onlyView ? 'none' : 'none',
                 }}
             >
                 <select
@@ -478,14 +480,14 @@ const Escala: FC<{
                 removerPermuta={removerPermuta}
                 onlyView={onlyView}
             />
-            <ListaMilitaresDoDia
+            {/*             <ListaMilitaresDoDia
                 servicosDoMes={servicosMensais}
                 permutas={permutasFiltradas}
             />
             <ListaDeServicosPorMilitar
                 servicosOrdinariosPorMatricula={servicosOrdinariosPorMatricula}
                 permutas={permutasFiltradas}
-            />
+            /> */}
         </div>
     );
 };
