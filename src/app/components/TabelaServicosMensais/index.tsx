@@ -110,7 +110,11 @@ const TabelaServicosMensais: FC<{
                 >
                     <option value="">Todos</option>
                     {Object.values(efetivo).map((militar) => {
-                        if (militar.matricula.includes('725') && !enable725) {
+                        if (
+                            militar.matricula.includes('725') &&
+                            militar.matricula !== '725112-2' &&
+                            !enable725
+                        ) {
                             return null;
                         }
                         return (
@@ -208,7 +212,9 @@ const TabelaServicosMensais: FC<{
                             );
                             if (
                                 matriculaSelecionado !== matriculaMilitar ||
-                                (matriculaMilitar.includes('725') && !enable725)
+                                (matriculaMilitar.includes('725') &&
+                                    matriculaMilitar !== '725112-2' &&
+                                    !enable725)
                             ) {
                                 return null;
                             }
