@@ -98,40 +98,8 @@ const TabelaServicosMensais: FC<{
         pjes,
         dispensas,
     });
-    const [matriculaSelecionado, setMatriculaSelecionado] =
-        useState<string>('');
-
     return (
         <div style={{ overflowX: 'auto', padding: '0.5rem 1rem' }}>
-            <div>
-                <select
-                    value={matriculaSelecionado}
-                    onChange={(e) => setMatriculaSelecionado(e.target.value)}
-                >
-                    <option value="">Todos</option>
-                    {Object.values(efetivo).map((militar) => {
-                        if (
-                            militar.matricula.includes('725') &&
-                            militar.matricula !== '725112-2' &&
-                            !enable725
-                        ) {
-                            return null;
-                        }
-                        return (
-                            <option
-                                key={militar.matricula}
-                                value={militar.matricula}
-                            >
-                                {
-                                    pantenteDictionary[militar.patente]
-                                        .abbreviation
-                                }{' '}
-                                {militar.name} - {militar.matricula}
-                            </option>
-                        );
-                    })}
-                </select>
-            </div>
             <table style={{ borderCollapse: 'collapse', width: '100%' }}>
                 <thead>
                     {showMesPorExtenso ? (
@@ -210,14 +178,6 @@ const TabelaServicosMensais: FC<{
                                     return index === 0;
                                 }
                             );
-                            if (
-                                matriculaSelecionado !== matriculaMilitar ||
-                                (matriculaMilitar.includes('725') &&
-                                    matriculaMilitar !== '725112-2' &&
-                                    !enable725)
-                            ) {
-                                return null;
-                            }
                             if (isPrimeiroMilitarDoGrupo) {
                                 return (
                                     <React.Fragment key={index}>
