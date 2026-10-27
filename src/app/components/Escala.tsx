@@ -16,12 +16,12 @@ const servicoExtraNovembro = {
     '2': ['726109-8'],
     '6': ['726109-8'],
     '1': ['725203-0'],
+    '19': ['725203-0'],
     '20': ['725203-0'],
     '12': ['725054-1'],
     '17': ['725054-1'],
     '25': ['725054-1'],
     '29': ['725054-1'],
-
 };
 const Escala: FC<{
     onlyView?: boolean;
@@ -43,7 +43,7 @@ const Escala: FC<{
     const [permutas, setPermutas] = useState<Array<Permuta>>(
         permutasMesSelecionado
     );
-
+    console.log('Permutas do mês:', {permutas});
     const [servicoSelecionadoParaPermuta, setServicoSelecionadoParaPermuta] =
         useState<Servico>({ dia: '', matricula: '' });
 

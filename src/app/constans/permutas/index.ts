@@ -1,6 +1,6 @@
 import { Permuta } from '@/app/types/Permuta';
 import permutasCorrompidasDezembro from './2025/permutasDezembro';
-import permutasNovembro from './2025/permutasNovembro';
+import permutasNovembro2025 from './2025/permutasNovembro';
 import { permutasAbrilAlternativas } from './2026/permutasAbril';
 import permutasFevUpdate from './2026/permutasFevereiro';
 import permutasJaneiro from './2026/permutasJaneiro';
@@ -10,10 +10,11 @@ import permutasJunho from './2026/permutasJunho';
 import permutasJulho from './2026/permutasJulho';
 import permutasAgosto from './2026/permtuasAgos';
 import permutasSetembro from './2026/permutasSetembro';
+import permutasNovembro from './2026/permutasNovembro';
 
 const permutasCadastradas: Record<string, Record<string, Array<Permuta>>> = {
     '2025': {
-        '11': permutasNovembro,
+        '11': permutasNovembro2025,
         '12': permutasCorrompidasDezembro,
     },
     '2026': {
@@ -26,6 +27,7 @@ const permutasCadastradas: Record<string, Record<string, Array<Permuta>>> = {
         '7': permutasJulho,
         '8': permutasAgosto,
         '9': permutasSetembro,
+        '11': permutasNovembro,
     },
 };
 export default permutasCadastradas;
