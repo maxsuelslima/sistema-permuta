@@ -257,7 +257,7 @@ const LinhaTabela: FC<{
             {celulas.map(({ tipo }, index) => {
                 const disabled =
                     (isEditingPermuta && tipo !== 'ordinario') ||
-                   /*  diasBloqueados.includes((index + 1).toString()) || */
+                    /*  diasBloqueados.includes((index + 1).toString()) || */
                     disablePermuta ||
                     linhasEstaDesabilitada;
                 const isSelectedDay =

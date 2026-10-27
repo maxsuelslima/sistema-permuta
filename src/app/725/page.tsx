@@ -1,8 +1,7 @@
-'use client'
-import { NextPage } from "next";
-import Guarnicoes from "../Guarnicoes";
-import Escala from "../components/Escala";
-
+'use client';
+import { NextPage } from 'next';
+import Guarnicoes from '../Guarnicoes';
+import Escala from '../components/Escala';
 
 const Escalas: NextPage = () => {
     return (
@@ -19,5 +18,5 @@ const Escalas: NextPage = () => {
             </div>
         </main>
     );
-}
+};
 export default Escalas;

@@ -43,7 +43,7 @@ const Escala: FC<{
     const [permutas, setPermutas] = useState<Array<Permuta>>(
         permutasMesSelecionado
     );
-    console.log('Permutas do mês:', {permutas});
+    console.log('Permutas do mês:', { permutas });
     const [servicoSelecionadoParaPermuta, setServicoSelecionadoParaPermuta] =
         useState<Servico>({ dia: '', matricula: '' });
 

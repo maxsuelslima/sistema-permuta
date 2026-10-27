@@ -11,12 +11,12 @@ const Home: NextPage = () => {
                     width: '100%',
                 }}
             >
-{/*                 <div>
+                {/*                 <div>
                     <Guarnicoes mes={8} ano={2026} />
                 </div> */}
                 <Escala onlyView={false} />
             </div>
         </main>
     );
-}
+};
 export default Home;
