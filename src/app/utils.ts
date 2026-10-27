@@ -30,7 +30,7 @@ export function gerarEscalaMensalOrdinaria({
                 (parseInt(guarnicaoQueIncia) - 1 + index) %
                 Object.keys(guarnicoesDoMes).length;
             dicionarioDiasServicos[dia.toString()] =
-                guarnicoesDoMes[String(indexGuarnicao)];
+                guarnicoesDoMes[`${indexGuarnicao}`];
         });
         if (servicoExtra) {
             Object.keys(servicoExtra).forEach((dia) => {

@@ -1,4 +1,4 @@
-import { Servico } from "@/app/types/Servico";
+import { Servico } from '@/app/types/Servico';
 
 const dispensasNovembro: Array<Servico> = [];
 
