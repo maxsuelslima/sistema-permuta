@@ -1,3 +1,5 @@
+import { Servico } from "@/app/types/Servico";
+
 const dispensasNovembro: Array<Servico> = [];
 
 Array.from({ length: 22 }, (_, index) => {
