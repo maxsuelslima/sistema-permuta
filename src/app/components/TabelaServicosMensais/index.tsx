@@ -165,6 +165,11 @@ const TabelaServicosMensais: FC<{
                             return indexA - indexB;
                         })
                         .map((matriculaMilitar, index) => {
+                            if (
+                                typeof efetivo[matriculaMilitar] === 'undefined'
+                            ) {
+                                return null;
+                            }
                             const permutasDoMilitar =
                                 permutas.filter(({ servicos }) =>
                                     servicos.some(
@@ -179,6 +184,7 @@ const TabelaServicosMensais: FC<{
                                 }
                             );
                             if (isPrimeiroMilitarDoGrupo) {
+                                console.log({ matriculaMilitar });
                                 return (
                                     <React.Fragment key={index}>
                                         <tr>
@@ -221,7 +227,9 @@ const TabelaServicosMensais: FC<{
                                         <LinhaTabela
                                             key={matriculaMilitar}
                                             nomeDeGuerra={
-                                                efetivo[matriculaMilitar].name
+                                                efetivo[matriculaMilitar]
+                                                    ?.name ||
+                                                'Militar desconhecido'
                                             }
                                             onlyView={onlyView}
                                             matricula={matriculaMilitar}

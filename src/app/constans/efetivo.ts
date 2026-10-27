@@ -253,6 +253,24 @@ const efetivo: Record<string, Militar> = {
         matricula: '725112-2',
         patente: '1',
     },
+    '726109-8': {
+        name: 'COSTA',
+        id: '726109-8',
+        matricula: '726109-8',
+        patente: '1',
+    },
+    '725054-1': {
+        name: 'SOUZA LEÃO',
+        id: '725054-1',
+        matricula: '725054-1',
+        patente: '1',
+    },
+    '725203-0': {
+        name: 'RAFAEL',
+        id: '725203-0',
+        matricula: '725203-0',
+        patente: '1',
+    },
 };
 
 export default efetivo;

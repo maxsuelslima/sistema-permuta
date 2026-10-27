@@ -12,12 +12,22 @@ import guarnicoes from '../constans/guarnicoes';
 import permutasCadastradas from '../constans/permutas';
 import pjes from '../constans/pjes';
 import { PJES } from '../types/PJES';
+const servicoExtraNovembro = {
+    '2': ['726109-8'],
+    '6': ['726109-8'],
+    '1': ['725203-0'],
+    '20': ['725203-0'],
+    '12': ['725054-1'],
+    '17': ['725054-1'],
+    '25': ['725054-1'],
+    '29': ['725054-1'],
 
+};
 const Escala: FC<{
     onlyView?: boolean;
     enable725?: boolean;
 }> = ({ onlyView, enable725 }) => {
-    const [mes, setMes] = useState(String(9));
+    const [mes, setMes] = useState(String(11));
     const [ano, setAno] = useState(String(2026));
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
     const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];
@@ -52,7 +62,11 @@ const Escala: FC<{
     const servicosMensais = gerarEscalaMensalOrdinaria({
         mes,
         ano,
+        guarnicaoQueIncia: '3',
+        servicoExtra:
+            mes === '11' && ano === '2026' ? servicoExtraNovembro : undefined,
     });
+    console.log({ servicosMensais });
     const [pjesDoMes, setPjesDoMes] = useState(pjes[ano]?.[mes] ?? []);
     function adicionarPjes(pjes: PJES) {
         console.log('Adicionando PJES:', pjes);
@@ -66,6 +80,7 @@ const Escala: FC<{
             )
         );
     }
+
     Object.keys(servicosMensais).forEach((data) => {
         servicosMensais[data].forEach((matricula) => {
             if (!servicosOrdinariosPorMatricula[matricula]) {
@@ -480,14 +495,14 @@ const Escala: FC<{
                 removerPermuta={removerPermuta}
                 onlyView={onlyView}
             />
-            {/*             <ListaMilitaresDoDia
+            <ListaMilitaresDoDia
                 servicosDoMes={servicosMensais}
                 permutas={permutasFiltradas}
             />
             <ListaDeServicosPorMilitar
                 servicosOrdinariosPorMatricula={servicosOrdinariosPorMatricula}
                 permutas={permutasFiltradas}
-            /> */}
+            />
         </div>
     );
 };
