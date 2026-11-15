@@ -1,4 +1,4 @@
-const permutasDezembro =[
+const permutasDezembro = [
     {
         id: '1794761647127',
         servicos: [
@@ -74,19 +74,6 @@ const permutasDezembro =[
             {
                 dia: '25',
                 matricula: '725103-3',
-            },
-        ],
-    },
-    {
-        id: '1794761724056',
-        servicos: [
-            {
-                dia: '26',
-                matricula: '725203-0',
-            },
-            {
-                dia: '31',
-                matricula: '725258-7',
             },
         ],
     },
