@@ -31,7 +31,7 @@ const Escala: FC<{
     onlyView?: boolean;
     enable725?: boolean;
 }> = ({ onlyView, enable725 }) => {
-    const [mes, setMes] = useState(String(11));
+    const [mes, setMes] = useState(String(12));
     const [ano, setAno] = useState(String(2026));
     const permutasMesSelecionado = permutasCadastradas[ano]?.[mes] ?? [];
     const dispensasMesSelecionado = dispensas[ano]?.[mes] ?? [];
@@ -66,7 +66,7 @@ const Escala: FC<{
     const servicosMensais = gerarEscalaMensalOrdinaria({
         mes,
         ano,
-        guarnicaoQueIncia: '3',
+        guarnicaoQueIncia: mes === '11' && ano === '2026' ? '3' : '1',
         servicoExtra:
             mes === '11' && ano === '2026' ? servicoExtraNovembro : undefined,
     });

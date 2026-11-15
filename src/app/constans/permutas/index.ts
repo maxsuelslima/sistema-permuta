@@ -11,6 +11,7 @@ import permutasJulho from './2026/permutasJulho';
 import permutasAgosto from './2026/permtuasAgos';
 import permutasSetembro from './2026/permutasSetembro';
 import permutasNovembro from './2026/permutasNovembro';
+import permutasDezembro from './2026/permtuasDezembro';
 
 const permutasCadastradas: Record<string, Record<string, Array<Permuta>>> = {
     '2025': {
@@ -28,6 +29,7 @@ const permutasCadastradas: Record<string, Record<string, Array<Permuta>>> = {
         '8': permutasAgosto,
         '9': permutasSetembro,
         '11': permutasNovembro,
+        '12': permutasDezembro,
     },
 };
 export default permutasCadastradas;
