@@ -1,4 +1,6 @@
-const pjesDezembro2026 = [
+import { PJES } from '@/app/types/PJES';
+
+const pjesDezembro2026: PJES[] = [
     {
         dia: '31',
         matricula: '725103-3',
