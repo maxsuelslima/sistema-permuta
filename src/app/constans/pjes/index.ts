@@ -4,6 +4,7 @@ import pjesJunho from './2026/pjesJunho';
 import pjesJulho from './2026/pjesJulho';
 import pjesAgosto from './2026/pjesAgosto';
 import pjesSetembro from './2026/pjesSetembro';
+import pjesDezembro2026 from './2026/pjesDezembro';
 
 const pjes: Record<string, Record<string, Array<PJES>>> = {
     '2026': {
@@ -12,6 +13,7 @@ const pjes: Record<string, Record<string, Array<PJES>>> = {
         '7': pjesJulho,
         '8': pjesAgosto,
         '9': pjesSetembro,
+        '12': pjesDezembro2026,
     },
 };
 export default pjes;

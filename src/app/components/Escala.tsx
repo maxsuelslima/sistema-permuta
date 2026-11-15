@@ -75,6 +75,7 @@ const Escala: FC<{
     function adicionarPjes(pjes: PJES) {
         console.log('Adicionando PJES:', pjes);
         setPjesDoMes((prevPjes) => [...prevPjes, pjes]);
+        console.log('PJES do mês após adição:', [...pjesDoMes, pjes]);
     }
     console.log('Pjes do mês:', pjesDoMes);
     function removerPjes(pjes: PJES) {
@@ -332,7 +333,7 @@ const Escala: FC<{
         },
         { P1: 0, P2: 0, P: 0, total: 0 }
     );
-    console.log('Quantidade de cotas PJES:', quantidadeDeCotasPJES);
+    console.log('Quantidade de cotas PJES:', pjesDoMes);
     return (
         <div>
             <label>Selecione o mês:</label>

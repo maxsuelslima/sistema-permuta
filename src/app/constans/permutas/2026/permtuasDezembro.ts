@@ -1,4 +1,4 @@
-const permutasDezembro = [
+const permutasDezembro =[
     {
         id: '1794761647127',
         servicos: [
@@ -103,5 +103,5 @@ const permutasDezembro = [
             },
         ],
     },
-];
+]; 
 export default permutasDezembro;
