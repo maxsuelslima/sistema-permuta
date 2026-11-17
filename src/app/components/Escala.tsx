@@ -12,6 +12,7 @@ import guarnicoes from '../constans/guarnicoes';
 import permutasCadastradas from '../constans/permutas';
 import pjes from '../constans/pjes';
 import { PJES } from '../types/PJES';
+import CelulaTabela from './TabelaServicosMensais/CelulaTabela';
 const servicoExtraNovembro = {
     '2': ['726109-8'],
     '6': ['726109-8'],
@@ -26,6 +27,25 @@ const servicoExtraNovembro = {
     '8': ['722131-2'],
     '27': ['725258-7'],
     '30': ['725258-7'],
+};
+const servicoExtraDezembro = {
+    '8': ['725258-7'],
+    '24': ['725258-7'],
+    '6': ['726109-8'],
+    '3': ['725212-9'],
+    '12': ['725212-9'],
+    '9': ['722131-2'],
+    '25': ['722131-2'],
+    '28': ['725203-0'],
+    '31': ['725203-0', '725103-3'],
+    '4': ['725103-3'],
+    '27': ['725103-3'],
+};
+const servicoExtra: Record<string, Record<string, Record<string, string[]>>> = {
+    '2026': {
+        '11': servicoExtraNovembro,
+        '12': servicoExtraDezembro,
+    },
 };
 const Escala: FC<{
     onlyView?: boolean;
@@ -67,8 +87,7 @@ const Escala: FC<{
         mes,
         ano,
         guarnicaoQueIncia: mes === '11' && ano === '2026' ? '3' : '1',
-        servicoExtra:
-            mes === '11' && ano === '2026' ? servicoExtraNovembro : undefined,
+        servicoExtra: servicoExtra[ano]?.[mes] || {},
     });
     console.log({ servicosMensais });
     const [pjesDoMes, setPjesDoMes] = useState(pjes[ano]?.[mes] ?? []);
@@ -388,6 +407,8 @@ const Escala: FC<{
                 pjes={pjesDoMes}
                 enable725={enable725}
             />
+            <Legenda />
+
             <ul
                 style={{
                     display: onlyView ? 'none' : 'block',
@@ -621,4 +642,66 @@ function generateUUID() {
         }
     );
 }
+const Legenda = () => {
+    return (
+        <div
+            style={{
+                display: 'flex',
+                gap: '8px',
+                margin: '16px',
+                flexDirection: 'column',
+            }}
+        >
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <CelulaTabela
+                    estilo="ordinario"
+                    onClick={() => {}}
+                    isDisabled={false}
+                    isSelected={false}
+                    showAdventistMarker={false}
+                >
+                    O
+                </CelulaTabela>
+                Serviço escala de grade
+            </div>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <CelulaTabela
+                    estilo="permuta"
+                    onClick={() => {}}
+                    isDisabled={false}
+                    isSelected={false}
+                    showAdventistMarker={false}
+                >
+                    O
+                </CelulaTabela>
+                Serviço permutado (Serviço recebido de outro militar via
+                permuta)
+            </div>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <CelulaTabela
+                    estilo="folgaEstranha"
+                    onClick={() => {}}
+                    isDisabled={false}
+                    isSelected={false}
+                    showAdventistMarker={false}
+                >
+                    X
+                </CelulaTabela>
+                Folga estranha ( Serviço cedido via permuta para outro militar )
+            </div>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <CelulaTabela
+                    estilo="dispensa"
+                    onClick={() => {}}
+                    isDisabled={false}
+                    isSelected={false}
+                    showAdventistMarker={false}
+                >
+                    D
+                </CelulaTabela>
+                Dispensa
+            </div>
+        </div>
+    );
+};
 export default Escala;

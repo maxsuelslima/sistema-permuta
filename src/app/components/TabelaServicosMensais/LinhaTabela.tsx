@@ -5,6 +5,7 @@ import { gerarDiasIndisponiveis } from '../Escala';
 import listaAdventistas from '@/app/constans/listaAdventistas';
 import pantenteDictionary from '@/app/constans/patenteDictionary';
 import { PJES } from '@/app/types/PJES';
+import CelulaTabela from './CelulaTabela';
 
 const styles: Record<string, CSSProperties> = {
     ordinario: {
@@ -170,9 +171,9 @@ const LinhaTabela: FC<{
         dispensas: dispensas,
         matricula,
     });
-    const disablePermuta = diasIndisponiveis.includes(
+    /*     const disablePermuta = diasIndisponiveis.includes(
         servicoSelecionadoParaPermuta?.dia || ''
-    );
+    ); */
     const diasEmServico = servicosOrdinarios.map((s) => s.dia);
     permutasDoMilitar.forEach((permuta) => {
         permuta.servicos.forEach((s) => {
@@ -257,8 +258,7 @@ const LinhaTabela: FC<{
             {celulas.map(({ tipo }, index) => {
                 const disabled =
                     (isEditingPermuta && tipo !== 'ordinario') ||
-                    /*  diasBloqueados.includes((index + 1).toString()) || */
-                    disablePermuta ||
+                    /* disablePermuta || */
                     linhasEstaDesabilitada;
                 const isSelectedDay =
                     servicoSelecionadoParaPermuta?.dia ===
@@ -272,9 +272,13 @@ const LinhaTabela: FC<{
                     isFridayOrSaturday &&
                     (tipo === 'ordinario' || tipo === 'permuta');
                 return (
-                    <td
+                    <CelulaTabela
+                        estilo={tipo}
+                        isDisabled={disabled}
+                        isSelected={isSelectedDay}
+                        showAdventistMarker={showAdventistMarker}
                         key={index}
-                        style={{
+                        /*                         style={{
                             border: `1px solid ${showAdventistMarker ? '#ff6600' : 'black'}`,
                             cursor: disabled ? '' : 'pointer',
                             minWidth: '32px',
@@ -286,7 +290,7 @@ const LinhaTabela: FC<{
                                 : disabled
                                   ? 'availableDayAnimation 2s infinite'
                                   : '',
-                        }}
+                        }} */
                         onClick={() => {
                             console.log('LinhaTabela - onClickDia:');
                             if (
@@ -309,7 +313,7 @@ const LinhaTabela: FC<{
                         }}
                     >
                         {conteudos[tipo]}
-                    </td>
+                    </CelulaTabela>
                 );
             })}
             <td

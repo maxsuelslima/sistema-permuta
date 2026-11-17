@@ -13,7 +13,6 @@ const pjes: Record<string, Record<string, Array<PJES>>> = {
         '7': pjesJulho,
         '8': pjesAgosto,
         '9': pjesSetembro,
-        '12': pjesDezembro2026,
     },
 };
 export default pjes;
