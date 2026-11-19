@@ -140,7 +140,6 @@ const Escala: FC<{
         const servicoExiste = servicosOrdinariosPorMatricula[
             servico.matricula
         ]?.find((s) => s.dia === servico.dia);
-        if (!servicoExiste) return alert('Serviço inválido para permuta.');
         setServicoSelecionadoParaPermuta(servico);
     }
     function adicionarPermuta(permuta: Permuta) {
@@ -200,28 +199,23 @@ const Escala: FC<{
                 return;
             }
         }
+
         if (!isEditing) {
-            selecionarServicoParaPermuta(servico);
+            return selecionarServicoParaPermuta(servico);
         }
-        if (!jaFoiPermutado && isEditing) {
-            const isPermutaValida = validarPermuta({
-                permutas,
-                permuta: {
-                    id: String(new Date().getTime()),
-                    servicos: [servicoSelecionadoParaPermuta, servico],
-                },
-                servicosOrdinariosPorMatricula,
-                dispensas: [],
-            });
-            if (isPermutaValida) {
-                adicionarPermuta({
-                    id: String(new Date().getTime()),
-                    servicos: [servicoSelecionadoParaPermuta, servico],
-                });
-                return removerSelecaoDeServicoParaPermuta();
-            }
-            alert('Permuta inválida.');
+        if (servicoSelecionadoParaPermuta.dia === servico.dia) {
+            alert('Não é possível permutar o mesmo dia.');
+            return;
         }
+        if (servicoSelecionadoParaPermuta.matricula === servico.matricula) {
+            alert('Não é possível permutar o mesmo militar.');
+            return;
+        }
+        adicionarPermuta({
+            id: String(new Date().getTime()),
+            servicos: [servicoSelecionadoParaPermuta, servico],
+        });
+        return removerSelecaoDeServicoParaPermuta();
     }
     function salvarPermutas() {
         const permutasSalvas: Array<{
@@ -615,6 +609,7 @@ export function gerarDiasIndisponiveis({
             diasIndisponiveis.push(servicoA.dia);
         }
     });
+
     return diasIndisponiveis;
 }
 function generateUUID() {
@@ -644,64 +639,91 @@ function generateUUID() {
 }
 const Legenda = () => {
     return (
-        <div
-            style={{
-                display: 'flex',
-                gap: '8px',
-                margin: '16px',
-                flexDirection: 'column',
-            }}
-        >
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <CelulaTabela
-                    estilo="ordinario"
-                    onClick={() => {}}
-                    isDisabled={false}
-                    isSelected={false}
-                    showAdventistMarker={false}
-                >
-                    O
-                </CelulaTabela>
-                Serviço escala de grade
-            </div>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <CelulaTabela
-                    estilo="permuta"
-                    onClick={() => {}}
-                    isDisabled={false}
-                    isSelected={false}
-                    showAdventistMarker={false}
-                >
-                    O
-                </CelulaTabela>
-                Serviço permutado (Serviço recebido de outro militar via
-                permuta)
-            </div>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <CelulaTabela
-                    estilo="folgaEstranha"
-                    onClick={() => {}}
-                    isDisabled={false}
-                    isSelected={false}
-                    showAdventistMarker={false}
-                >
-                    X
-                </CelulaTabela>
-                Folga estranha ( Serviço cedido via permuta para outro militar )
-            </div>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <CelulaTabela
-                    estilo="dispensa"
-                    onClick={() => {}}
-                    isDisabled={false}
-                    isSelected={false}
-                    showAdventistMarker={false}
-                >
-                    D
-                </CelulaTabela>
-                Dispensa
-            </div>
-        </div>
+        <table style={{ marginTop: '16px', marginBottom: '16px' }}>
+            <tbody>
+                <tr>
+                    <td>
+                        <CelulaTabela
+                            estilo="ordinario"
+                            onClick={() => {}}
+                            isDisabled={false}
+                            isSelected={false}
+                            showAdventistMarker={false}
+                        >
+                            O
+                        </CelulaTabela>
+                    </td>
+                    <td>
+                        Serviço ordinário (Serviço que o militar deve cumprir)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <CelulaTabela
+                            estilo="permuta"
+                            onClick={() => {}}
+                            isDisabled={false}
+                            isSelected={false}
+                            showAdventistMarker={false}
+                        >
+                            O
+                        </CelulaTabela>
+                    </td>
+                    <td>
+                        Serviço permutado (Serviço recebido de outro militar via
+                        permuta)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <CelulaTabela
+                            estilo="dispensa"
+                            onClick={() => {}}
+                            isDisabled={false}
+                            isSelected={false}
+                            showAdventistMarker={false}
+                        >
+                            O
+                        </CelulaTabela>
+                    </td>
+                    <td>
+                        Dispensa (Serviço que o militar está dispensado de
+                        cumprir)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <CelulaTabela
+                            estilo="folga"
+                            onClick={() => {}}
+                            isDisabled={false}
+                            isSelected={false}
+                            showAdventistMarker={false}
+                        >
+                            ""
+                        </CelulaTabela>
+                    </td>
+                    <td>Folga (Dia de descanso do militar)</td>
+                </tr>
+                <tr>
+                    <td>
+                        <CelulaTabela
+                            estilo="folgaEstranha"
+                            onClick={() => {}}
+                            isDisabled={false}
+                            isSelected={false}
+                            showAdventistMarker={false}
+                        >
+                            X
+                        </CelulaTabela>
+                    </td>
+                    <td>
+                        Folga Estranha (Dia de descanso do militar que não é
+                        folga normal)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     );
 };
 export default Escala;

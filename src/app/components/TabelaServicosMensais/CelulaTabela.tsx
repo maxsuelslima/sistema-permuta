@@ -18,7 +18,12 @@ export const estilos: Record<string, React.CSSProperties> = {
         opacity: 0.7,
         pointerEvents: 'none',
     },
-    folga: { backgroundColor: '#f2f2f2', textAlign: 'center' },
+    folga: {
+        backgroundColor: '#f2f2f2',
+        textAlign: 'center',
+        pointerEvents: 'none',
+        opacity: 0.7,
+    },
     folgaEstranha: {
         backgroundColor: '#ffcccc',
         cursor: 'pointer',

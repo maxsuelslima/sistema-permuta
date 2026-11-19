@@ -573,7 +573,7 @@ function aplicarPermutasNaEscala({
     };
     permutas.forEach(({ servicos }) => {
         const [first, second] = servicos;
-        // Remove o serviço original do primeiro militar
+        console.log({ first, second });
         escalaComPermutas[first.dia] = escalaComPermutas[first.dia].filter(
             (matricula) => matricula !== first.matricula
         );

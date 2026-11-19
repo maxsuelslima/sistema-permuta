@@ -171,9 +171,9 @@ const LinhaTabela: FC<{
         dispensas: dispensas,
         matricula,
     });
-    /*     const disablePermuta = diasIndisponiveis.includes(
+    const disablePermuta = diasIndisponiveis.includes(
         servicoSelecionadoParaPermuta?.dia || ''
-    ); */
+    );
     const diasEmServico = servicosOrdinarios.map((s) => s.dia);
     permutasDoMilitar.forEach((permuta) => {
         permuta.servicos.forEach((s) => {
@@ -257,8 +257,10 @@ const LinhaTabela: FC<{
             </td>
             {celulas.map(({ tipo }, index) => {
                 const disabled =
-                    (isEditingPermuta && tipo !== 'ordinario') ||
-                    /* disablePermuta || */
+                    (isEditingPermuta &&
+                        tipo !== 'ordinario' &&
+                        tipo !== 'permuta') ||
+                    disablePermuta ||
                     linhasEstaDesabilitada;
                 const isSelectedDay =
                     servicoSelecionadoParaPermuta?.dia ===
