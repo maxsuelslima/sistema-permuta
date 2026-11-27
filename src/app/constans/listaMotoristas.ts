@@ -1,6 +1,6 @@
 const listaMotoristas: Record<
     string,
-    { dataDeInclusao?: Date; categoria: string }
+    { dataDeInclusao?: Date; categoria: 'B' | 'C' | 'D' }
 > = {
     '707401-8': {
         dataDeInclusao: new Date('2023-11-01'),

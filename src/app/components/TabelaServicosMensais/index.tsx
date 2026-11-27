@@ -89,7 +89,11 @@ const TabelaServicosMensais: FC<{
         string,
         {
             militares: number;
-            motoristas: number;
+            motoristas: {
+                B: number;
+                C: number;
+                D: number;
+            };
             graduados: number;
         }
     > = gerarQuantidadeMilitaresPorDia({
@@ -332,32 +336,54 @@ const TabelaServicosMensais: FC<{
                                 >
                                     Quantidade de motoristas escalados por dia
                                 </td>
-                                {diasNoMes.map(({ dia }, index) => (
-                                    <td
-                                        key={index}
-                                        style={{
-                                            border: '1px solid black',
-                                            padding: '2px 1px',
-                                            textAlign: 'center',
-                                            backgroundColor:
-                                                quantidadeDeMilitaresPorDia[dia]
-                                                    .motoristas === 3
-                                                    ? '#ffcccc' // vermelho claro se tiver 3 motoristas
-                                                    : quantidadeDeMilitaresPorDia[
+                                {diasNoMes.map(({ dia }, index) => {
+                                    return (
+                                        <td
+                                            key={index}
+                                            style={{
+                                                border: '1px solid black',
+                                                backgroundColor: '#ccffcc',
+                                            }}
+                                        >
+                                            <span
+                                                key={index}
+                                                style={{
+                                                    padding: '2px 1px',
+                                                    textAlign: 'center',
+                                                    width: '100%',
+                                                    backgroundColor:
+                                                        quantidadeDeMilitaresPorDia[
                                                             dia
-                                                        ].motoristas == 2
-                                                      ? '#ccffcc' // laranja claro se tiver 2 motoristas
-                                                      : quantidadeDeMilitaresPorDia[
-                                                              dia
-                                                          ].motoristas == 1
-                                                        ? '#ffff99' // amarelo claro se tiver 2 motoristas
-                                                        : '#ffcccc', // vermelho claro se não tiver motoristas
-                                        }}
-                                    >
-                                        {quantidadeDeMilitaresPorDia[dia]
-                                            .motoristas || 0}
-                                    </td>
-                                ))}
+                                                        ].motoristas.B >= 1
+                                                            ? '#ccffcc'
+                                                            : '#ffcccc', // vermelho claro se não tiver motoristas
+                                                }}
+                                            >
+                                                B:
+                                                {quantidadeDeMilitaresPorDia[
+                                                    dia
+                                                ].motoristas.B || 0}
+                                            </span>
+                                            <br />
+                                            <span
+                                                key={index}
+                                                style={{
+                                                    backgroundColor:
+                                                        quantidadeDeMilitaresPorDia[
+                                                            dia
+                                                        ].motoristas.D >= 1
+                                                            ? '#ccffcc'
+                                                            : '#ffcccc', // vermelho claro se não tiver motoristas
+                                                }}
+                                            >
+                                                D:
+                                                {quantidadeDeMilitaresPorDia[
+                                                    dia
+                                                ].motoristas.D || 0}
+                                            </span>
+                                        </td>
+                                    );
+                                })}
                             </tr>
                             <tr>
                                 <td
@@ -481,7 +507,15 @@ export function aplicarPermutas(ars: {
 }
 type QuantidadeMilitaresPorDia = Record<
     string,
-    { militares: number; motoristas: number; graduados: number }
+    {
+        militares: number;
+        motoristas: {
+            B: number;
+            C: number;
+            D: number;
+        };
+        graduados: number;
+    }
 >;
 function gerarQuantidadeMilitaresPorDia({
     escalaOrdinaria,
@@ -506,7 +540,11 @@ function gerarQuantidadeMilitaresPorDia({
         if (!quantidadeDeMilitaresPorDia[dia]) {
             quantidadeDeMilitaresPorDia[dia] = {
                 militares: 0,
-                motoristas: 0,
+                motoristas: {
+                    B: 0,
+                    C: 0,
+                    D: 0,
+                },
                 graduados: 0,
             };
         }
@@ -524,7 +562,8 @@ function gerarQuantidadeMilitaresPorDia({
                 listaMotoristas
             ).some((motorista) => motorista === matricula);
             if (pertenceAoQuadroDeMotoristas) {
-                quantidadeDeMilitaresPorDia[dia].motoristas += 1;
+                const categoria = listaMotoristas[matricula].categoria;
+                quantidadeDeMilitaresPorDia[dia].motoristas[categoria] += 1;
             }
             if (Number(efetivo[matricula]?.patente) >= 2) {
                 quantidadeDeMilitaresPorDia[dia].graduados += 1;
@@ -539,9 +578,11 @@ function gerarQuantidadeMilitaresPorDia({
         const isMeioTurno = turno === 'P1' || turno === 'P2';
         if (pertenceAoQuadroDeMotoristas) {
             if (isMeioTurno) {
-                quantidadeDeMilitaresPorDia[dia].motoristas += 0.5;
+                const categoria = listaMotoristas[pMatricula].categoria;
+                quantidadeDeMilitaresPorDia[dia].motoristas[categoria] += 0.5;
             } else {
-                quantidadeDeMilitaresPorDia[dia].motoristas += 1;
+                const categoria = listaMotoristas[pMatricula].categoria;
+                quantidadeDeMilitaresPorDia[dia].motoristas[categoria] += 1;
             }
         }
         if (isGraduado) {

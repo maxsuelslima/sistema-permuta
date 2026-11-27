@@ -1,96 +1,3 @@
-const permutasDezembro = [
-    {
-        id: '1794882307153',
-        servicos: [
-            {
-                dia: '2',
-                matricula: '725203-0',
-            },
-            {
-                dia: '5',
-                matricula: '725103-3',
-            },
-        ],
-    },
-    {
-        id: '1794882312876',
-        servicos: [
-            {
-                dia: '3',
-                matricula: '725258-7',
-            },
-            {
-                dia: '10',
-                matricula: '725203-0',
-            },
-        ],
-    },
-    {
-        id: '1794882319542',
-        servicos: [
-            {
-                dia: '4',
-                matricula: '722131-2',
-            },
-            {
-                dia: '14',
-                matricula: '725203-0',
-            },
-        ],
-    },
-    {
-        id: '1794882325405',
-        servicos: [
-            {
-                dia: '9',
-                matricula: '722131-2',
-            },
-            {
-                dia: '19',
-                matricula: '725258-7',
-            },
-        ],
-    },
-    {
-        id: '1794882352603',
-        servicos: [
-            {
-                dia: '15',
-                matricula: '725258-7',
-            },
-            {
-                dia: '25',
-                matricula: '725103-3',
-            },
-        ],
-    },
-    {
-        id: '1794882357935',
-        servicos: [
-            {
-                dia: '27',
-                matricula: '725258-7',
-            },
-            {
-                dia: '22',
-                matricula: '725203-0',
-            },
-        ],
-    },
-    {
-        id: '1794882365369',
-        servicos: [
-            {
-                dia: '18',
-                matricula: '725203-0',
-            },
-            {
-                dia: '29',
-                matricula: '725103-3',
-            },
-        ],
-    },
-];
 const permutasDezembroAlt = [
     {
         id: '1795737606998',
@@ -457,19 +364,6 @@ const permutasDezembroAlt = [
         ],
     },
     {
-        id: '1795739985294',
-        servicos: [
-            {
-                dia: '6',
-                matricula: '726109-8',
-            },
-            {
-                dia: '15',
-                matricula: '725258-7',
-            },
-        ],
-    },
-    {
         id: '1795740129990',
         servicos: [
             {
@@ -505,6 +399,32 @@ const permutasDezembroAlt = [
             {
                 dia: '25',
                 matricula: '725103-3',
+            },
+        ],
+    },
+    {
+        id: '1795741325841',
+        servicos: [
+            {
+                dia: '15',
+                matricula: '725258-7',
+            },
+            {
+                dia: '21',
+                matricula: '726107-1',
+            },
+        ],
+    },
+    {
+        id: '1795741357393',
+        servicos: [
+            {
+                dia: '3',
+                matricula: '725212-9',
+            },
+            {
+                dia: '17',
+                matricula: '726107-1',
             },
         ],
     },
