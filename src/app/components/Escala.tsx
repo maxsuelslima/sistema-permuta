@@ -29,17 +29,37 @@ const servicoExtraNovembro = {
     '30': ['725258-7'],
 };
 const servicoExtraDezembro = {
-    '8': ['725258-7'],
+    '1': ['710178-3', '725268-4'],
+    '2': ['718232-5', '718123-0'],
+    '3': ['711344-7', '725212-9'],
+    '4': ['725103-3', ' 718232-5'],
+    '5': ['710147-3', ' 710178-3'],
+    '6': ['726109-8', '718123-0'],
+    '7': ['725133-5', '711344-7'],
+    '8': ['725258-7', '722010-3'],
+    '9': ['725195-5', '710178-3', '722131-2'],
+    '10': ['718123-0', '718232-5'],
+    '11': ['726117-9', '711344-7'],
+    '12': ['725212-9', '722010-3'],
+    '13': ['725213-7', '710147-3'],
+    '14': ['718123-0', '722010-3'],
+    '15': ['711344-7', '726117-9'],
+    '16': ['726107-1'],
+    '17': ['710178-3', '725268-4'],
+    '18': ['718121-3', '718123-0'],
+    '19': ['726107-1', '711344-7'],
+    '20': ['718232-5'],
+    '21': ['725195-5'],
+    '22': ['710178-3', '718121-3'],
+    '23': ['725133-5', '711344-7'],
     '24': ['725258-7'],
-    '6': ['726109-8'],
-    '3': ['725212-9'],
-    '12': ['725212-9'],
-    '9': ['722131-2'],
-    '25': ['722131-2'],
+    '25': ['722131-2', '725195-5'],
+    '26': ['710178-3', '718121-3'],
+    '27': ['725103-3', '710147-3'],
     '28': ['725203-0'],
+    '29': ['725213-7', '722010-3'],
+    '30': ['718123-0', '718121-3'],
     '31': ['725203-0', '725103-3'],
-    '4': ['725103-3'],
-    '27': ['725103-3'],
 };
 const servicoExtra: Record<string, Record<string, Record<string, string[]>>> = {
     '2026': {
@@ -642,81 +662,71 @@ const Legenda = () => {
         <table style={{ marginTop: '16px', marginBottom: '16px' }}>
             <tbody>
                 <tr>
-                    <td>
-                        <CelulaTabela
-                            estilo="ordinario"
-                            onClick={() => {}}
-                            isDisabled={false}
-                            isSelected={false}
-                            showAdventistMarker={false}
-                        >
-                            O
-                        </CelulaTabela>
-                    </td>
+                    <CelulaTabela
+                        estilo="ordinario"
+                        onClick={() => {}}
+                        isDisabled={false}
+                        isSelected={false}
+                        showAdventistMarker={false}
+                    >
+                        O
+                    </CelulaTabela>
                     <td>
                         Serviço ordinário (Serviço que o militar deve cumprir)
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <CelulaTabela
-                            estilo="permuta"
-                            onClick={() => {}}
-                            isDisabled={false}
-                            isSelected={false}
-                            showAdventistMarker={false}
-                        >
-                            O
-                        </CelulaTabela>
-                    </td>
+                    <CelulaTabela
+                        estilo="permuta"
+                        onClick={() => {}}
+                        isDisabled={false}
+                        isSelected={false}
+                        showAdventistMarker={false}
+                    >
+                        O
+                    </CelulaTabela>
                     <td>
                         Serviço permutado (Serviço recebido de outro militar via
                         permuta)
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <CelulaTabela
-                            estilo="dispensa"
-                            onClick={() => {}}
-                            isDisabled={false}
-                            isSelected={false}
-                            showAdventistMarker={false}
-                        >
-                            O
-                        </CelulaTabela>
-                    </td>
+                    <CelulaTabela
+                        estilo="dispensa"
+                        onClick={() => {}}
+                        isDisabled={false}
+                        isSelected={false}
+                        showAdventistMarker={false}
+                    >
+                        O
+                    </CelulaTabela>
                     <td>
                         Dispensa (Serviço que o militar está dispensado de
                         cumprir)
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <CelulaTabela
-                            estilo="folga"
-                            onClick={() => {}}
-                            isDisabled={false}
-                            isSelected={false}
-                            showAdventistMarker={false}
-                        >
-                            ""
-                        </CelulaTabela>
-                    </td>
+                    <CelulaTabela
+                        estilo="folga"
+                        onClick={() => {}}
+                        isDisabled={false}
+                        isSelected={false}
+                        showAdventistMarker={false}
+                    >
+                        ""
+                    </CelulaTabela>
                     <td>Folga (Dia de descanso do militar)</td>
                 </tr>
                 <tr>
-                    <td>
-                        <CelulaTabela
-                            estilo="folgaEstranha"
-                            onClick={() => {}}
-                            isDisabled={false}
-                            isSelected={false}
-                            showAdventistMarker={false}
-                        >
-                            X
-                        </CelulaTabela>
-                    </td>
+                    <CelulaTabela
+                        estilo="folgaEstranha"
+                        onClick={() => {}}
+                        isDisabled={false}
+                        isSelected={false}
+                        showAdventistMarker={false}
+                    >
+                        X
+                    </CelulaTabela>
                     <td>
                         Folga Estranha (Dia de descanso do militar que não é
                         folga normal)

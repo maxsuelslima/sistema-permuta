@@ -184,7 +184,6 @@ const TabelaServicosMensais: FC<{
                                 }
                             );
                             if (isPrimeiroMilitarDoGrupo) {
-                                console.log({ matriculaMilitar });
                                 return (
                                     <React.Fragment key={index}>
                                         <tr>

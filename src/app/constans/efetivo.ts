@@ -301,6 +301,84 @@ const efetivo: Record<string, Militar> = {
         matricula: '726134-9',
         patente: '1',
     },
+    '718123-0': {
+        name: 'EVERTON',
+        id: '718123-0',
+        matricula: '718123-0',
+        patente: '2',
+    },
+    '718232-5': {
+        name: 'DORALICE',
+        id: '718232-5',
+        matricula: '718232-5',
+        patente: '2',
+    },
+    '725133-5': {
+        name: 'EVILÁCIO',
+        id: '725133-5',
+        matricula: '725133-5',
+        patente: '1',
+    },
+    '710147-3': {
+        name: 'RONALDO',
+        id: '710147-3',
+        matricula: '710147-3',
+        patente: '3',
+    },
+    '725195-5':{
+        name: 'GUILHERME VINÍCIUS',
+        id: '725195-5',
+        matricula: '725195-5',
+        patente: '1',
+    },
+    '726107-1': {
+        name: 'CLAÚDIO TORRES',
+        id: '726107-1',
+        matricula: '726107-1',
+        patente: '1',
+    },
+    '710178-3': {
+        name: 'FILHO',
+        id: '710178-3',
+        matricula: '710178-3',
+        patente: '3',
+    },
+    '722010-3': {
+        name: 'ÍCARO',
+        id: '722010-3',
+        matricula: '722010-3',
+        patente: '2',
+    },
+    '725213-7': {
+        name: 'SOBRAL',
+        id: '725213-7',
+        matricula: '725213-7',
+        patente: '1',
+    },
+    '711344-7':{
+        name: 'DE OLIVEIRA',
+        id: '711344-7',
+        matricula: '711344-7',
+        patente: '2',
+    },
+    '718121-3': {
+        name: 'VICTOR',
+        id: '718121-3',
+        matricula: '718121-3',
+        patente: '2',
+    },
+    '725268-4': {
+        name: 'IOANES',
+        id: '725268-4',
+        matricula: '725268-4',
+        patente: '1',
+    },
+    '726117-9': {
+        name: 'F LIRA',
+        id: '726117-9',
+        matricula: '726117-9',
+        patente: '1',
+    },
 };
 
 export default efetivo;
