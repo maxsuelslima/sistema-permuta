@@ -314,7 +314,11 @@ const LinhaTabela: FC<{
                             }
                         }}
                     >
-                        {conteudos[tipo]}
+                        {tipo === 'dispensa'
+                            ? 'D'
+                            : tipo !== 'folga'
+                              ? index + 1
+                              : null}
                     </CelulaTabela>
                 );
             })}

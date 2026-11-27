@@ -79,6 +79,9 @@ const CelulaTabela: FC<CelulaTabelaProps> = ({
                 minWidth: '32px',
                 minHeight: '32px',
                 textAlign: 'center',
+                fontSize: '0.75rem',
+                fontWeight: 'bold',
+                color: 'grey',
                 ...estilos[estilo],
                 ...(isDisabled ? estilos.disabled : {}),
                 animation: isSelected

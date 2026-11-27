@@ -416,19 +416,6 @@ const permutasDezembroAlt = [
         ],
     },
     {
-        id: '1795741357393',
-        servicos: [
-            {
-                dia: '3',
-                matricula: '725212-9',
-            },
-            {
-                dia: '17',
-                matricula: '726107-1',
-            },
-        ],
-    },
-    {
         id: '1795786480425',
         servicos: [
             {
